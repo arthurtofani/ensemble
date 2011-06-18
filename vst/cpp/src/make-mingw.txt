@@ -1,0 +1,1 @@
+g++ -Wl,--kill-at -D_JNI_IMPLEMENTATION_ -I$JAVA_HOME/include -I$JAVA_HOME/include/win32 -shared JVST.cpp -o jvst-0.0.1.dll
