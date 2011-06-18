@@ -189,7 +189,7 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 	JavaVM * virtual_machine = NULL;
 
 	int callback(jack_nframes_t nframes, void * arg) {
-		int ret = 0, i;
+		int ret = 0;
 		UserData * data;
 //		char ** ports;
 //		jack_default_audio_sample_t * sampleBuffer;
@@ -457,9 +457,9 @@ SWIGEXPORT jlong JNICALL Java_mmsjack_mmsjackJNI_jack_1client_1open(JNIEnv *jenv
   *(jack_client_t **)&jresult = client;
 
 	// Gets the virtual machine
-    if (virtual_machine == NULL) {
+  if (virtual_machine == NULL) {
 	  (*jenv)->GetJavaVM(jenv, &virtual_machine);
-  	}
+  }
 
     // Creates userData and set parameters
 	data = (UserData *)malloc(sizeof(UserData));
@@ -489,13 +489,11 @@ SWIGEXPORT jint JNICALL Java_mmsjack_mmsjackJNI_jack_1get_1sample_1rate(JNIEnv *
 
 
 SWIGEXPORT jlong JNICALL Java_mmsjack_mmsjackJNI_jack_1port_1register(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3, jlong jarg4) {
-  UserData * data;
   jlong jresult = 0 ;
   jack_client_t *arg1 = (jack_client_t *) 0 ;
   char *arg2 = (char *) 0 ;
   char *arg3 = (char *) 0 ;
   unsigned long arg4 ;
-  jobject arg5 ;
   jack_port_t *result = 0 ;
   
   (void)jenv;
@@ -514,8 +512,12 @@ SWIGEXPORT jlong JNICALL Java_mmsjack_mmsjackJNI_jack_1port_1register(JNIEnv *je
   arg4 = (unsigned long)jarg4; 
 
   result = (jack_port_t *)jack_port_register(arg1,(char const *)arg2,(char const *)arg3,arg4,0);
+  
+  if (result == NULL) {
+  	printf("WARNING!!! result = NULL\n"); fflush(stdout);
+  }
 
-  *(jack_port_t **)&jresult = result; 
+  *(jack_port_t **)&jresult = result;
   if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, (const char *)arg2);
   if (arg3) (*jenv)->ReleaseStringUTFChars(jenv, jarg3, (const char *)arg3);
   return jresult;
@@ -678,7 +680,13 @@ SWIGEXPORT jobject JNICALL Java_mmsjack_mmsjackJNI_jack_1port_1get_1buffer(JNIEn
   sampleBuffer = (jack_default_audio_sample_t *) jack_port_get_buffer(arg1,arg2);
   *(void **)&jresult = result;
 
-  return (*jenv)->NewDirectByteBuffer(jenv, sampleBuffer, (jint) jarg2 * sizeof(jack_default_audio_sample_t));
+	if (sampleBuffer != NULL) {
+  	return (*jenv)->NewDirectByteBuffer(jenv, sampleBuffer, (jint) jarg2 * sizeof(jack_default_audio_sample_t));
+  }
+  else {
+  	return NULL;
+  }
+  
 
 //  return jresult;
 }
@@ -846,7 +854,6 @@ SWIGEXPORT jlong JNICALL Java_mmsjack_mmsjackJNI_jack_1get_1time(JNIEnv *jenv, j
   (void)jcls;
   result = (jack_time_t)jack_get_time();
   jresult = (jlong) result;
-  printf("c:time = %ld\n", jresult); fflush(stdout);
 
   return jresult;
 }

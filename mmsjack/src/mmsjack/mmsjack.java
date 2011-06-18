@@ -35,87 +35,84 @@ public class mmsjack implements mmsjackConstants {
 	}
 
 	
-  public static int jack_client_close(SWIGTYPE_p_jack_client_t client) {
-    return mmsjackJNI.jack_client_close(SWIGTYPE_p_jack_client_t.getCPtr(client));
+  public static int jack_client_close(long client) {
+    return mmsjackJNI.jack_client_close(client);
   }
 
-  public static SWIGTYPE_p_jack_client_t jack_client_open(String client_name, Object callback) {
-    long cPtr = mmsjackJNI.jack_client_open(client_name, callback);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_jack_client_t(cPtr, false);
+  public static long jack_client_open(String client_name, Object callback) {
+    return mmsjackJNI.jack_client_open(client_name, callback);
   }
 
-  public static int jack_get_sample_rate(SWIGTYPE_p_jack_client_t arg0) {
-    return mmsjackJNI.jack_get_sample_rate(SWIGTYPE_p_jack_client_t.getCPtr(arg0));
+  public static int jack_get_sample_rate(long arg0) {
+    return mmsjackJNI.jack_get_sample_rate(arg0);
   }
 
-  public static SWIGTYPE_p_jack_port_t jack_port_register(SWIGTYPE_p_jack_client_t client, String port_name, String port_type, long flags) {
-    long cPtr = mmsjackJNI.jack_port_register(SWIGTYPE_p_jack_client_t.getCPtr(client), port_name, port_type, flags);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_jack_port_t(cPtr, false);
+  public static long jack_port_register(long client, String port_name, String port_type, long flags) {
+    return mmsjackJNI.jack_port_register(client, port_name, port_type, flags);
   }
 
-  public static int jack_port_unregister(SWIGTYPE_p_jack_client_t arg0, SWIGTYPE_p_jack_port_t arg1) {
-	    return mmsjackJNI.jack_port_unregister(SWIGTYPE_p_jack_client_t.getCPtr(arg0), SWIGTYPE_p_jack_port_t.getCPtr(arg1));
+  public static int jack_port_unregister(long arg0, long arg1) {
+	    return mmsjackJNI.jack_port_unregister(arg0, arg1);
   }
 
-  public static int jack_activate(SWIGTYPE_p_jack_client_t client) {
-    return mmsjackJNI.jack_activate(SWIGTYPE_p_jack_client_t.getCPtr(client));
+  public static int jack_activate(long client) {
+    return mmsjackJNI.jack_activate(client);
   }
 
-  public static String[] jack_get_ports(SWIGTYPE_p_jack_client_t arg0, String port_name_pattern, String type_name_pattern, long flags) {
-    return mmsjackJNI.jack_get_ports(SWIGTYPE_p_jack_client_t.getCPtr(arg0), port_name_pattern, type_name_pattern, flags);
+  public static String[] jack_get_ports(long arg0, String port_name_pattern, String type_name_pattern, long flags) {
+    return mmsjackJNI.jack_get_ports(arg0, port_name_pattern, type_name_pattern, flags);
 }
 
-  public static int jack_connect(SWIGTYPE_p_jack_client_t arg0, String source_port, String destination_port) {
-    return mmsjackJNI.jack_connect(SWIGTYPE_p_jack_client_t.getCPtr(arg0), source_port, destination_port);
+  public static int jack_connect(long arg0, String source_port, String destination_port) {
+    return mmsjackJNI.jack_connect(arg0, source_port, destination_port);
   }
 
-  public static int jack_disconnect(SWIGTYPE_p_jack_client_t arg0, String source_port, String destination_port) {
-	    return mmsjackJNI.jack_disconnect(SWIGTYPE_p_jack_client_t.getCPtr(arg0), source_port, destination_port);
+  public static int jack_disconnect(long arg0, String source_port, String destination_port) {
+	    return mmsjackJNI.jack_disconnect(arg0, source_port, destination_port);
 	  }
 
-  public static String jack_port_name(SWIGTYPE_p_jack_port_t port) {
-    return mmsjackJNI.jack_port_name(SWIGTYPE_p_jack_port_t.getCPtr(port));
+  public static String jack_port_name(long port) {
+    return mmsjackJNI.jack_port_name(port);
   }
 
-  public static ByteBuffer jack_port_get_buffer(SWIGTYPE_p_jack_port_t arg0, int arg1) {
-	    return mmsjackJNI.jack_port_get_buffer(SWIGTYPE_p_jack_port_t.getCPtr(arg0), arg1);
+  public static ByteBuffer jack_port_get_buffer(long arg0, int arg1) {
+	    return mmsjackJNI.jack_port_get_buffer(arg0, arg1);
   }
 
-//  public static int jack_set_process_callback(SWIGTYPE_p_jack_client_t client, Object process_callback) {
-//    return mmsjackJNI.jack_set_process_callback(SWIGTYPE_p_jack_client_t.getCPtr(client), process_callback);
+//  public static int jack_set_process_callback(long client, Object process_callback) {
+//    return mmsjackJNI.jack_set_process_callback(client), process_callback);
 //  }
 
-  public static SWIGTYPE_p_jack_port_t jack_port_by_name(SWIGTYPE_p_jack_client_t arg0, String port_name) {
-    long cPtr = mmsjackJNI.jack_port_by_name(SWIGTYPE_p_jack_client_t.getCPtr(arg0), port_name);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_jack_port_t(cPtr, false);
+  public static long jack_port_by_name(long arg0, String port_name) {
+    return mmsjackJNI.jack_port_by_name(arg0, port_name);
   }
 
-  public static int jack_port_get_latency(SWIGTYPE_p_jack_port_t port) {
-    return mmsjackJNI.jack_port_get_latency(SWIGTYPE_p_jack_port_t.getCPtr(port));
+  public static int jack_port_get_latency(long port) {
+    return mmsjackJNI.jack_port_get_latency(port);
   }
 
-  public static int jack_port_get_total_latency(SWIGTYPE_p_jack_client_t arg0, SWIGTYPE_p_jack_port_t port) {
-    return mmsjackJNI.jack_port_get_total_latency(SWIGTYPE_p_jack_client_t.getCPtr(arg0), SWIGTYPE_p_jack_port_t.getCPtr(port));
+  public static int jack_port_get_total_latency(long arg0, long port) {
+    return mmsjackJNI.jack_port_get_total_latency(arg0, port);
   }
 
-  public static int jack_frames_since_cycle_start(SWIGTYPE_p_jack_client_t arg0) {
-    return mmsjackJNI.jack_frames_since_cycle_start(SWIGTYPE_p_jack_client_t.getCPtr(arg0));
+  public static int jack_frames_since_cycle_start(long arg0) {
+    return mmsjackJNI.jack_frames_since_cycle_start(arg0);
   }
 
-  public static int jack_frame_time(SWIGTYPE_p_jack_client_t arg0) {
-    return mmsjackJNI.jack_frame_time(SWIGTYPE_p_jack_client_t.getCPtr(arg0));
+  public static int jack_frame_time(long arg0) {
+    return mmsjackJNI.jack_frame_time(arg0);
   }
 
-  public static int jack_last_frame_time(SWIGTYPE_p_jack_client_t client) {
-    return mmsjackJNI.jack_last_frame_time(SWIGTYPE_p_jack_client_t.getCPtr(client));
+  public static int jack_last_frame_time(long client) {
+    return mmsjackJNI.jack_last_frame_time(client);
   }
 
-  public static long jack_frames_to_time(SWIGTYPE_p_jack_client_t client, int arg1) {
-    return mmsjackJNI.jack_frames_to_time(SWIGTYPE_p_jack_client_t.getCPtr(client), arg1);
+  public static long jack_frames_to_time(long client, int arg1) {
+    return mmsjackJNI.jack_frames_to_time(client, arg1);
   }
 
-  public static int jack_time_to_frames(SWIGTYPE_p_jack_client_t client, long arg1) {
-    return mmsjackJNI.jack_time_to_frames(SWIGTYPE_p_jack_client_t.getCPtr(client), arg1);
+  public static int jack_time_to_frames(long client, long arg1) {
+    return mmsjackJNI.jack_time_to_frames(client, arg1);
   }
 
   public static long jack_get_time() {

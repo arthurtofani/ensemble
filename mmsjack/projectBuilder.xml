@@ -62,7 +62,7 @@
       <echo message="Came into the Windows target" />
     	
         <exec executable="gcc">
-        	<arg line="-Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at -I%JAVA_HOME%\include -I%JAVA_HOME%\include\win32 -Iinclude -shared mmsjack.c -L. -ljack -o mmsjack.dll" />
+        	<arg line="-Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at -I$JAVA_HOME/include -I$JAVA_HOME/include/win32 -Iinclude -shared mmsjack.c -L. -ljack -o mmsjack.dll" />
         </exec>
 
     </target>

@@ -12,8 +12,8 @@ import mmsjack.mmsjackConstants;
 
 public class Test {
 
-	private static SWIGTYPE_p_jack_client_t 	client;
-	private static SWIGTYPE_p_jack_port_t 		port;
+	private static long client;
+	private static long port;
 
 	public static void main(String[] args) {
 		
@@ -34,21 +34,22 @@ public class Test {
                 return 0;
 			}
 		});
-		if (client == null) {
+
+		if (client == 0) {
 			System.err.println("Error");
 			System.exit(1);
 		}
 		
+		port = mmsjack.jack_port_register(client, 
+										"port_1",
+										mmsjackConstants.JACK_DEFAULT_AUDIO_TYPE, 
+										JackPortFlags.JackPortIsOutput);
+
 		// Activates the JACK client
 		if (mmsjack.jack_activate(client) != 0) {
 			System.err.println("Error");
 		}
 
-		port = mmsjack.jack_port_register(client, 
-										"port_1",
-										mmsjackConstants.JACK_DEFAULT_AUDIO_TYPE, 
-										JackPortFlags.JackPortIsOutput);
-		
 		mmsjack.jack_connect(client, "mmsjack:port_1", "system:playback_1");
 		
 		try {
