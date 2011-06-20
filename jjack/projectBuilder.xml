@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <project name="jjack" default="OS-TEST" basedir=".">
+  	
+  	<property name="JAVA_HOME" 		 value="C:\Program Files (x86)\Java\jdk1.6.0_22"/>
+
+  	<property name="lib.dir"     value="lib"/>
+  	<property name="src.dir"     value="src"/>
+  	
+  	<property name="cp" 		value=".;${classes.dir}"/>
+  	
+    <!-- set the operating system test properties -->
+    <condition property="isMac">
+      <os family="mac" />
+    </condition>
+
+    <condition property="isWindows">
+      <os family="windows" />
+    </condition>
+
+    <condition property="isUnix">
+      <os family="unix" />
+    </condition>
+  	
+    <!-- define the operating system specific targets -->
+    <target name="doMac" if="isMac">
+    	
+    	<!-- SWIG -->
+    	<!--
+        <exec executable="swig" dir="./swig/">
+          <arg line="-java -package jjack jjack.i" />
+        </exec>
+        -->
+    	
+    	<!-- Move Java files -->
+    	<!--
+		<move todir="./src/jjack/">
+			<fileset dir="./swig/">
+				<include name="**/*.java"/>
+			</fileset>
+		</move>
+    	-->
+    	
+    	<!-- Compiles c file -->
+        <exec executable="cc" dir="." >
+          <arg line="-I/Library/Frameworks/Jackmp.framework/Headers/ -I/System/Library/Frameworks/JavaVM.framework/Headers -c jjack.c -o jjack.o" />
+        </exec>
+    	
+    	<!-- Creates the library --> 
+        <exec executable="cc" dir=".">
+          <arg line="-framework JavaVM  -bundle jjack.o -ljack -o ./libjjack.jnilib"/>
+        </exec>
+    	
+    	<delete>
+			<fileset dir=".">
+			    <include name="**/*.o"/>
+			</fileset>
+		</delete>
+    	
+    </target>
+
+    <target name="doWindows" if="isWindows">
+      <echo message="Came into the Windows target" />
+    	
+        <exec executable="gcc">
+        	<arg line="-Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at -I$JAVA_HOME/include -I$JAVA_HOME/include/win32 -Iinclude -shared jjack.c -L. -ljack -o jjack.dll" />
+        </exec>
+
+    </target>
+
+    <target name="doUnix" if="isUnix">
+      <echo message="Came into the Unix target" />
+    </target>
+
+    <!-- define our main/default target -->
+    <target name="OS-TEST" depends="doMac, doWindows, doUnix">
+      <echo message="Running OS-TEST target" />
+    </target>
+
+  	<!-- - - - - - - - - - - - - - - - - - 
+          target: compile_java                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="compile_java" depends="">
+		<javac srcdir="${src.dir}"
+         destdir="${classes.dir}"
+         classpath="${cp}"
+         debug="off"
+	/>    </target>
+  	
+  </project>
