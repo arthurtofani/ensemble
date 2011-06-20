@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
   <project name="jjack" default="OS-TEST" basedir=".">
   	
-  	<property name="JAVA_HOME" 		 value="C:\Program Files (x86)\Java\jdk1.6.0_22"/>
-
+  	<property environment="env" />
   	<property name="lib.dir"     value="lib"/>
   	<property name="src.dir"     value="src"/>
   	
@@ -47,13 +46,13 @@
     	
     	<!-- Creates the library --> 
         <exec executable="cc" dir=".">
-          <arg line="-framework JavaVM  -bundle jjack.o -ljack -o ./libjjack.jnilib"/>
+          <arg line="-framework JavaVM -bundle jjack.o -ljack -o ./libjjack.jnilib"/>
         </exec>
     	
     	<delete>
 			<fileset dir=".">
 			    <include name="**/*.o"/>
-			</fileset>
+			</fileset>C:\Windows\SysWOW64
 		</delete>
     	
     </target>
@@ -62,7 +61,7 @@
       <echo message="Came into the Windows target" />
     	
         <exec executable="gcc">
-        	<arg line="-Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at -I$JAVA_HOME/include -I$JAVA_HOME/include/win32 -Iinclude -shared jjack.c -L. -ljack -o jjack.dll" />
+        	<arg line="-Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at -I${env.JAVA_HOME}\include -I${env.JAVA_HOME}\include\win32 -Iinclude -shared jjack.c -LC:\Windows\SysWOW64 -ljack -o jjack.dll" />
         </exec>
 
     </target>
