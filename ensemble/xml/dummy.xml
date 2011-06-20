@@ -1,0 +1,34 @@
+<ENSEMBLE NAME="Dummy">
+
+	<GLOBAL_PARAMETERS CLOCK_MODE="CLOCK_CPU" PROCESS_MODE="REAL_TIME" SCHEDULER_THREADS="100" />
+	
+  	<!-- ********** ENVIRONMENT AGENT ********** -->
+
+	<ENVIRONMENT_AGENT_CLASS NAME="ENVIRONMENT" CLASS="ensemble.EnvironmentAgent">
+		<WORLD CLASS="ensemble.world.World">
+			<ARG NAME="dimensions" VALUE="3" />
+			<ARG NAME="structure" VALUE="continuous" />
+			<ARG NAME="form" VALUE="cube:200:loop" />
+			<LAW CLASS="ensemble.movement.MovementLaw">
+				<ARG NAME="friction_coefficient" VALUE="0.25" />
+				<ARG NAME="gravity" VALUE="10" />
+			</LAW>
+		</WORLD>
+		<EVENT_SERVER CLASS="ensemble.apps.dummy.DummyEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="1000 300 1000 2000" />
+	</ENVIRONMENT_AGENT_CLASS>
+	
+  <!-- ********** MUSICAL AGENT CLASSES ********** -->
+
+	<MUSICAL_AGENT_CLASS NAME="DUMMY" CLASS="ensemble.MusicalAgent">
+		<COMPONENTS>
+			<REASONING NAME="DummyReasoning" CLASS="ensemble.apps.dummy.DummyReasoning" />
+			<ACTUATOR NAME="DummyActuator" CLASS="ensemble.Actuator" EVENT_TYPE="DUMMY" COMM="ensemble.comm.direct.CommDirect" />
+			<SENSOR NAME="DummySensor" CLASS="ensemble.apps.dummy.DummySensor" EVENT_TYPE="DUMMY" COMM="ensemble.comm.direct.CommDirect" />
+		</COMPONENTS>
+	</MUSICAL_AGENT_CLASS>
+	
+  <!-- ********** MUSICAL AGENT INSTANCES ********** -->
+
+	<MUSICAL_AGENT NAME="Dummy" CLASS="DUMMY" QUANTITY="100" />
+
+</ENSEMBLE>

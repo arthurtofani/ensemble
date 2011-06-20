@@ -1,0 +1,22 @@
+#N canvas 146 42 977 667 10;
+#X obj 20 -329 audce_gui_grid 500 500 0.04;
+#X obj 20 -402 dumpOSC 57110;
+#X obj 35 -354 print osc_rcv;
+#X obj 20 -379 OSCroute /pd;
+#X msg 20 181 send /ensemble/ENVIRONMENT/MOVEMENT TRANSPORT :AGENT \$1 :POS
+(\$2 \$3 \$4);
+#X obj 213 -352 sendOSC;
+#X obj 139 -402 loadbang;
+#X msg 139 -378 connect localhost 57111;
+#X obj 304 -378 r osc;
+#X obj 20 221 s osc;
+#X obj 67 222 print osc_snd;
+#X connect 0 0 4 0;
+#X connect 1 0 3 0;
+#X connect 3 0 2 0;
+#X connect 3 0 0 0;
+#X connect 4 0 9 0;
+#X connect 4 0 10 0;
+#X connect 6 0 7 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;

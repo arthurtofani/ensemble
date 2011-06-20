@@ -1,0 +1,26 @@
+<ENSEMBLE NAME="Living Melodies">
+
+	<GLOBAL_PARAMETERS CLOCK_MODE="CLOCK_USER" PROCESS_MODE="BATCH" OSC="FALSE" />
+
+  	<!-- ********** ENVIRONMENT AGENT ********** -->
+
+	<ENVIRONMENT_AGENT_CLASS NAME="ENVIRONMENT" CLASS="ensemble.apps.lm.LM_Environment">
+		<ARG NAME="WAIT_TIME_TURN" VALUE="300" />
+		<ARG NAME="WAIT_ALL_AGENTS" VALUE="TRUE" />
+		<WORLD CLASS="ensemble.apps.lm.LM_World">
+			<LAW CLASS="ensemble.movement.MovementLaw" />
+			<ARG NAME="dimensions" VALUE="2" />
+			<ARG NAME="structure" VALUE="continuous" />
+			<ARG NAME="form" VALUE="cube:200:loop" />
+		</WORLD>
+	</ENVIRONMENT_AGENT_CLASS>
+	
+  <!-- ********** MUSICAL AGENT CLASSES ********** -->
+
+	<MUSICAL_AGENT_CLASS NAME="LM_AGENT" CLASS="ensemble.apps.lm.LM_MusicalAgent" />
+  
+  <!-- ********** MUSICAL AGENT INSTANCES ********** -->
+
+	<MUSICAL_AGENT NAME="creature" CLASS="LM_AGENT" QUANTITY="30" />
+
+</ENSEMBLE>

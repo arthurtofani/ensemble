@@ -1,0 +1,166 @@
+<ENSEMBLE NAME="Prepared Piano Test">
+
+	<GLOBAL_PARAMETERS CLOCK_MODE="CLOCK_CPU" PROCESS_MODE="REAL_TIME"/>
+	
+  	<!-- ********** ENVIRONMENT AGENT ********** -->
+
+	<ENVIRONMENT_AGENT_CLASS NAME="ENVIRONMENT" CLASS="ensemble.EnvironmentAgent">
+		<WORLD CLASS="ensemble.world.World" CLASS_ENTITY_STATE="ensemble.world.EntityState3D">
+			<ARG NAME="dimensions" VALUE="3" />
+			<ARG NAME="structure" VALUE="continuous" />
+			<ARG NAME="form" VALUE="cube:200:infinite" />
+			<LAW CLASS="ensemble.movement.MovementLaw" >
+				<ARG NAME="friction_coefficient" VALUE="0.25" />
+			</LAW>
+		</WORLD>
+		<EVENT_SERVER CLASS="ensemble.audio.AudioEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="200 100 160 2000">
+			<ARG NAME="SPEED_SOUND" VALUE="343.3" />
+			<ARG NAME="REFERENCE_DISTANCE" VALUE="1.0" />
+			<ARG NAME="ROLLOF_FACTOR" VALUE="1.0" />
+		</EVENT_SERVER>
+		<EVENT_SERVER CLASS="ensemble.movement.MovementEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="100 0">
+			<ARG NAME="friction_coefficient" VALUE="0.25" />
+			<ARG NAME="gravity" VALUE="10" />
+		</EVENT_SERVER>
+	</ENVIRONMENT_AGENT_CLASS>
+	
+  <!-- ********** MUSICAL AGENT CLASSES ********** -->
+
+	<MUSICAL_AGENT_CLASS NAME="MUSICIAN" CLASS="ensemble.MusicalAgent">
+		<ARG NAME="arg_ma" VALUE="mamama" />
+		<KB>
+			<FACT NAME="filename" VALUE="" PUBLIC="false" />
+			<FACT NAME="instructions" VALUE="" PUBLIC="false" />
+		</KB>
+		<COMPONENTS>
+			<REASONING NAME="AudioReasoning" CLASS="ensemble.apps.pp.PP_Reasoning" REASONING_MODE="REACTIVE" />
+			<ACTUATOR NAME="Mouth" CLASS="ensemble.Actuator" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" />
+			<SENSOR NAME="Ear" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" />
+			<REASONING NAME="MovementReasoning" CLASS="ensemble.movement.MovementReasoning" REASONING_MODE="CYCLIC" />
+			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+			<SENSOR NAME="Eyes" CLASS="ensemble.Sensor" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+		</COMPONENTS>
+	</MUSICAL_AGENT_CLASS>
+	
+	<MUSICAL_AGENT_CLASS NAME="LISTENER" CLASS="ensemble.MusicalAgent">
+		<COMPONENTS>
+			<REASONING NAME="AudioReasoning" CLASS="ensemble.audio.portaudio.PAOutputReasoning" REASONING_MODE="REACTIVE" />
+			<SENSOR NAME="Ear_left" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(-2;0;0)"/>
+			<SENSOR NAME="Ear_right" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(2;0;0)"/>
+			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+			<SENSOR NAME="Eyes" CLASS="ensemble.Sensor" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+		</COMPONENTS>
+	</MUSICAL_AGENT_CLASS>
+	
+	<MUSICAL_AGENT_CLASS NAME="WALKER" CLASS="ensemble.MusicalAgent">
+		<COMPONENTS>
+			<REASONING NAME="MovementReasoning" CLASS="ensemble.movement.MovementReasoning" REASONING_MODE="CYCLIC" />
+			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+			<SENSOR NAME="Eyes" CLASS="ensemble.Sensor" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+		</COMPONENTS>
+	</MUSICAL_AGENT_CLASS>
+	<!--
+	<MUSICAL_AGENT_CLASS NAME="LISTENER" CLASS="ensemble.apps.rt.RT_ListenerMusicalAgent">
+	</MUSICAL_AGENT_CLASS>
+  	-->
+  
+  <!-- ********** MUSICAL AGENT INSTANCES ********** -->
+
+	<!-- 
+	<MUSICAL_AGENT NAME="Police" CLASS="MUSICIAN">
+		<ARG_COMP COMP="Legs" NAME="POS" VALUE="(20;15.0;0)" />
+		<ARG_COMP COMP="Legs" NAME="VEL" VALUE="(0;0;0)" />
+		<ARG_COMP COMP="MovementReasoning" NAME="waypoints" VALUE="(30;40;0) 8.0:(-40;-30;0) 7.0:(60;-80;0) 10.0" />
+		<ARG_COMP COMP="MovementReasoning" NAME="loop" VALUE="true" />
+		<ARG_COMP COMP="AudioReasoning" NAME="gain" VALUE="1.0" />
+		<FACT NAME="filename" VALUE="siren.wav" />
+	</MUSICAL_AGENT>
+
+	<MUSICAL_AGENT NAME="Thief" CLASS="MUSICIAN">
+		<ARG_COMP COMP="Legs" NAME="POS" VALUE="(10.0;30.0;0)" />
+		<ARG_COMP COMP="Legs" NAME="VEL" VALUE="(0;0;0)" />	
+		<ARG_COMP COMP="MovementReasoning" NAME="waypoints" VALUE="(30;40;0) 8.0:(-40;-30;0) 7.0:(60;-80;0) 10.0" />
+		<ARG_COMP COMP="MovementReasoning" NAME="loop" VALUE="true" />
+		<FACT NAME="filename" VALUE="shifting.wav" />
+	</MUSICAL_AGENT>
+	-->
+	
+	<MUSICAL_AGENT NAME="Ambulance" CLASS="MUSICIAN">
+		<!-- <ARG_COMP COMP="Legs" NAME="POS" VALUE="(-50;-50;0)" />
+		<ARG_COMP COMP="Legs" NAME="POS" VALUE="(30;0;0)" />
+		<ARG_COMP COMP="Legs" NAME="VEL" VALUE="(0;0;0)" />	
+		<ARG_COMP COMP="MovementReasoning" NAME="waypoints" VALUE="(20;20;0) 2.0:(-20;20;0) 2.0:(-20;-20;0) 4.0:(20;-20;0) 4.0" />
+		<ARG_COMP COMP="MovementReasoning" NAME="loop" VALUE="false" />
+		<!-- <FACT NAME="instructions" VALUE="ppt_instructions.xml" /> -->
+		<FACT NAME="filename" VALUE="media/siren_2.wav" />
+	</MUSICAL_AGENT>
+	 
+	<MUSICAL_AGENT NAME="Listener_1" CLASS="LISTENER">
+		<ARG_COMP COMP="Legs" NAME="POS" VALUE="(0;0;0)" />
+		<ARG_COMP COMP="Legs" NAME="VEL" VALUE="(0;0;0)" />
+		<ARG_COMP COMP="AudioReasoning" NAME="channel" VALUE="Ear_left:10,0;Ear_right:10,1" />
+	</MUSICAL_AGENT>
+	
+	<!-- 
+	<MUSICAL_AGENT NAME="Agent_1" CLASS="WALKER">
+		<ARG_COMP COMP="Legs" NAME="POS" VALUE="(0;0;0)" />
+		<ARG_COMP COMP="Legs" NAME="VEL" VALUE="(0;0;0)" />	
+		<ARG_COMP COMP="MovementReasoning" NAME="waypoints" VALUE="(20;20;0) 2.0:(-10;20;0) 2.0:(-10;-20;0) 4.0:(10;-10;0) 4.0" />
+		<ARG_COMP COMP="MovementReasoning" NAME="loop" VALUE="false" />
+	</MUSICAL_AGENT>
+	-->
+	  
+	 <!--
+	<MUSICAL_AGENT NAME="Listener_2" CLASS="LISTENER">
+		<ARG_COMP COMP="Legs" NAME="POS" VALUE="(-50;50;0)" />
+		<ARG_COMP COMP="Legs" NAME="VEL" VALUE="(0;0;0)" />
+		<ARG_COMP COMP="Ear_left" NAME="channel" VALUE="LEFT" />
+		<ARG_COMP COMP="Ear_right" NAME="channel" VALUE="LEFT" />
+	</MUSICAL_AGENT>
+	
+ 		<MUSICAL_AGENT NAME="Listener_3" CLASS="LISTENER">
+		<ARG_COMP COMP="Legs" NAME="POS" VALUE="(-50;-50;0)" />
+		<ARG_COMP COMP="Legs" NAME="VEL" VALUE="(0;0;0)" />
+		<ARG_COMP COMP="Ear_left" NAME="channel" VALUE="RIGHT" />
+		<ARG_COMP COMP="Ear_right" NAME="channel" VALUE="RIGHT" />
+	</MUSICAL_AGENT>
+	
+	<MUSICAL_AGENT NAME="Listener_4" CLASS="LISTENER">
+		<ARG_COMP COMP="Legs" NAME="POS" VALUE="(50;-50;0)" />
+		<ARG_COMP COMP="Legs" NAME="VEL" VALUE="(0;0;0)" />
+		<ARG_COMP COMP="Ear_left" NAME="channel" VALUE="LEFT" />
+		<ARG_COMP COMP="Ear_right" NAME="channel" VALUE="RIGHT" />
+	</MUSICAL_AGENT>
+	-->
+	
+	<!-- 	
+	<MUSICAL_AGENT NAME="Drummer" CLASS="MUSICIAN">
+		<ARG_COMP COMP="Legs" NAME="POS" VALUE="(-10;2;0)" />
+		<ARG_COMP COMP="Legs" NAME="VEL" VALUE="(2;0;0)" />
+		<ARG NAME="arg1" VALUE="bla1" />
+		<FACT NAME="filename" VALUE="Drums_44_16.wav" />
+	</MUSICAL_AGENT>
+
+	<MUSICAL_AGENT NAME="Bassist" CLASS="MUSICIAN">
+		<ARG NAME="arg1" VALUE="bla1" />
+		<ARG_COMP COMP="Legs" NAME="POS" VALUE="(10;-10;0)" />
+		<ARG_COMP COMP="Legs" NAME="VEL" VALUE="(-2;0;0)" />
+		<FACT NAME="filename" VALUE="Bass_44_16.wav" />
+	</MUSICAL_AGENT>
+
+	<MUSICAL_AGENT NAME="Guitarist" CLASS="MUSICIAN">
+		<ARG NAME="arg1" VALUE="bla1" />
+		<ARG_COMP COMP="Legs" NAME="POS" VALUE="(10;10;0)" />
+		<ARG_COMP COMP="Legs" NAME="VEL" VALUE="(0;1;0)" />
+		<FACT NAME="filename" VALUE="Guitar_44_16.wav" />
+	</MUSICAL_AGENT>
+	-->
+
+	<!-- 
+	<MUSICAL_AGENT NAME="Listener_2" CLASS="LISTENER">
+		<ARG_COMP COMP="Legs" NAME="POS" VALUE="(-2;0;0)" />
+		<ARG_COMP COMP="Legs" NAME="VEL" VALUE="(0;0;0)" />
+		<ARG_COMP COMP="AudioReasoning" NAME="channel" VALUE="RIGHT" />
+	</MUSICAL_AGENT>
+ 	-->
+</ENSEMBLE>

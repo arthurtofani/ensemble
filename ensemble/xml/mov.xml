@@ -1,0 +1,44 @@
+<ENSEMBLE NAME="Movement Test">
+
+	<GLOBAL_PARAMETERS CLOCK_MODE="CLOCK_CPU" PROCESS_MODE="REAL_TIME" />
+	
+  <!-- ********** ENVIRONMENT AGENT ********** -->
+
+	<ENVIRONMENT_AGENT_CLASS NAME="ENVIRONMENT" CLASS="ensemble.EnvironmentAgent">
+		<WORLD CLASS="ensemble.world.World">
+			<ARG NAME="dimensions" VALUE="3" />
+			<ARG NAME="structure" VALUE="continuous" />
+			<ARG NAME="form" VALUE="cube:100:loop" />
+			<LAW CLASS="ensemble.movement.MovementLaw">
+				<ARG NAME="friction_coefficient" VALUE="0.0" />
+				<ARG NAME="gravity" VALUE="10" />
+			</LAW>
+		</WORLD>
+		<EVENT_SERVER CLASS="ensemble.movement.MovementEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="10 0" />
+	</ENVIRONMENT_AGENT_CLASS>
+	
+  <!-- ********** MUSICAL AGENT CLASSES ********** -->
+
+	<MUSICAL_AGENT_CLASS NAME="WALKER" CLASS="ensemble.MusicalAgent">
+		<COMPONENTS>
+			<REASONING NAME="MovementReasoning" CLASS="ensemble.movement.MovementReasoning" REASONING_MODE="PERIODIC" PERIOD="50" />
+			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+			<SENSOR NAME="Eyes" CLASS="ensemble.Sensor" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+		</COMPONENTS>
+	</MUSICAL_AGENT_CLASS>
+
+  <!-- ********** MUSICAL AGENT INSTANCES ********** -->
+
+	<MUSICAL_AGENT NAME="Agent_1" CLASS="WALKER">
+		<ARG NAME="POSITION" VALUE="(0;0;0)" />
+		<!-- <ARG_COMP COMP="MovementReasoning" NAME="waypoints" VALUE="(20;20;0) 2.0:(-20;20;0) 2.0:(-20;-20;0) 4.0:(20;-20;0) 4.0" /> -->
+		<ARG_COMP COMP="MovementReasoning" NAME="loop" VALUE="false" />
+	</MUSICAL_AGENT>
+	
+	<MUSICAL_AGENT NAME="Agent_2" CLASS="WALKER">
+		<ARG NAME="POSITION" VALUE="(10;-5;0)" />
+		<!-- <ARG_COMP COMP="MovementReasoning" NAME="waypoints" VALUE="(10;10;0) 2.0:(-10;10;0) 2.0:(-20;-20;0) 4.0:(10;-10;0) 4.0" /> -->
+		<ARG_COMP COMP="MovementReasoning" NAME="loop" VALUE="false" />
+	</MUSICAL_AGENT>
+
+</ENSEMBLE>

@@ -1,0 +1,37 @@
+#N canvas 146 42 1092 682 10;
+#X obj 20 -329 audce_gui_grid 500 500 0.2;
+#X obj 20 -402 dumpOSC 57110;
+#X obj 35 -354 print osc_rcv;
+#X obj 20 -379 OSCroute /pd;
+#X msg 20 181 send /ensemble/ENVIRONMENT/MOVEMENT TRANSPORT :AGENT \$1 :POS
+(\$2 \$3 \$4);
+#X obj 213 -352 sendOSC;
+#X obj 139 -402 loadbang;
+#X msg 139 -378 connect localhost 57111;
+#X obj 304 -378 r osc;
+#X obj 20 221 s osc;
+#X obj 67 222 print osc_snd;
+#X obj 563 2 s osc;
+#X msg 580 -278 send /ensemble/Agent_1/MovementReasoning STOP;
+#X msg 598 -183 send /ensemble/Agent_1/MovementReasoning WALK :POS (10 -5
+0) :TIME 1;
+#X msg 589 -220 send /ensemble/Agent_1/MovementReasoning WALK :POS (1 0
+0) :TIME 1;
+#X msg 608 -98 send /ensemble/Agent_2/MovementReasoning WALK :POS (0 0 0)
+:TIME 1;
+#X msg 611 -44 send /ensemble/Agent_2/MovementReasoning WALK :POS (3 0 0)
+:TIME 1;
+#X connect 0 0 4 0;
+#X connect 1 0 3 0;
+#X connect 3 0 2 0;
+#X connect 3 0 0 0;
+#X connect 4 0 9 0;
+#X connect 4 0 10 0;
+#X connect 6 0 7 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 12 0 11 0;
+#X connect 13 0 11 0;
+#X connect 14 0 11 0;
+#X connect 15 0 11 0;
+#X connect 16 0 11 0;

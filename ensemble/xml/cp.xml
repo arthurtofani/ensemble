@@ -1,0 +1,128 @@
+<ENSEMBLE NAME="Clapping Music">
+
+	<GLOBAL_PARAMETERS CLOCK_MODE="CLOCK_CPU" PROCESS_MODE="REAL_TIME" />
+	
+  	<!-- ********** ENVIRONMENT AGENT ********** -->
+
+	<ENVIRONMENT_AGENT_CLASS NAME="ENVIRONMENT" CLASS="ensemble.EnvironmentAgent">
+		<WORLD CLASS="ensemble.world.World">
+			<ARG NAME="dimensions" VALUE="3" />
+			<ARG NAME="structure" VALUE="continuous" />
+			<ARG NAME="form" VALUE="cube:100:loop" />
+			<LAW CLASS="ensemble.movement.MovementLaw">
+				<ARG NAME="friction_coefficient" VALUE="0.0" />
+				<ARG NAME="gravity" VALUE="10" />
+			</LAW>
+		</WORLD>
+		<EVENT_SERVER CLASS="ensemble.audio.AudioEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="250 100 200 2000">
+			<ARG NAME="MASTER_GAIN" VALUE="0.25" />
+			<ARG NAME="SAMPLE_RATE" VALUE="44100" />
+			<ARG NAME="SPEED_SOUND" VALUE="343.3" />
+			<ARG NAME="REFERENCE_DISTANCE" VALUE="1.0" />
+			<ARG NAME="ROLLOFF_FACTOR" VALUE="1.0" />
+			<ARG NAME="LOOP_HEARING" VALUE="FALSE" />
+			<ARG NAME="INTERPOLATION_MODE" VALUE="POLYNOMIAL" />
+			<ARG NAME="NUMBER_POINTS" VALUE="4" />
+		</EVENT_SERVER>
+		<EVENT_SERVER CLASS="ensemble.movement.MovementEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="25 0" />
+	</ENVIRONMENT_AGENT_CLASS>
+	
+  <!-- ********** MUSICAL AGENT CLASSES ********** -->
+	
+	<MUSICAL_AGENT_CLASS NAME="MUSICIAN" CLASS="ensemble.MusicalAgent">
+		<KB>
+			<FACT NAME="role" VALUE="master" PUBLIC="false" />
+			<FACT NAME="wavetable" VALUE="cowbell_menor.wav" PUBLIC="false" />
+			<FACT NAME="bpm" VALUE="300" PUBLIC="false" />
+			<FACT NAME="pattern" VALUE="111011010110" PUBLIC="false" />
+			<!-- <FACT NAME="pattern" VALUE="1110" PUBLIC="false" /> -->
+			<FACT NAME="inital_phase" VALUE="1" />
+			<FACT NAME="phase" VALUE="1" />
+			<FACT NAME="slide" VALUE="1" />
+		</KB>
+		<COMPONENTS>
+			<REASONING NAME="Reasoning" CLASS="ensemble.apps.cp.CP_Reasoning" REASONING_MODE="PERIODIC" PERIOD="25" />
+			<ACTUATOR NAME="Mouth" CLASS="ensemble.Actuator" EVENT_TYPE="AUDIO" MEMORY="ensemble.kb.AudioMemory" COMM="ensemble.comm.direct.CommDirect" />
+			<SENSOR NAME="Ear" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" MEMORY="ensemble.kb.AudioMemory" COMM="ensemble.comm.direct.CommDirect" />
+			<REASONING NAME="MovementReasoning" CLASS="ensemble.movement.MovementReasoning" REASONING_MODE="PERIODIC" PERIOD="25"  />
+			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+			<SENSOR NAME="Eyes" CLASS="ensemble.Sensor" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+		</COMPONENTS>
+	</MUSICAL_AGENT_CLASS>
+
+	<MUSICAL_AGENT_CLASS NAME="LISTENER" CLASS="ensemble.MusicalAgent">
+		<COMPONENTS>
+			<REASONING NAME="AudioReasoning" CLASS="ensemble.audio.jack.JACKOutputReasoning" />
+			<SENSOR NAME="Ear" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" MEMORY="ensemble.kb.AudioMemory" COMM="ensemble.comm.direct.CommDirect" POSITION="(0;0;0)"/>
+			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+			<SENSOR NAME="Eyes" CLASS="ensemble.Sensor" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+		</COMPONENTS>
+	</MUSICAL_AGENT_CLASS>
+  
+  <!-- ********** MUSICAL AGENT INSTANCES ********** -->
+
+	<MUSICAL_AGENT NAME="L" CLASS="MUSICIAN">
+		<FACT NAME="role" VALUE="master" />
+		<FACT NAME="wavetable" VALUE="media/claves.wav" />
+		<ARG NAME="POSITION" VALUE="(0;0;0)" />
+	</MUSICAL_AGENT>
+
+	<MUSICAL_AGENT NAME="F1" CLASS="MUSICIAN">
+		<FACT NAME="role" VALUE="slave" />
+		<FACT NAME="wavetable" VALUE="media/woodblock_high.wav" />
+		<FACT NAME="phase" VALUE="1" />
+		<FACT NAME="slide" VALUE="1" />
+		<ARG NAME="POSITION" VALUE="(0.8;0;0)" />
+	</MUSICAL_AGENT>
+
+	<MUSICAL_AGENT NAME="F2" CLASS="MUSICIAN">
+		<FACT NAME="role" VALUE="slave" />
+		<FACT NAME="wavetable" VALUE="media/woodblock_low.wav" />
+		<FACT NAME="phase" VALUE="1" />
+		<FACT NAME="slide" VALUE="2" />
+		<ARG NAME="POSITION" VALUE="(1.6;0;0)" />
+	</MUSICAL_AGENT>
+
+	<!-- 
+	<MUSICAL_AGENT NAME="F3" CLASS="MUSICIAN">
+		<FACT NAME="role" VALUE="slave" />
+		<FACT NAME="wavetable" VALUE="media/cowbell.wav" />
+		<FACT NAME="phase" VALUE="1" />
+		<FACT NAME="slide" VALUE="1" />
+		<ARG NAME="POSITION" VALUE="(30;0;0)" />
+	</MUSICAL_AGENT>
+
+	<MUSICAL_AGENT NAME="Follower_4" CLASS="MUSICIAN">
+		<FACT NAME="role" VALUE="slave" />
+		<FACT NAME="wavetable" VALUE="media/cowbell.wav" />
+		<FACT NAME="phase" VALUE="2" />
+		<FACT NAME="slide" VALUE="2" />
+		<ARG NAME="POSITION" VALUE="(5;5;0)" />
+	</MUSICAL_AGENT>
+	 -->
+
+	<MUSICAL_AGENT NAME="S1" CLASS="LISTENER">
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_1" />
+		<!-- <ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear:2,0" /> -->
+		<ARG NAME="POSITION" VALUE="(1;1;0)" />
+	</MUSICAL_AGENT>
+	
+	<MUSICAL_AGENT NAME="S2" CLASS="LISTENER">
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_2" />
+		<!-- <ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear:2,0" /> -->
+		<ARG NAME="POSITION" VALUE="(1;-1;0)" />
+	</MUSICAL_AGENT>
+	
+	<!-- 
+	<MUSICAL_AGENT NAME="S3" CLASS="LISTENER">
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_3" />
+		<ARG NAME="POSITION" VALUE="(-1;1;0)" />
+	</MUSICAL_AGENT>
+	
+	<MUSICAL_AGENT NAME="S4" CLASS="LISTENER">
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_4" />
+		<ARG NAME="POSITION" VALUE="(-1;-1;0)" />
+	</MUSICAL_AGENT>
+	 -->
+
+</ENSEMBLE>
