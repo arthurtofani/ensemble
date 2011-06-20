@@ -72,17 +72,20 @@ public class JACKInputReasoning extends Reasoning {
 	@Override
 	public boolean init() {
 		
-		String[] str = getParameter("mapping", "").split("-");
-		if (str.length == 1) {
-			mapping.put(str[0], "");
+		String[] str = getParameter("mapping", "").split(";");
+		for (int i = 0; i < str.length; i++) {
+			String[] str2 = str[i].split("-");
+			if (str2.length == 1) {
+				mapping.put(str2[0], "");
+			}
+			else if (str2.length == 2) {
+				mapping.put(str2[0], str2[1]);
+			} 
+			else {
+				System.err.println("[" + this.getAgent().getAgentName() + ":" + getComponentName()+ "] " + "no mapping in parameters!");
+			}
 		}
-		else if (str.length == 2) {
-			mapping.put(str[0], str[1]);
-		} 
-		else {
-			System.err.println("[" + this.getAgent().getAgentName() + ":" + getComponentName()+ "] " + "no mapping in parameters!");
-		}
-		
+
 		// JACK
 		client_name = Constants.FRAMEWORK_NAME+"_"+getAgent().getAgentName()+"_"+getComponentName();
 		client = jjack.jack_client_open(client_name, new Process());
@@ -123,7 +126,7 @@ public class JACKInputReasoning extends Reasoning {
 				ports.put(actuatorName, jjack.jack_port_register(client, 
 											actuatorName,
 											jjackConstants.JACK_DEFAULT_AUDIO_TYPE, 
-											JackPortFlags.JackPortIsOutput));
+											JackPortFlags.JackPortIsInput));
 				// If specified, connects the port
 				String connectPort = mapping.get(actuatorName);
 				if (connectPort != null && !connectPort.equals("")) {
@@ -138,7 +141,7 @@ public class JACKInputReasoning extends Reasoning {
 //						return;
 					}
 					// Connects the port
-					if (jjack.jack_connect(client, client_name+":"+actuatorName, capture_ports[0]) != 0) {
+					if (jjack.jack_connect(client, capture_ports[0], client_name+":"+actuatorName) != 0) {
 						System.err.println("[" + getAgent().getAgentName() + ":" + getComponentName() + "] Cannot connect playback ports");
 						return;
 					}

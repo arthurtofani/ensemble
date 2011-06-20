@@ -5,7 +5,6 @@
   	<!-- ********** ENVIRONMENT AGENT ********** -->
 
 	<ENVIRONMENT_AGENT_CLASS NAME="ENVIRONMENT" CLASS="ensemble.EnvironmentAgent">
-		<ARG NAME="arg_ea" VALUE="eaeaea" />
 		<WORLD CLASS_WORLD="ensemble.world.World">
 			<LAW CLASS="ensemble.movement.MovementLaw" />
 			<ARG NAME="dimensions" VALUE="3" />
@@ -23,7 +22,6 @@
   <!-- ********** MUSICAL AGENT CLASSES ********** -->
 
 	<MUSICAL_AGENT_CLASS NAME="MUSICIAN" CLASS="ensemble.MusicalAgent">
-		<ARG NAME="arg_ma" VALUE="mamama" />
 		<KB>
 			<FACT NAME="filename" VALUE="" PUBLIC="false" />
 		</KB>
@@ -35,9 +33,7 @@
 	
 	<MUSICAL_AGENT_CLASS NAME="LISTENER" CLASS="ensemble.MusicalAgent">
 		<COMPONENTS>
-			<REASONING NAME="AudioReasoning_left" CLASS="ensemble.audio.jack.JACKOutputReasoning" />
-			<REASONING NAME="AudioReasoning_right" CLASS="ensemble.audio.jack.JACKOutputReasoning" />
-			<!-- <REASONING NAME="AudioReasoning_right" CLASS="ensemble.audio.jack.JACKOutputReasoning" CYCLIC="false" /> -->
+			<REASONING NAME="AudioReasoning" CLASS="ensemble.audio.jack.JACKOutputReasoning" />
 			<SENSOR NAME="ear_left" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(-2;0;0)"/>
 			<SENSOR NAME="ear_right" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(2;0;0)"/>
 		</COMPONENTS>
@@ -59,26 +55,21 @@
  	-->
  	 
 	<MUSICAL_AGENT NAME="Listener_1" CLASS="LISTENER">
-		<ARG_COMP COMP="AudioReasoning_left" NAME="mapping" VALUE="ear_left:system,playback_1" />
-		<ARG_COMP COMP="AudioReasoning_right" NAME="mapping" VALUE="ear_right:system,playback_2" />
+		<ARG NAME="POSITION" VALUE="(1;1;0)" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="ear_left-system:playback_1;ear_right-system:playback_2" />
 	</MUSICAL_AGENT>
 
 	<MUSICAL_AGENT NAME="Listener_2" CLASS="LISTENER">
-		<ARG_COMP COMP="AudioReasoning_left" NAME="mapping" VALUE="ear_left:system,playback_1" />
-		<ARG_COMP COMP="AudioReasoning_right" NAME="mapping" VALUE="ear_right:system,playback_2" />
+		<ARG NAME="POSITION" VALUE="(1;1;0)" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="ear_left-pure_data_0:input0;ear_right-pure_data_0:input1" />
 	</MUSICAL_AGENT>
 
 	<MUSICAL_AGENT NAME="Player_1" CLASS="PLAYER">
-		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="mouth:pure_data_0,output1" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="mouth-pure_data_0:output0" />
 	</MUSICAL_AGENT>
 
 	<MUSICAL_AGENT NAME="Player_2" CLASS="PLAYER">
-		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="mouth:pure_data_0,output1" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="mouth-pure_data_0:output1" />
 	</MUSICAL_AGENT>
 
-	<!-- 
-	<MUSICAL_AGENT NAME="Player_2" CLASS="PLAYER">
-		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="mouth:pure_data_0,output0" />
-	</MUSICAL_AGENT>
-	 -->
 </ENSEMBLE>

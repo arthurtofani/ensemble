@@ -61,15 +61,18 @@ public class JACKOutputReasoning extends Reasoning {
 	@Override
 	public boolean init() {
 		
-		String[] str = getParameter("mapping", "").split("-");
-		if (str.length == 1) {
-			mapping.put(str[0], "");
-		}
-		else if (str.length == 2) {
-			mapping.put(str[0], str[1]);
-		} 
-		else {
-			System.err.println("[" + this.getAgent().getAgentName() + ":" + getComponentName()+ "] " + "no mapping in parameters!");
+		String[] str = getParameter("mapping", "").split(";");
+		for (int i = 0; i < str.length; i++) {
+			String[] str2 = str[i].split("-");
+			if (str2.length == 1) {
+				mapping.put(str2[0], "");
+			}
+			else if (str2.length == 2) {
+				mapping.put(str2[0], str2[1]);
+			} 
+			else {
+				System.err.println("[" + this.getAgent().getAgentName() + ":" + getComponentName()+ "] " + "no mapping in parameters!");
+			}
 		}
 		
 		// JACK
