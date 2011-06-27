@@ -15,7 +15,7 @@
 			</LAW>
 		</WORLD>
 		<EVENT_SERVER CLASS="ensemble.audio.AudioEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="100 30 80 1000">
-			<ARG NAME="MASTER_GAIN" VALUE="10.0" />
+			<ARG NAME="MASTER_GAIN" VALUE="1.0" />
 			<ARG NAME="SAMPLE_RATE" VALUE="44100" />
 			<ARG NAME="SPEED_SOUND" VALUE="343.3" />
 			<ARG NAME="REFERENCE_DISTANCE" VALUE="1.0" />
@@ -50,7 +50,6 @@
 		<COMPONENTS>
 			<REASONING NAME="AudioReasoning" CLASS="ensemble.audio.jack.JACKOutputReasoning" />
 			<REASONING NAME="MovementReasoning" CLASS="ensemble.movement.MovementReasoning" REASONING_MODE="PERIODIC" PERIOD="50" /> -->
-			<!-- <REASONING NAME="AudioReasoning" CLASS="ensemble.audio.portaudio.PAOutputReasoning" /> -->
 			<SENSOR NAME="Ear" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(0;0;0)"/>
 			<!--  <SENSOR NAME="Ear_left" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(0;0;0)"/>
 				<SENSOR NAME="Ear_right" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(2;0;0)"/> -->
@@ -62,7 +61,6 @@
 	<MUSICAL_AGENT_CLASS NAME="PLAYER" CLASS="ensemble.MusicalAgent">
 		<COMPONENTS>
 			<REASONING NAME="AudioReasoning" CLASS="ensemble.audio.jack.JACKInputReasoning" />
-			<!-- <REASONING NAME="AudioReasoning" CLASS="ensemble.audio.portaudio.PAInputReasoning" /> -->
 			<ACTUATOR NAME="Mouth" CLASS="ensemble.Actuator" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" />
 			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
 			<SENSOR NAME="Eyes" CLASS="ensemble.Sensor" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
@@ -137,7 +135,7 @@
 	<!--
 	<MUSICAL_AGENT NAME="Player_1" CLASS="PLAYER">
 		<ARG NAME="POSITION" VALUE="(0;-2;0)" />
-		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Mouth;system:capture_1" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Mouth-system:capture_1" />
 	</MUSICAL_AGENT>
 	-->
 
