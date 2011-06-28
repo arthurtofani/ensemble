@@ -93,11 +93,6 @@ public class JACKInputReasoning extends Reasoning {
 			System.err.println("[" + getAgent().getAgentName() + ":" + getComponentName() + "] JACK server not running... JACK will not be available!");
             return false;
 		}
-		// Activates the JACK client
-		if (jjack.jack_activate(client) != 0) {
-			System.err.println("[" + getAgent().getAgentName() + ":" + getComponentName() + "] Cannot activate JACK client... JACK will not be available!");
-			return false;
-		}
 
 		return true;
 		
@@ -119,10 +114,15 @@ public class JACKInputReasoning extends Reasoning {
 			Actuator mouth = (Actuator)evtHdl;
 			String actuatorName = mouth.getComponentName();
 			if (mapping.containsKey(actuatorName)) {
+				mouth.registerListener(this);
 				mouths.put(actuatorName, mouth);
 				mouthMemories.put(actuatorName, getAgent().getKB().getMemory(mouth.getComponentName()));
 				period = Double.valueOf(mouth.getParameter(Constants.PARAM_PERIOD))/1000.0;
-				// Creats a JACK client
+				// Activates the JACK client
+				if (jjack.jack_activate(client) != 0) {
+					System.err.println("[" + getAgent().getAgentName() + ":" + getComponentName() + "] Cannot activate JACK client... JACK will not be available!");
+					return;
+				}
 				ports.put(actuatorName, jjack.jack_port_register(client, 
 											actuatorName,
 											jjackConstants.JACK_DEFAULT_AUDIO_TYPE, 
@@ -170,7 +170,7 @@ public class JACKInputReasoning extends Reasoning {
 //		System.out.println("needAction() - t = " + instant + " até " + (instant+duration));
 		// Teoricamente, já vai estar escrito na memória o que deve ser enviado,
 		// pois foi preenchido pelo callback do JACK
-		mouths.get(sourceActuator).act();
+		mouths.get(sourceActuator.getComponentName()).act();
 		
 	}
 	
@@ -204,7 +204,7 @@ public class JACKInputReasoning extends Reasoning {
 				Memory mouthMemory = mouthMemories.get(actuatorName);
 				try {
 					mouthMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
-//					System.out.println(now + " " + getAgent().getClock().getCurrentTime() + " Escrevi do instante " + (instant+period) + " até " + (instant+period+duration));
+//					System.out.println(" Escrevi do instante " + (instant+period) + " até " + (instant+period+duration));
 				} catch (MemoryException e) {
 					e.printStackTrace();
 				}
