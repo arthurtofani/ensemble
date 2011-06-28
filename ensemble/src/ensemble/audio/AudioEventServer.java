@@ -331,7 +331,7 @@ public class AudioEventServer extends EventServer {
 	@Override
 	public void process() {
 		
-		long time_process = System.nanoTime();
+//		long time_process = System.nanoTime();
 
 		if (param_changed) {
 			// TODO What is the best way to implement that?
@@ -528,7 +528,7 @@ public class AudioEventServer extends EventServer {
 		}
 		
 //		System.out.printf("AS time = %.3f \t(t = %.3f)\n", ((double)(System.nanoTime()-time_process)/1000000), instant);
-		System.out.printf("%.5f\n", ((double)(System.nanoTime()-time_process)/1000000));		
+//		System.out.printf("%.5f\n", ((double)(System.nanoTime()-time_process)/1000000));		
 
 	}
 
