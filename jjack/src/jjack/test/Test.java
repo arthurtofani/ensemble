@@ -28,7 +28,7 @@ public class Test {
 //                System.out.printf("Java::callback(%d)\n", nframes);
 				FloatBuffer fOut = jjack.jack_port_get_buffer(port, nframes).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer();
                 while (fOut.remaining() > 0) {
-                        double dSample = 0.3 * Math.sin(2 * Math.PI * freq * t);
+                        double dSample = 0.1 * Math.sin(2 * Math.PI * freq * t);
                         fOut.put((float)dSample);
                         t = t + step;
                 }
@@ -54,7 +54,7 @@ public class Test {
 		jjack.jack_connect(client, "jjack:port_1", "system:playback_1");
 		
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(50000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
