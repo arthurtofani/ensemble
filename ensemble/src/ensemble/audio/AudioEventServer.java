@@ -21,7 +21,6 @@ along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 
 package ensemble.audio;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -122,7 +121,6 @@ public class AudioEventServer extends EventServer {
 //	int number_of_frames;
 //	long proc_time_1, proc_time_2, proc_time_3;
 //	PrintWriter file_perf, file_perf_1, file_perf_2, file_perf_3;
-//	DecimalFormat df = new DecimalFormat("0.0000");
 	
 	@Override
 	public boolean configure() {
@@ -333,9 +331,6 @@ public class AudioEventServer extends EventServer {
 	@Override
 	public void process() {
 		
-		if (workingFrame == 100)
-			System.exit(1);
-		
 		long time_process = System.nanoTime();
 
 		if (param_changed) {
@@ -533,7 +528,7 @@ public class AudioEventServer extends EventServer {
 		}
 		
 //		System.out.printf("AS time = %.3f \t(t = %.3f)\n", ((double)(System.nanoTime()-time_process)/1000000), instant);
-//		System.out.printf(df.format(((double)(System.nanoTime()-time_process)/1000000))+"\n");		
+		System.out.printf("%.5f\n", ((double)(System.nanoTime()-time_process)/1000000));		
 
 	}
 
