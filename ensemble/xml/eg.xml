@@ -34,8 +34,8 @@
 			<FACT NAME="filename" VALUE="" PUBLIC="false" />
 		</KB>
 		<COMPONENTS>
-			<!-- <REASONING NAME="FileInputReasoning" CLASS="ensemble.audio.file.AudioFileInputReasoning" />
-			
+			<!-- 
+			<REASONING NAME="FileInputReasoning" CLASS="ensemble.audio.file.AudioFileInputReasoning" />
 			-->
 			 
 			<REASONING NAME="MicInputReasoning" CLASS="ensemble.audio.jack.JACKInputReasoning" />

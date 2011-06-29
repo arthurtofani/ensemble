@@ -26,16 +26,12 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import ensemble.Acting;
 import ensemble.Command;
 import ensemble.Constants;
+import ensemble.Constants.EA_STATE;
 import ensemble.EnvironmentAgent;
 import ensemble.LifeCycle;
-import ensemble.EnsembleAgent;
-import ensemble.MusicalAgent;
 import ensemble.Parameters;
-import ensemble.Sensing;
-import ensemble.Constants.EA_STATE;
 import ensemble.clock.VirtualClockHelper;
 import ensemble.router.RouterClient;
 

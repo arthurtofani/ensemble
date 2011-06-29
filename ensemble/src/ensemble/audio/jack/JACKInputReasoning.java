@@ -21,34 +21,27 @@ along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 
 package ensemble.audio.jack;
 
-import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.HashMap;
 import java.util.Hashtable;
+
+import jjack.JackCallback;
+import jjack.JackPortFlags;
+import jjack.jjack;
+import jjack.jjackConstants;
+
+import org.boris.jvst.AEffect;
+import org.boris.jvst.VST;
+import org.boris.jvst.VSTException;
 
 import ensemble.Actuator;
 import ensemble.Constants;
 import ensemble.EventHandler;
-import ensemble.MusicalAgent;
 import ensemble.Reasoning;
-import ensemble.Sensor;
 import ensemble.audio.AudioConstants;
-import ensemble.audio.jack.JACKOutputReasoning.Process;
 import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
-import ensemble.tools.AudioTools;
-
-import jade.core.ServiceException;
-import jade.domain.introspection.SuspendedAgent;
-import jade.util.Logger;
-import jjack.JackCallback;
-import jjack.JackPortFlags;
-import jjack.SWIGTYPE_p_jack_client_t;
-import jjack.SWIGTYPE_p_jack_port_t;
-import jjack.jjack;
-import jjack.jjackConstants;
 
 
 public class JACKInputReasoning extends Reasoning {
@@ -192,8 +185,11 @@ public class JACKInputReasoning extends Reasoning {
 				firstCall = false;
 			}
 			
+			
 			double duration = (double)(nframes) * step;
 //			System.out.println("Java::callback - t = " + instant + " até " + (instant+duration));
+			
+			
 			
 			for (String actuatorName : ports.keySet()) {
 				FloatBuffer fIn = jjack.jack_port_get_buffer(ports.get(actuatorName), nframes).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer();
@@ -203,9 +199,57 @@ public class JACKInputReasoning extends Reasoning {
 				}
 				Memory mouthMemory = mouthMemories.get(actuatorName);
 				try {
+					double[] dTransBuffer = new double[nframes];
+					int numInputs = 0;
+					AEffect a;
+						a = VST.load("lib\\vst\\Freeverb2.dll");
+						a.open();
+						a.setSampleRate(44100.0f);
+						a.setBlockSize(nframes);
+						numInputs = a.numInputs;
+						float[][] inputs = new float[a.numInputs][];
+				        for (int i = 0; i < a.numInputs; i++) {
+				            inputs[i] = new float[nframes];
+				            for (int j = 0; j < nframes; j++)
+				                inputs[i][j] = (float) dBuffer[j];
+				        }
+				        float[][] outputs = new float[a.numOutputs][];
+				        for (int i = 0; i < a.numOutputs; i++) {
+				            outputs[i] = new float[nframes];
+				            for (int j = 0; j < nframes; j++)
+				                outputs[i][j] = 0;
+				        }
+
+				        a.processReplacing(inputs, outputs, nframes);
+
+				        VST.dispose(a);
+						/*
+						
+						float[][] inputs = new float[a.numInputs][];
+				        for (int i = 0; i < a.numInputs; i++) {
+				            inputs[i] = new float[nframes];
+				            for (int j = 0; j < nframes; j++)
+				                inputs[i][j] = (float)dBuffer[j];
+				        }
+				        float[][] outputs = new float[a.numOutputs][];
+				        
+						a.processReplacing(inputs, outputs, nframes);
+						VST.dispose(a);
+						*/
+						for (int i = 0; i < a.numInputs; i++) {
+							 for (int j = 0; j < nframes; j++){
+								 dTransBuffer[j] = (double)outputs[i][j];
+								 System.out.println(" dBuffer " + (dBuffer[j]) + " dTransBuffer " + (outputs[i][j]));
+							 }
+						}
+					
+						//System.out.println(" NumInputs " + (numInputs) + " blocksize " + (nframes));
 					mouthMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
-//					System.out.println(" Escrevi do instante " + (instant+period) + " até " + (instant+period+duration));
+ 					
 				} catch (MemoryException e) {
+					e.printStackTrace();
+				} catch (VSTException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

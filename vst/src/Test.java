@@ -23,6 +23,7 @@ public class Test {
 	            for (int j = 0; j < blocksize; j++)
 	                inputs[i][j] = (float) Math
 	                        .sin(j * Math.PI * 2 * 440 / 44100.0);
+	            
 	        }
 	        float[][] outputs = new float[a.numOutputs][];
 	        for (int i = 0; i < a.numOutputs; i++) {
@@ -33,6 +34,14 @@ public class Test {
 
 	        a.processReplacing(inputs, outputs, blocksize);
 
+	        
+	        for (int i = 0; i < a.numOutputs; i++) {
+	            
+	            for (int j = 0; j < blocksize; j++)
+	            	System.out.println("input[" +i+"]"+ "[" +j+"] ="+ inputs[i][j] + "  ouput[" +i+"]"+ "[" +j+"] ="+ outputs[i][j] );
+	            	
+	        }
+	        
 	        VST.dispose(a);
 		} catch (VSTException e) {
 			// TODO Auto-generated catch block
