@@ -199,7 +199,7 @@ public class JACKInputReasoning extends Reasoning {
 				}
 				Memory mouthMemory = mouthMemories.get(actuatorName);
 				try {
-					double[] dTransBuffer = new double[nframes];
+			/*		double[] dTransBuffer = new double[nframes];
 					int numInputs = 0;
 					AEffect a;
 						a = VST.load("lib\\vst\\Freeverb2.dll");
@@ -222,7 +222,7 @@ public class JACKInputReasoning extends Reasoning {
 
 				        a.processReplacing(inputs, outputs, nframes);
 
-				        VST.dispose(a);
+				        VST.dispose(a); */
 						/*
 						
 						float[][] inputs = new float[a.numInputs][];
@@ -236,21 +236,21 @@ public class JACKInputReasoning extends Reasoning {
 						a.processReplacing(inputs, outputs, nframes);
 						VST.dispose(a);
 						*/
-						for (int i = 0; i < a.numInputs; i++) {
+					/*	for (int i = 0; i < a.numInputs; i++) {
 							 for (int j = 0; j < nframes; j++){
 								 dTransBuffer[j] = (double)outputs[i][j];
 								 System.out.println(" dBuffer " + (dBuffer[j]) + " dTransBuffer " + (outputs[i][j]));
 							 }
 						}
-					
+					*/
 						//System.out.println(" NumInputs " + (numInputs) + " blocksize " + (nframes));
 					mouthMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
  					
 				} catch (MemoryException e) {
 					e.printStackTrace();
-				} catch (VSTException e) {
+				//} catch (VSTException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+				//	e.printStackTrace();
 				}
 			}
 			
