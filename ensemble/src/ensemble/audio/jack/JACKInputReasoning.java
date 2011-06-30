@@ -39,6 +39,7 @@ import ensemble.Constants;
 import ensemble.EventHandler;
 import ensemble.Reasoning;
 import ensemble.audio.AudioConstants;
+import ensemble.audio.vst.VstProcessReasoning;
 import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
@@ -199,14 +200,14 @@ public class JACKInputReasoning extends Reasoning {
 				}
 				Memory mouthMemory = mouthMemories.get(actuatorName);
 				try {
-			/*		double[] dTransBuffer = new double[nframes];
-					int numInputs = 0;
+					double[] dTransBuffer = new double[nframes];
+					/*//int numInputs = 0;
 					AEffect a;
-						a = VST.load("lib\\vst\\Freeverb2.dll");
+						a = VST.load("lib\\vst\\mda Overdrive.dll");
 						a.open();
 						a.setSampleRate(44100.0f);
 						a.setBlockSize(nframes);
-						numInputs = a.numInputs;
+						//numInputs = a.numInputs;
 						float[][] inputs = new float[a.numInputs][];
 				        for (int i = 0; i < a.numInputs; i++) {
 				            inputs[i] = new float[nframes];
@@ -219,38 +220,33 @@ public class JACKInputReasoning extends Reasoning {
 				            for (int j = 0; j < nframes; j++)
 				                outputs[i][j] = 0;
 				        }
-
+				        a.setParameter(0, new Float(1));
 				        a.processReplacing(inputs, outputs, nframes);
 
-				        VST.dispose(a); */
-						/*
+				        VST.dispose(a); 
 						
-						float[][] inputs = new float[a.numInputs][];
-				        for (int i = 0; i < a.numInputs; i++) {
-				            inputs[i] = new float[nframes];
-				            for (int j = 0; j < nframes; j++)
-				                inputs[i][j] = (float)dBuffer[j];
-				        }
-				        float[][] outputs = new float[a.numOutputs][];
+				       
 				        
-						a.processReplacing(inputs, outputs, nframes);
-						VST.dispose(a);
-						*/
-					/*	for (int i = 0; i < a.numInputs; i++) {
+						//for (int i = 0; i < a.numOutputs; i++) {
 							 for (int j = 0; j < nframes; j++){
-								 dTransBuffer[j] = (double)outputs[i][j];
-								 System.out.println(" dBuffer " + (dBuffer[j]) + " dTransBuffer " + (outputs[i][j]));
+								 
+								 dTransBuffer[j] = new Double(outputs[0][j]);
+								 //System.out.println(" dBuffer " + (dBuffer[j]) + " dTransBuffer " + (outputs[i][j]));
 							 }
-						}
-					*/
+						//}
+*/					
 						//System.out.println(" NumInputs " + (numInputs) + " blocksize " + (nframes));
-					mouthMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
+					
+					new VstProcessReasoning().ProcessAudio("lib\\vst\\mda Overdrive.dll", dBuffer, dTransBuffer, nframes);
+					 
+					
+					mouthMemory.writeMemory(dTransBuffer, instant, duration, TimeUnit.SECONDS);
  					
 				} catch (MemoryException e) {
 					e.printStackTrace();
-				//} catch (VSTException e) {
+				} catch (VSTException e) {
 					// TODO Auto-generated catch block
-				//	e.printStackTrace();
+					e.printStackTrace();
 				}
 			}
 			
