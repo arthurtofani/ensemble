@@ -28,10 +28,10 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import ensemble.Command;
 import ensemble.Constants;
-import ensemble.Constants.EA_STATE;
 import ensemble.EnvironmentAgent;
 import ensemble.LifeCycle;
 import ensemble.Parameters;
+import ensemble.Constants.EA_STATE;
 import ensemble.clock.VirtualClockHelper;
 import ensemble.router.RouterClient;
 
@@ -227,14 +227,14 @@ public class World implements LifeCycle, RouterClient {
 	// Laws
 	//--------------------------------------------------------------------------------
 
-    public final void addLaw(String className, Parameters arguments) {
+    public final void addLaw(String className, Parameters parameters) {
 		try {
 			// Creates a Law instance
 			Class lawClass = Class.forName(className);
 			Law law = (Law)lawClass.newInstance();
 			// Configures this Law
 			law.setWorld(this);
-			law.setParameters(arguments);
+			law.setParameters(parameters);
 			law.configure();
 			// Adicionar na tabela
 			if (laws.containsKey(law.getType())) {
