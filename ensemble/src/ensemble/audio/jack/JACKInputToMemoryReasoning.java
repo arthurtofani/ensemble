@@ -22,7 +22,8 @@
 
 	package ensemble.audio.jack;
 
-	import java.nio.ByteOrder;
+	import java.io.Console;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.Hashtable;
 
@@ -105,7 +106,10 @@ import ensemble.memory.MemoryException;
 				if (mapping.containsKey(actuatorName)) {
 					mouth.registerListener(this);
 					mouths.put(actuatorName, mouth);
-					mouthMemories.put(actuatorName, getAgent().getKB().getMemory(mouth.getComponentName() + Constants.SUF_AUXILIAR_MEMORY));
+					Memory auxMemory = getAgent().getKB().getMemory(mouth.getComponentName() + Constants.SUF_AUXILIAR_MEMORY);
+					//if(auxMemory!=null)System.out.println("Memory available");
+		            
+					mouthMemories.put(actuatorName, auxMemory);
 					period = Double.valueOf(mouth.getParameter(Constants.PARAM_PERIOD))/1000.0;
 					// Activates the JACK client
 					if (jjack.jack_activate(client) != 0) {
@@ -159,7 +163,7 @@ import ensemble.memory.MemoryException;
 //			System.out.println("needAction() - t = " + instant + " até " + (instant+duration));
 			// Teoricamente, já vai estar escrito na memória o que deve ser enviado,
 			// pois foi preenchido pelo callback do JACK
-			//mouths.get(sourceActuator.getComponentName()).act();
+			mouths.get(sourceActuator.getComponentName()).act();
 			
 		}
 		
@@ -193,7 +197,12 @@ import ensemble.memory.MemoryException;
 					while (fIn.remaining() > 0) {
 						dBuffer[ptr++] = (double)fIn.get();
 					}
-					Memory mouthMemory = mouthMemories.get(actuatorName);
+					
+					//System.out.println("Process initiated");
+					
+					Memory auxMemory = getAgent().getKB().getMemory(actuatorName + Constants.SUF_AUXILIAR_MEMORY);
+					//if(auxMemory!=null)System.out.println("Memory available");
+					
 					try {
 						//double[] dTransBuffer = new double[nframes];
 					
@@ -201,8 +210,19 @@ import ensemble.memory.MemoryException;
 						//new VstProcessReasoning().ProcessAudio("lib\\vst\\mda Overdrive.dll", dBuffer, dTransBuffer, nframes);
 						 
 						
-						mouthMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
+						auxMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
 	 					
+						dBuffer = new double[nframes];
+						
+						//System.out.println("Instant: " + instant + " Duration: " + duration );
+						//0.011609977324263039
+						dBuffer = (double[])auxMemory.readMemory(instant-duration, duration, TimeUnit.SECONDS);
+						
+						Memory mouthMemory = getAgent().getKB().getMemory(actuatorName);
+						
+						mouthMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
+						
+						
 					} catch (MemoryException e) {
 						e.printStackTrace();
 					}
