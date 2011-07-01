@@ -218,6 +218,13 @@ public abstract class EventHandler extends MusicalAgentComponent {
 			deregister();
 			return;
 		}
+		
+		Memory auxMemory = getAgent().getKB().createMemory(getComponentName()+ Constants.SUF_AUXILIAR_MEMORY, getParameters());
+		if (auxMemory == null) {
+			System.err.println("[" + getAgent().getAgentName() + ":" + getComponentName() + "] It was not possible to create an auxiliar memory! Deregistering...");
+			deregister();
+			return;
+		}
 //		MusicalAgent.logger.info("[" + getAgent().getAgentName() + ":" + getName() + "] " + "Memória de '" + getName() + "' do tipo '" + eventType + "' foi criada");
 
 		// Altera o status

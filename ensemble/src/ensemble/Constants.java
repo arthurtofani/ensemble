@@ -137,5 +137,7 @@ public final class Constants {
 	public static final String REP_TYPE_INPUT			= "INPUT";
 	public static final String REP_TYPE_OUTPUT			= "OUTPUT";
 	public static final String REP_TYPE_PARAMETERS  	= "PARAMETERS";
+	
+	public static final String SUF_AUXILIAR_MEMORY		= "AUX";
 
 }

@@ -36,8 +36,10 @@
 		<COMPONENTS>
 			<!-- 
 			<REASONING NAME="FileInputReasoning" CLASS="ensemble.audio.file.AudioFileInputReasoning" />
+			<REASONING NAME="GeneratorReasoning" CLASS="EG_Reasoning" />
+			<REASONING NAME="MicInputReasoning" CLASS="ensemble.audio.jack.JACKInputToMemoryReasoning" />
 			-->
-			 
+			
 			<REASONING NAME="MicInputReasoning" CLASS="ensemble.audio.jack.JACKInputReasoning" />
 			
 			<SENSOR NAME="Ear" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(0;0;0)"/>
