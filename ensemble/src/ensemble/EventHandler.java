@@ -218,32 +218,19 @@ public abstract class EventHandler extends MusicalAgentComponent {
 			deregister();
 			return;
 		}
-		
-//		Memory auxMemory = getAgent().getKB().createMemory(getComponentName()+ Constants.SUF_AUXILIAR_MEMORY, getParameters());
-//		if (auxMemory == null) {
-//			System.err.println("[" + getAgent().getAgentName() + ":" + getComponentName() + "] It was not possible to create an auxiliar memory! Deregistering...");
-//			deregister();
-//			return;
-//		}
 //		MusicalAgent.logger.info("[" + getAgent().getAgentName() + ":" + getName() + "] " + "Memória de '" + getName() + "' do tipo '" + eventType + "' foi criada");
 
-		// Altera o status
-		this.status = EH_STATUS.REGISTERED;
-		
-		Command cmd = new Command(getAddress(), "/console", "UPDATE");
-		cmd.addParameter("AGENT", getAgent().getAgentName());
-		cmd.addParameter("COMPONENT", getComponentName());
-		cmd.addParameter("STATE", "REGISTERED");
-		sendCommand(cmd);
-
-		// Avisa o agente do novo EventHandler registrado
-		getAgent().eventHandlerRegistered(getComponentName());
-		
 		// No caso de ser uma troca de evento frequente, armazena os parÃ¢metros
 		if (eventExecution.equals(Constants.EVT_EXC_PERIODIC) && getType().equals(Constants.COMP_ACTUATOR)) {
 			Actuator act = (Actuator)this;
 			act.setEventFrequency();
 		}
+		
+		// Altera o status
+		this.status = EH_STATUS.REGISTERED;
+
+		// Calls the user-implemented method informing that the EH was registered
+		eventHandlerRegistered();
 		
 		if (this instanceof Sensor) {
 			Sensor sensor = (Sensor)this;
@@ -252,7 +239,17 @@ public abstract class EventHandler extends MusicalAgentComponent {
 			}
 			sensor.early_events.clear();
 		}
+
+		// Avisa o agente do novo EventHandler registrado
+		getAgent().eventHandlerRegistered(getComponentName());
 		
+		// Updates the console
+		Command cmd = new Command(getAddress(), "/console", "UPDATE");
+		cmd.addParameter("AGENT", getAgent().getAgentName());
+		cmd.addParameter("COMPONENT", getComponentName());
+		cmd.addParameter("STATE", "REGISTERED");
+		sendCommand(cmd);
+
 //		MusicalAgent.logger.info("[" + getAgent().getAgentName() + ":" + getComponentName() + "] " + "Register of '" + getComponentName() + "' confirmed");
 		
 	}
@@ -280,14 +277,40 @@ public abstract class EventHandler extends MusicalAgentComponent {
 		
 		this.status = EH_STATUS.NOT_REGISTERED;
 		
+		// Calls the user-implemented method informing that the EH was registered
+		eventHandlerDeregistered();
+
+		// Informs the agent about the deregistration
+		getAgent().eventHandlerDeregistered(getComponentName());
+
+		// Updates the console
 		Command cmd = new Command(getAddress(), "/console", "UPDATE");
 		cmd.addParameter("AGENT", getAgent().getAgentName());
 		cmd.addParameter("COMPONENT", getComponentName());
 		cmd.addParameter("STATE", "NOT_REGISTERED");
 		sendCommand(cmd);
 		
-		getAgent().eventHandlerDeregistered(getComponentName());
-
 	}
 	
+	//--------------------------------------------------------------------------------
+	// User implemented methods
+	//--------------------------------------------------------------------------------
+
+	/**
+	 * Process an event before acting or after sensing
+	 */
+	protected void process(Event evt) throws Exception  {
+	}
+	
+	/**
+	 * Called after the Event Handler has been registered within the Event Server
+	 */
+	protected void eventHandlerRegistered() {
+	}
+
+	/**
+	 * Called after the Event Handler has been deregistered within the Event Server
+	 */
+	protected void eventHandlerDeregistered() {
+	}
 }

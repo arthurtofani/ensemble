@@ -317,15 +317,4 @@ public class Actuator extends EventHandler implements Acting {
 		
 	}
 	
-	//--------------------------------------------------------------------------------
-	// User implemented methods
-	//--------------------------------------------------------------------------------
-
-	/**
-	 * Método que pode ser implementado pelo usário para fazer alguma alteração no Evento
-	 */
-	public void process(Event evt) throws Exception {
-//		System.out.println(getAgent().getClock().getCurrentTime() + "\t ["+ getAgent().getAgentName() + ":" + getName() + "] \t Entrei no process()");
-	}
-
 }

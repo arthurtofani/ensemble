@@ -150,15 +150,4 @@ public class Sensor extends EventHandler implements Sensing {
 		
 	}
 
-	//--------------------------------------------------------------------------------
-	// User implemented methods
-	//--------------------------------------------------------------------------------
-
-	/**
-	 * Faz o pré-processamento do evento recebido.
-	 */
-	protected void process(Event evt) throws Exception  {
-//		System.out.println("[Sensor] Entrei no process()");
-	}
-
 }
