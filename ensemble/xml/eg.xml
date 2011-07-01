@@ -48,7 +48,7 @@
 			
 			<SENSOR NAME="Ear" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(0;0;0)"/>
 			
-			<ACTUATOR NAME="Mouth" CLASS="ensemble.Actuator" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" />
+			<ACTUATOR NAME="Mouth" CLASS="ensemble.apps.eg.GeneratorActuator" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" />
 			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
 			<SENSOR NAME="Eyes" CLASS="ensemble.Sensor" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
 		   

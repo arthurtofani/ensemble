@@ -1,16 +1,13 @@
 package ensemble.apps.eg;
-import java.util.Collections;
-
 import ensemble.Actuator;
+import ensemble.Command;
 import ensemble.Constants;
 import ensemble.EventHandler;
-import ensemble.Parameters;
 import ensemble.Reasoning;
 import ensemble.Sensor;
 import ensemble.audio.AudioConstants;
 import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
-import ensemble.memory.MemoryException;
 import ensemble.movement.MovementConstants;
 
 public class EG_Reasoning extends Reasoning{
@@ -54,7 +51,7 @@ public class EG_Reasoning extends Reasoning{
 	
 	@Override
 	public boolean init() {
-		return false;
+		return true;
 		
 		
 		
@@ -149,7 +146,9 @@ public class EG_Reasoning extends Reasoning{
 			break;
 
 		case PLAYING:
-			
+			//Command cmd = new Command(getAddress(), "/"+ Constants.FRAMEWORK_NAME + "/" + getAgent().getAgentName() + "/MovementReasoning", "WALK");
+//			
+//			cmd.addParameter(MovementConstants.PARAM_POS, "("+x+";"+ycmd.addParameter(MovementConstants.PARAM_TIME, "sendCommand(cmd);" +"
 			break;
 			
 		case PROCESSING:
