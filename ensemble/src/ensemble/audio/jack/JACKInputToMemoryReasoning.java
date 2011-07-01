@@ -216,11 +216,12 @@ import ensemble.memory.MemoryException;
 						
 						//System.out.println("Instant: " + instant + " Duration: " + duration );
 						//0.011609977324263039
+						
 						dBuffer = (double[])auxMemory.readMemory(instant-duration, duration, TimeUnit.SECONDS);
 						
-						Memory mouthMemory = getAgent().getKB().getMemory(actuatorName);
+						//Memory mouthMemory = getAgent().getKB().getMemory(actuatorName);
 						
-						mouthMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
+						//mouthMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
 						
 						
 					} catch (MemoryException e) {

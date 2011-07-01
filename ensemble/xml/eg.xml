@@ -41,7 +41,7 @@
 			
 			
 			-->
-			<REASONING NAME="GeneratorReasoning" CLASS="EG_Reasoning" />
+			<REASONING NAME="GeneratorReasoning" CLASS="ensemble.apps.eg.EG_Reasoning" />
 			
 			<REASONING NAME="MicInputReasoning" CLASS="ensemble.audio.jack.JACKInputToMemoryReasoning" />
 			

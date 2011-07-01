@@ -122,7 +122,7 @@ public class EG_Reasoning extends Reasoning{
 			//double[] dTransBuffer = new double[nframes];
 			
 			//new VstProcessReasoning().ProcessAudio("lib\\vst\\mda Overdrive.dll", dBuffer, dTransBuffer, nframes);
-			dBuffer = (double[])internalMemory.readMemory(instant-duration, duration, TimeUnit.SECONDS);
+			dBuffer = (double[])internalMemory.readMemory(instant, duration, TimeUnit.SECONDS);
 			//System.out.println("Instant: " + instant + " Duration: " + duration );
 			//0.011609977324263039
 			mouthMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
