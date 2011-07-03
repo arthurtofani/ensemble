@@ -12,8 +12,9 @@ public class Test {
 	public static void main(String[] args) {
 
 		try {
-			//AEffect a = VST.load("Freeverb2.dll");
-			AEffect a = VST.load("mda Delay");
+			//AEffect a = VST.load("mda Delay.dll");
+			//AEffect a = VST.load("mda Overdrive.dll");
+			AEffect a = VST.load("mda Multiband.dll");
 			a.open();
 			a.setSampleRate(44100.0f);
 			a.setBlockSize(512);
@@ -27,9 +28,53 @@ public class Test {
 	                        .sin(j * Math.PI * 2 * 440 / 44100.0);
 	            
 	        }
+	      //Multiband Parameters
+	        //Listen Output
+	        a.setParameter(0, new Float(0.3));
+	        //L <> M (Hz)
+	        a.setParameter(1, new Float(0.4));	        
+	        //M <> H (Hz)
+	        a.setParameter(2, new Float(1));	        
+	        //L Comp (dB)
+	        //a.setParameter(3, new Float(0.3));	        
+	        //M Comp (dB)
+	        //a.setParameter(4, new Float(0.3));	   
+	        //H Comp   (dB) 
+	        //a.setParameter(5, new Float(0.3));	   
+	        //L Out  (dB) 
+	        a.setParameter(6, new Float(-1));
+	        //M Out  (dB) 
+	        a.setParameter(7, new Float(-0.7));
+	        //H Out  (dB) 
+	        a.setParameter(8, new Float(0.8));
+	        //Attack (µs)
+	        a.setParameter(9, new Float(0.1));
+	        //Release (ms)
+	        a.setParameter(10, new Float(0.5));
+	        //Stereo (% Width)
+	        //a.setParameter(11, new Float(0.5));	        
+	        //Process 
+	        //a.setParameter(12, new Float(-1));
+	          
+	       /*//Overdrive Parameters
+	        //Drive (%)
+	        a.setParameter(0, new Float(0.5));
+	        //Muffle (%)
+	        a.setParameter(1, new Float(0.3));	        
+	        //Output  (dB) 
+	        a.setParameter(2, new Float(0.9));*/
 	        
-	        a.setParameter(0, new Float(1));
-	        a.setParameter(4, new Float(0.5));
+	        /*//Delay Parameters
+	        //L Delay (ms)
+	        a.setParameter(0, new Float(5));
+	        //Feedback (%)
+	        a.setParameter(2, new Float(0.8));	        
+	        //Fb Tone  Lo <> Hi
+	        a.setParameter(3, new Float(3));
+	        //FX Mix  (%) 
+	        a.setParameter(4, new Float(1.2));
+	        //Output  (dB) 
+	        a.setParameter(5, new Float(0.7));*/
 	        
 	        float[][] outputs = new float[a.numOutputs][];
 	        for (int i = 0; i < a.numOutputs; i++) {

@@ -22,8 +22,7 @@
 
 	package ensemble.audio.jack;
 
-	import java.io.Console;
-import java.nio.ByteOrder;
+	import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.Hashtable;
 
@@ -32,6 +31,7 @@ import jjack.JackPortFlags;
 import jjack.jjack;
 import jjack.jjackConstants;
 import ensemble.Actuator;
+import ensemble.Command;
 import ensemble.Constants;
 import ensemble.EventHandler;
 import ensemble.Reasoning;
@@ -59,6 +59,17 @@ import ensemble.memory.MemoryException;
 		Hashtable<String,Actuator> mouths = new Hashtable<String, Actuator>(2);
 		Hashtable<String,Memory> mouthMemories = new Hashtable<String, Memory>(2);
 		
+		
+		// Reasoning state
+		enum ReasoningState {
+			NOT_DEFINED,
+			BYPASS,
+			STOPPED,
+			ERROR
+		}
+		ReasoningState state = ReasoningState.NOT_DEFINED;
+		
+		
 		@Override
 		public boolean init() {
 			
@@ -84,6 +95,7 @@ import ensemble.memory.MemoryException;
 	            return false;
 			}
 
+			state = ReasoningState.BYPASS;
 			return true;
 			
 		}
@@ -167,75 +179,89 @@ import ensemble.memory.MemoryException;
 			
 		}
 		
-		class Process implements JackCallback {
+	class Process implements JackCallback {
 
-			double[] dBuffer;
-			boolean firstCall = true;
-			double instant = 0;
+		double[] dBuffer;
+		boolean firstCall = true;
+		double instant = 0;
 
-			@Override
-			public int process(int nframes, double time) {
+		@Override
+		public int process(int nframes, double time) {
 
-				if (firstCall) {
-					// It must be 2 frames plus the latency in the future
-					instant = getAgent().getClock().getCurrentTime(TimeUnit.SECONDS) + 
-								(period * 2) + 
-								(nframes * step);
-					dBuffer = new double[nframes];
-					firstCall = false;
-				}
-				
-				
-				double duration = (double)(nframes) * step;
-//				System.out.println("Java::callback - t = " + instant + " até " + (instant+duration));
-				
-				
-				
+			if (firstCall) {
+				// It must be 2 frames plus the latency in the future
+				instant = getAgent().getClock()
+						.getCurrentTime(TimeUnit.SECONDS)
+						+ (period * 2)
+						+ (nframes * step);
+				dBuffer = new double[nframes];
+				firstCall = false;
+			}
+
+			double duration = (double) (nframes) * step;
+			// System.out.println("Java::callback - t = " + instant + " até " +
+			// (instant+duration));
+
+			switch (state) {
+			case BYPASS:
+
 				for (String actuatorName : ports.keySet()) {
-					FloatBuffer fIn = jjack.jack_port_get_buffer(ports.get(actuatorName), nframes).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer();
+					FloatBuffer fIn = jjack
+							.jack_port_get_buffer(ports.get(actuatorName),
+									nframes).order(ByteOrder.LITTLE_ENDIAN)
+							.asFloatBuffer();
 					int ptr = 0;
 					while (fIn.remaining() > 0) {
-						dBuffer[ptr++] = (double)fIn.get();
+						dBuffer[ptr++] = (double) fIn.get();
 					}
+
+					// System.out.println("Process initiated");
+
+					Memory auxMemory = getAgent().getKB().getMemory(
+							actuatorName + Constants.SUF_AUXILIAR_MEMORY);
 					
-					//System.out.println("Process initiated");
-					
-					Memory auxMemory = getAgent().getKB().getMemory(actuatorName + Constants.SUF_AUXILIAR_MEMORY);
-					//if(auxMemory!=null)System.out.println("Memory available");
-					
+
 					try {
-						//double[] dTransBuffer = new double[nframes];
-					
+
+						auxMemory.writeMemory(dBuffer, instant, duration,
+								TimeUnit.SECONDS);
 						
-						//new VstProcessReasoning().ProcessAudio("lib\\vst\\mda Overdrive.dll", dBuffer, dTransBuffer, nframes);
-						 
-						
-						auxMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
-	 					
-						dBuffer = new double[nframes];
-						
-						//System.out.println("Instant: " + instant + " Duration: " + duration );
-						//0.011609977324263039
-						
-						dBuffer = (double[])auxMemory.readMemory(instant-duration, duration, TimeUnit.SECONDS);
-						
-						//Memory mouthMemory = getAgent().getKB().getMemory(actuatorName);
-						
-						//mouthMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
-						
+						//System.out.println("Salvou na memoria auxiliar");
+						// System.out.println("Instant: " + instant + " Duration: " + duration );
+						// 0.011609977324263039
+
 						
 					} catch (MemoryException e) {
 						e.printStackTrace();
 					}
 				}
-				
-				instant = instant + duration;
-				
-				return 0;
-				
+
+				break;
+
+			default:
+				firstCall = true;
+				break;
 			}
 
-		};
+			instant = instant + duration;
 
+			return 0;
+
+		}
+
+	};
+
+	public void processCommand(Command cmd) {
+
+		if (cmd.getCommand().equals(JACKConstants.CMD_STOP)) {
+			state = ReasoningState.STOPPED;
+		}
+		if (cmd.getCommand().equals(JACKConstants.CMD_START)) {
+			state = ReasoningState.BYPASS;
+		} 
+
+	}
+		
+		
 		
 	}

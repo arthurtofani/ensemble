@@ -1,4 +1,4 @@
-<ENSEMBLE NAME="Eletroacoustic Generator">
+<ENSEMBLE NAME="Band Using VST Demo">
 
 	<GLOBAL_PARAMETERS CLOCK_MODE="CLOCK_CPU" PROCESS_MODE="REAL_TIME" SCHEDULER_THREADS="5" />
 	
@@ -29,23 +29,15 @@
 	
   <!-- ********** MUSICAL AGENT CLASSES ********** -->
 
-	<MUSICAL_AGENT_CLASS NAME="GENERATOR" CLASS="ensemble.MusicalAgent">
+	<MUSICAL_AGENT_CLASS NAME="MUSICIAN" CLASS="ensemble.MusicalAgent">
 		<KB CLASS="ensemble.KnowledgeBase">
 			<FACT NAME="filename" VALUE="" PUBLIC="false" />
 		</KB>
 		<COMPONENTS>
-			<!-- 
-			
-			<REASONING NAME="MicInputReasoning" CLASS="ensemble.audio.jack.JACKInputReasoning" />
-			<REASONING NAME="MicInputReasoning" CLASS="ensemble.audio.jack.JACKInputToMemoryReasoning" />
-			
-			-->
 			
 			<REASONING NAME="GeneratorReasoning" CLASS="ensemble.apps.eg.EG_Reasoning" />
 			
 			<REASONING NAME="FileInputReasoning" CLASS="ensemble.audio.file.AudioFileInputToMemoryReasoning" />
-						
-			<SENSOR NAME="Ear" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(0;0;0)"/>
 			
 			<ACTUATOR NAME="Mouth" CLASS="ensemble.apps.eg.GeneratorActuator" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" />
 			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
@@ -60,9 +52,7 @@
 		</KB>
 		<COMPONENTS>
 			<REASONING NAME="AudioReasoning" CLASS="ensemble.audio.jack.JACKOutputReasoning" />
-			<!-- 
-				<REASONING NAME="FileOutputReasoning" CLASS="ensemble.audio.file.AudioFileOutputReasoning" />
-			 -->
+
 			<REASONING NAME="MovementReasoning" CLASS="ensemble.movement.MovementReasoning" REASONING_MODE="PERIODIC" PERIOD="150" /> -->
 			<SENSOR NAME="Ear" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(0;0;0)"/>
 			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
@@ -75,21 +65,49 @@
 
 
 
-	<MUSICAL_AGENT NAME="g1" CLASS="GENERATOR">
+	<MUSICAL_AGENT NAME="Guitar" CLASS="MUSICIAN">
 		<ARG NAME="POSITION" VALUE="(1;3;0)" />
 		 
-			<ARG_COMP COMP="MicInputReasoning" NAME="mapping" VALUE="Mouth-system:capture_1" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="inputMode" VALUE="FILE_ONLY" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="vstMode" VALUE="FIXED" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="vstPlugins" VALUE="OVERDRIVE" />
 		 
 		<FACT NAME="filename" VALUE="media/Guitar_44_16.wav" />
 	</MUSICAL_AGENT>
 	
+	<MUSICAL_AGENT NAME="Bass" CLASS="MUSICIAN">
+		<ARG NAME="POSITION" VALUE="(1;3;0)" />
+		 
+		<ARG_COMP COMP="GeneratorReasoning" NAME="inputMode" VALUE="FILE_ONLY" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="vstMode" VALUE="FIXED" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="vstPlugins" VALUE="FILTER" />
+		 
+		<FACT NAME="filename" VALUE="media/Bass_44_16.wav" />
+	</MUSICAL_AGENT>
+	
+	
+	<MUSICAL_AGENT NAME="Drums" CLASS="MUSICIAN">
+		<ARG NAME="POSITION" VALUE="(1;3;0)" />
+		 
+		<ARG_COMP COMP="GeneratorReasoning" NAME="inputMode" VALUE="FILE_ONLY" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="vstMode" VALUE="FIXED" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="vstPlugins" VALUE="DELAY" />
+		
+		<FACT NAME="filename" VALUE="media/Drums_44_16.wav" />
+	</MUSICAL_AGENT>
+	
+	
 	
 	<MUSICAL_AGENT NAME="Listener_1" CLASS="LISTENER">
 		<ARG NAME="POSITION" VALUE="(1;1;0)" />
-		<!-- <ARG NAME="CHANNELS" VALUE="1" /> -->
+		
 		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_1" />
 	</MUSICAL_AGENT>
 
-	
+	<MUSICAL_AGENT NAME="Listener_2" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(1;-1;0)" />
+		
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_2" />
+	</MUSICAL_AGENT>
 
 </ENSEMBLE>

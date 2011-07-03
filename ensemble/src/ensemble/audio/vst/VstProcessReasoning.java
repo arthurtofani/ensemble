@@ -28,6 +28,54 @@ public class VstProcessReasoning {
 	            for (int j = 0; j < nframes; j++)
 	                outputs[i][j] = 0;
 	        }
+	        
+	        if(vstDll.indexOf("Delay")>=0){
+	        	
+	        	 //Delay Parameters
+	        	//L Delay (ms)
+		        a.setParameter(0, new Float(5));
+		        //Feedback (%)
+		        a.setParameter(2, new Float(0.8));	        
+		        //Fb Tone  Lo <> Hi
+		        a.setParameter(3, new Float(3));
+		        //FX Mix  (%) 
+		        a.setParameter(4, new Float(1.2));
+		        //Output  (dB) 
+		        a.setParameter(5, new Float(0.7));
+	        }else if(vstDll.indexOf("Overdrive")>=0){
+	        	//Drive (%)
+		        a.setParameter(0, new Float(0.5));
+		        //Muffle (%)
+		        a.setParameter(1, new Float(0.3));	        
+		        //Output  (dB) 
+		        a.setParameter(2, new Float(0.9));
+	        }else if(vstDll.indexOf("Multiband")>=0){
+	        	
+	        	//Multiband Parameters
+	        	 //Listen Output
+	        	a.setParameter(0, new Float(0));
+		        //L <> M (Hz)
+		        a.setParameter(1, new Float(0.4));	        
+		        //M <> H (Hz)
+		        a.setParameter(2, new Float(1));	        
+		        //L Comp (dB)
+		        //a.setParameter(3, new Float(0.3));	        
+		        //M Comp (dB)
+		        //a.setParameter(4, new Float(0.3));	   
+		        //H Comp   (dB) 
+		        //a.setParameter(5, new Float(0.3));	   
+		        //L Out  (dB) 
+		        a.setParameter(6, new Float(-1));
+		        //M Out  (dB) 
+		        a.setParameter(7, new Float(-0.7));
+		        //H Out  (dB) 
+		        a.setParameter(8, new Float(0.8));
+		        //Attack (µs)
+		        //a.setParameter(9, new Float(40));
+		        //Release (ms)
+		        a.setParameter(10, new Float(0.5));
+	        }
+	        
 	        //a.setParameter(0, new Float(1));
 	        a.processReplacing(inputs, outputs, nframes);
 
