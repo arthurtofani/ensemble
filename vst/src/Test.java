@@ -14,7 +14,11 @@ public class Test {
 		try {
 			//AEffect a = VST.load("mda Delay.dll");
 			//AEffect a = VST.load("mda Overdrive.dll");
-			AEffect a = VST.load("mda Multiband.dll");
+			//AEffect a = VST.load("mda Multiband.dll");
+			//AEffect a = VST.load("mda Talkbox.dll");
+			//AEffect a = VST.load("mda RePsycho!.dll");
+			//AEffect a = VST.load("mda ThruZero.dll");
+			AEffect a = VST.load("EngineersFilter.dll");
 			a.open();
 			a.setSampleRate(44100.0f);
 			a.setBlockSize(512);
@@ -28,7 +32,35 @@ public class Test {
 	                        .sin(j * Math.PI * 2 * 440 / 44100.0);
 	            
 	        }
-	      //Multiband Parameters
+	        
+	     /* //ThruZero Flanger Parameters
+	      //Rate (sec)
+	        a.setParameter(0, new Float(0.1));
+	      //Depth (ms)
+	        a.setParameter(1, new Float(0.1));
+	      //Mix (%)
+	      //  a.setParameter(2, new Float(1.1));
+	      //Feedback (%)
+	        a.setParameter(3, new Float(0.3));*/
+	        
+	        
+	      /*//RePsycho Parameters
+	        //Tune (semi)
+	        a.setParameter(0, new Float(1.1));
+	        //Fine (cent)
+	        //a.setParameter(1, new Float(0.7));
+	        //Decay (%)
+	        //a.setParameter(2, new Float(0.1));
+	        //MIX (%)
+	        a.setParameter(5, new Float(1));*/
+	        
+	       /* //Talkbox Parameters
+	        //Wet (%)
+	        a.setParameter(0, new Float(0.3));
+	        //Dry (%)
+	        a.setParameter(1, new Float(0.7));*/
+	      
+	        /*//Multiband Parameters
 	        //Listen Output
 	        a.setParameter(0, new Float(0.3));
 	        //L <> M (Hz)
@@ -55,7 +87,7 @@ public class Test {
 	        //a.setParameter(11, new Float(0.5));	        
 	        //Process 
 	        //a.setParameter(12, new Float(-1));
-	          
+*/	          
 	       /*//Overdrive Parameters
 	        //Drive (%)
 	        a.setParameter(0, new Float(0.5));

@@ -91,7 +91,12 @@ public class EG_Reasoning extends Reasoning{
 		vstReference.put("OVERDRIVE", "lib\\vst\\mda Overdrive.dll");
 		vstReference.put("DELAY", "lib\\vst\\mda Delay.dll");
 		vstReference.put("FILTER", "lib\\vst\\mda MultiBand.dll");
-
+		vstReference.put("TALKBOX", "lib\\vst\\mda TalkBox.dll");
+		vstReference.put("REPYSCHO", "lib\\vst\\mda RePsycho!.dll");
+		vstReference.put("FLANGER", "lib\\vst\\mda ThruZero.dll");
+		vstReference.put("REVERB", "lib\\vst\\DX Reverb Light.dll");
+		vstReference.put("EFILTER", "lib\\vst\\EngineersFilter.dll");
+		
 		return true;
 		
 	}
@@ -107,18 +112,21 @@ public class EG_Reasoning extends Reasoning{
 			mouthMemory = getAgent().getKB().getMemory( mouth.getComponentName());
 			chunk_size = Integer.parseInt(mouth.getParameter(Constants.PARAM_CHUNK_SIZE, "0"));
 			frame_duration = chunk_size / sampleRate;
-			
+
 			//Defines the InputMode
 			String str = getParameter("inputMode", "");
-			//System.out.println("inputMode: " + str);
-			if(str != null && str == "FILE_ONLY"){
+			System.out.println("inputMode: " + str);
+			if(str.equalsIgnoreCase("FILE_ONLY")){
 				inputMode= InputMode.FILE_ONLY;
+			}else if(str.equalsIgnoreCase("MIC_ONLY")){
+				inputMode= InputMode.MIC_ONLY;
 			}
-			
+			System.out.println("inputMode: " + inputMode.toString());
+
 			//Defines the VSTMode
 			str = getParameter("vstMode", "");
 			//System.out.println("vstMode: " + str);			
-			if(str != null && str == "FIXED"){
+			if(str.equalsIgnoreCase("FIXED")){
 				vstMode= VSTMode.FIXED;
 			}
 			
@@ -213,24 +221,55 @@ public class EG_Reasoning extends Reasoning{
 
 			
 			break;
+		case MIC_ONLY:
 			
+			try {
+
+				double[] dBuffer = new double[chunk_size];
+				dBuffer = (double[])internalMemory.readMemory(instant - duration, duration, TimeUnit.SECONDS);
+				if (vstList != null && vstList.length > 0) {
+
+					switch (vstMode) {
+
+					case FIXED:
+
+						double[] dTransBuffer = new double[chunk_size];
+						long start = System.currentTimeMillis();
+						new VstProcessReasoning().ProcessAudio(vstList[0],dBuffer, dTransBuffer, chunk_size);
+						long end = System.currentTimeMillis();
+						System.out.println("start = " + start +" end = " + end + " dif= " + (end-start) );
+						mouthMemory.writeMemory(dTransBuffer, instant , duration, TimeUnit.SECONDS);
+
+						break;
+
+					case NOT_DEFINED:
+						mouthMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
+						break;
+					}
+
+				}
+				mouth.act();
+					
+			} catch (MemoryException e) {
+				e.printStackTrace();
+			} catch (VSTException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			
+			break;
 		case NOT_DEFINED:
 		
 		try {
 			
 			double[] dBuffer = new double[chunk_size];
 			
-			
-			double[] dTransBuffer = new double[chunk_size];
-			
 			dBuffer = (double[])internalMemory.readMemory(instant - duration, duration, TimeUnit.SECONDS);
-			new VstProcessReasoning().ProcessAudio("lib\\vst\\mda Delay.dll", dBuffer, dTransBuffer, chunk_size);
+
+			mouthMemory.writeMemory(dBuffer, instant + duration, duration, TimeUnit.SECONDS);
 			
-			//System.out.println("Instant: " + instant + " Duration: " + duration );
-			
-			mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
-			
-			//System.out.println("Guardei na memória principal um evento no instante " + instant + " de duração " + duration);
+			System.out.println("Guardei na memória principal um evento no instante " + instant + " de duração " + duration);
 
 			//TESTE COMMAND	
 			//			if(instant >12){
@@ -249,10 +288,7 @@ public class EG_Reasoning extends Reasoning{
 				
 		} catch (MemoryException e) {
 			e.printStackTrace();
-		} catch (VSTException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		break;
 	}
 //		System.out.println("REAS time = " + (System.currentTimeMillis() - start));

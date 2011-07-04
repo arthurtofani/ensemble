@@ -74,9 +74,39 @@ public class VstProcessReasoning {
 		        //a.setParameter(9, new Float(40));
 		        //Release (ms)
 		        a.setParameter(10, new Float(0.5));
+	        }else if(vstDll.indexOf("Talkbox")>=0){
+
+	        	//Talkbox Parameters
+	        	//Wet (%)
+	        	a.setParameter(0, new Float(0.3));
+	        	//Dry (%)
+	        	a.setParameter(1, new Float(0.7));
+	        }else if(vstDll.indexOf("RePsycho")>=0){
+	        	//RePsycho Parameters
+	        	//Tune (semi)
+	        	a.setParameter(0, new Float(1.1));
+		        //Fine (cent)
+		        //a.setParameter(1, new Float(0.7));
+		        //Decay (%)
+		        //a.setParameter(2, new Float(0.1));
+		        //MIX (%)
+		        a.setParameter(5, new Float(1));
+	        }else if(vstDll.indexOf("ThruZero")>=0){
+	        	
+	        	//ThruZero Flanger Parameters
+	        	
+	  	      //Rate (sec)
+	  	        a.setParameter(0, new Float(0.1));
+	  	      //Depth (ms)
+	  	        a.setParameter(1, new Float(0.1));
+	  	      //Mix (%)
+	  	      //  a.setParameter(2, new Float(1.1));
+	  	      //Feedback (%)
+	  	        a.setParameter(3, new Float(0.3));
+	  	        
 	        }
 	        
-	        //a.setParameter(0, new Float(1));
+	        
 	        a.processReplacing(inputs, outputs, nframes);
 
 	        VST.dispose(a); 
