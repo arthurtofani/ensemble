@@ -200,19 +200,20 @@ public class JACKInputReasoning extends Reasoning {
 				}
 				Memory mouthMemory = mouthMemories.get(actuatorName);
 				try {
-					double[] dTransBuffer = new double[nframes];
+//					double[] dTransBuffer = new double[nframes];
+//					
+//					new VstProcessReasoning().ProcessAudio("lib\\vst\\mda Overdrive.dll", dBuffer, dTransBuffer, nframes);
+//					 
 					
-					new VstProcessReasoning().ProcessAudio("lib\\vst\\mda Overdrive.dll", dBuffer, dTransBuffer, nframes);
-					 
-					
-					mouthMemory.writeMemory(dTransBuffer, instant, duration, TimeUnit.SECONDS);
+					mouthMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
  					
 				} catch (MemoryException e) {
 					e.printStackTrace();
-				} catch (VSTException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				} 
+//				catch (VSTException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 			}
 			
 			instant = instant + duration;

@@ -96,7 +96,7 @@ public class EG_Reasoning extends Reasoning{
 		vstReference.put("FLANGER", "lib\\vst\\mda ThruZero.dll");
 		vstReference.put("REVERB", "lib\\vst\\DX Reverb Light.dll");
 		vstReference.put("EFILTER", "lib\\vst\\EngineersFilter.dll");
-		
+		vstReference.put("TRACKER", "lib\\vst\\mda Tracker.dll");
 		return true;
 		
 	}

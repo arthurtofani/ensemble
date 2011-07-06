@@ -78,14 +78,14 @@
 	
 	
 	
-	<MUSICAL_AGENT NAME="Listener_1" CLASS="LISTENER">
-		<ARG NAME="POSITION" VALUE="(1;1;0)" />
+	<MUSICAL_AGENT NAME="L1" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(1;-1;0)" />
 		
 		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_1" />
 	</MUSICAL_AGENT>
 
-	<MUSICAL_AGENT NAME="Listener_2" CLASS="LISTENER">
-		<ARG NAME="POSITION" VALUE="(1;-1;0)" />
+	<MUSICAL_AGENT NAME="L2" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(1;1;0)" />
 		
 		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_2" />
 	</MUSICAL_AGENT>

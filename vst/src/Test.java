@@ -18,7 +18,10 @@ public class Test {
 			//AEffect a = VST.load("mda Talkbox.dll");
 			//AEffect a = VST.load("mda RePsycho!.dll");
 			//AEffect a = VST.load("mda ThruZero.dll");
-			AEffect a = VST.load("EngineersFilter.dll");
+			//AEffect a = VST.load("EngineersFilter.dll");
+			AEffect a = VST.load("mda Tracker.dll");
+			//AEffect a = VST.load("tuner.dll");
+			
 			a.open();
 			a.setSampleRate(44100.0f);
 			a.setBlockSize(512);
@@ -33,15 +36,15 @@ public class Test {
 	            
 	        }
 	        
-	     /* //ThruZero Flanger Parameters
+	      /*//ThruZero Flanger Parameters
 	      //Rate (sec)
-	        a.setParameter(0, new Float(0.1));
+	        a.setParameter(0, new Float(0.5));
 	      //Depth (ms)
-	        a.setParameter(1, new Float(0.1));
+	      // a.setParameter(1, new Float(0.4));
 	      //Mix (%)
-	      //  a.setParameter(2, new Float(1.1));
+	        a.setParameter(2, new Float(0.2));
 	      //Feedback (%)
-	        a.setParameter(3, new Float(0.3));*/
+	        a.setParameter(3, new Float(-0.01));*/
 	        
 	        
 	      /*//RePsycho Parameters
@@ -125,6 +128,7 @@ public class Test {
 	        
 	        
 	        a.processReplacing(inputs, outputs, blocksize);
+	        
 	        
 	        for (int i = 0; i < a.numOutputs; i++) {
 	            

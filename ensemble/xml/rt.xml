@@ -49,7 +49,7 @@
 		</KB>
 		<COMPONENTS>
 			<REASONING NAME="AudioReasoning" CLASS="ensemble.audio.jack.JACKOutputReasoning" />
-			<REASONING NAME="MovementReasoning" CLASS="ensemble.movement.MovementReasoning" REASONING_MODE="PERIODIC" PERIOD="50" /> -->
+			<REASONING NAME="MovementReasoning" CLASS="ensemble.movement.MovementReasoning" REASONING_MODE="PERIODIC" PERIOD="50" /> 
 			<SENSOR NAME="Ear" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(0;0;0)"/>
 			<!--  <SENSOR NAME="Ear_left" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(0;0;0)"/>
 				<SENSOR NAME="Ear_right" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(2;0;0)"/> -->

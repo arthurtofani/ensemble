@@ -93,16 +93,16 @@ public class VstProcessReasoning {
 		        a.setParameter(5, new Float(1));
 	        }else if(vstDll.indexOf("ThruZero")>=0){
 	        	
+
 	        	//ThruZero Flanger Parameters
-	        	
 	  	      //Rate (sec)
-	  	        a.setParameter(0, new Float(0.1));
+	  	        a.setParameter(0, new Float(0.5));
 	  	      //Depth (ms)
-	  	        a.setParameter(1, new Float(0.1));
+	  	      // a.setParameter(1, new Float(0.4));
 	  	      //Mix (%)
-	  	      //  a.setParameter(2, new Float(1.1));
+	  	        a.setParameter(2, new Float(0.2));
 	  	      //Feedback (%)
-	  	        a.setParameter(3, new Float(0.3));
+	  	        a.setParameter(3, new Float(-0.01));
 	  	        
 	        }
 	        
