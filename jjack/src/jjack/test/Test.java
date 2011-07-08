@@ -17,7 +17,7 @@ public class Test {
 	private static long port;
 
 	public static void main(String[] args) {
-		
+
 		client = jjack.jack_client_open("jjack", new JackCallback() {
 	        double t = 0;
 	        double freq = 440.0;
@@ -40,7 +40,21 @@ public class Test {
 			System.err.println("Error");
 			System.exit(1);
 		}
+
+		/* Capture ports */
+		System.out.println("JACK Capture ports");
+		String[] cap_ports = jjack.jack_get_ports(client, null, jjack.JACK_DEFAULT_AUDIO_TYPE, JackPortFlags.JackPortIsOutput);
+		for (int i = 0; i < cap_ports.length; i++) {
+			System.out.println("\t"+cap_ports[i]);
+		}
 		
+		/* Playback ports */
+		System.out.println("JACK Playback ports");
+		String[] pla_ports = jjack.jack_get_ports(client, null, jjack.JACK_DEFAULT_AUDIO_TYPE, JackPortFlags.JackPortIsInput);
+		for (int i = 0; i < pla_ports.length; i++) {
+			System.out.println("\t"+pla_ports[i]);
+		}
+
 		port = jjack.jack_port_register(client, 
 										"port_1",
 										jjackConstants.JACK_DEFAULT_AUDIO_TYPE, 
