@@ -22,6 +22,7 @@ along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 package ensemble.audio.file;
 
 import ensemble.Actuator;
+import ensemble.Command;
 import ensemble.Constants;
 import ensemble.EventHandler;
 import ensemble.Reasoning;
@@ -30,6 +31,7 @@ import ensemble.audio.AudioConstants;
 import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
+import ensemble.movement.MovementConstants;
 
 public class AudioFileInputToMemoryReasoning  extends Reasoning {
 
@@ -63,7 +65,7 @@ public class AudioFileInputToMemoryReasoning  extends Reasoning {
 		// Abre o arquivo de áudio para leitura
 		String filename = getAgent().getKB().readFact("filename");
 		try {
-			in = new AudioInputFile(filename, true);
+			in = new AudioInputFile(filename, false);
 		} catch (Exception e) {
 //			getAgent().logger.severe("[" + getComponentName() + "] " + "Error in opening the file " + filename);
 			System.out.println("[" + getAgent().getAgentName() + ":" + getComponentName() + "] " + "Error in opening the file " + filename);
@@ -107,7 +109,14 @@ public class AudioFileInputToMemoryReasoning  extends Reasoning {
 
 		// Le o fragmento do arquivo e transformas em float
 		chunk = in.readNextChunk(chunk_size);
-
+		
+		//notifica fim de arquivo
+		if(in.hasEnded && getAgent().getKB().getParameter("playState")!="STOP"){
+			getParameters().put("playState", "STOP");
+			getAgent().getKB().setParameters(getParameters());
+			
+		}
+		
 		// Faz qualquer alteração necessária no buffer (aplica o ganho)
 		for (int i = 0; i < chunk.length; i++) {
 			chunk[i] = chunk[i] * gain;
@@ -117,7 +126,7 @@ public class AudioFileInputToMemoryReasoning  extends Reasoning {
 		// TODO Ao invés de escrever na KB, fazer diretamente no Atuador
 		try {
 			mouthMemory.writeMemory(chunk, instant, duration, TimeUnit.SECONDS);
-			System.out.println("Guardei na memória auxiliar um evento no instante " + instant + " de duração " + duration);
+			//System.out.println("Guardei na memória auxiliar um evento no instante " + instant + " de duração " + duration);
 		} catch (MemoryException e1) {
 		}
 		//mouth.act();
@@ -140,6 +149,30 @@ public class AudioFileInputToMemoryReasoning  extends Reasoning {
 
 	@Override
 	public void process() {
+	}
+	
+	
+	@Override
+	public void processCommand(Command cmd) {
+		//System.out.println("FILE = " +cmd.getCommand());
+		if (cmd.getCommand().equals(AudioConstants.CMD_PLAY)) {
+			
+			// Abre o arquivo de áudio para leitura
+			String filename = cmd.getParameter("filename");
+			System.out.println("FILE = " +filename);
+			try {
+				in = new AudioInputFile(filename, false);
+				
+			} catch (Exception e) {
+//				getAgent().logger.severe("[" + getComponentName() + "] " + "Error in opening the file " + filename);
+				System.out.println("[" + getAgent().getAgentName() + ":" + getComponentName() + "] " + "Error in opening the file " + filename);
+			}
+		}
+
+		if (cmd.getCommand().equals(AudioConstants.CMD_STOP)) {
+			
+			
+		}
 	}
 
 }

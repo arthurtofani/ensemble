@@ -33,22 +33,22 @@ public class VstProcessReasoning {
 	        	
 	        	 //Delay Parameters
 	        	//L Delay (ms)
-		        a.setParameter(0, new Float(5));
+		       /* a.setParameter(0, new Float(5));
 		        //Feedback (%)
 		        a.setParameter(2, new Float(0.8));	        
 		        //Fb Tone  Lo <> Hi
 		        a.setParameter(3, new Float(3));
 		        //FX Mix  (%) 
-		        a.setParameter(4, new Float(1.2));
+		        a.setParameter(4, new Float(1.2));*/
 		        //Output  (dB) 
-		        a.setParameter(5, new Float(0.7));
+		        a.setParameter(5, new Float(0.4));
 	        }else if(vstDll.indexOf("Overdrive")>=0){
 	        	//Drive (%)
-		        a.setParameter(0, new Float(0.5));
-		        //Muffle (%)
-		        a.setParameter(1, new Float(0.3));	        
-		        //Output  (dB) 
-		        a.setParameter(2, new Float(0.9));
+	        	 a.setParameter(0, new Float(0.2));
+	 	        //Muffle (%)
+	 	        a.setParameter(1, new Float(0.3));	        
+	 	        //Output  (dB) 
+	 	        a.setParameter(2, new Float(0.7));
 	        }else if(vstDll.indexOf("Multiband")>=0){
 	        	
 	        	//Multiband Parameters
@@ -104,6 +104,9 @@ public class VstProcessReasoning {
 	  	      //Feedback (%)
 	  	        a.setParameter(3, new Float(-0.01));
 	  	        
+	        }else if(vstDll.indexOf("MadShifta")>=0){
+	        	
+	        	
 	        }
 	        
 	        

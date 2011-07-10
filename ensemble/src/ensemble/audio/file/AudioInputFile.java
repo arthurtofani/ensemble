@@ -36,6 +36,7 @@ public class AudioInputFile {
 	AudioInputStream audioInputStream;
 	
 	boolean 	onLoop = false;
+	boolean 	hasEnded = false;
 
 	int 		bytesPerFrame;
 	float 		sampleRate;
@@ -65,6 +66,7 @@ public class AudioInputFile {
 			sampleSizeInBits = audioInputStream.getFormat().getSampleSizeInBits();
 			isBigEndian = audioInputStream.getFormat().isBigEndian();
 			enc = audioInputStream.getFormat().getEncoding();
+			hasEnded=false;
 			if (bytesPerFrame == AudioSystem.NOT_SPECIFIED) {
 				bytesPerFrame = 1;
 			} 
@@ -147,6 +149,8 @@ public class AudioInputFile {
 							System.exit(-1);
 						}
 					} else {
+						//Acabou o arquivo
+						hasEnded = true;
 						break;
 					}
 				}

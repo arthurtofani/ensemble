@@ -66,49 +66,59 @@
 
 
 
-	<MUSICAL_AGENT NAME="Guitar" CLASS="MUSICIAN">
-		<ARG NAME="POSITION" VALUE="(1;3;0)" />
-		 
-		<ARG_COMP COMP="GeneratorReasoning" NAME="inputMode" VALUE="FILE_ONLY" />
-		<ARG_COMP COMP="GeneratorReasoning" NAME="vstMode" VALUE="FIXED" />
-		<ARG_COMP COMP="GeneratorReasoning" NAME="vstPlugins" VALUE="OVERDRIVE" />
-		 
-		<FACT NAME="filename" VALUE="media/Guitar_44_16.wav" />
-	</MUSICAL_AGENT>
-	
-	<MUSICAL_AGENT NAME="Bass" CLASS="MUSICIAN">
-		<ARG NAME="POSITION" VALUE="(1;3;0)" />
+	<MUSICAL_AGENT NAME="Guitarist" CLASS="MUSICIAN">
+		<ARG NAME="POSITION" VALUE="(0;8;0)" />
 		 
 		<ARG_COMP COMP="GeneratorReasoning" NAME="inputMode" VALUE="FILE_ONLY" />
 		<ARG_COMP COMP="GeneratorReasoning" NAME="vstMode" VALUE="FIXED" />
 		<ARG_COMP COMP="GeneratorReasoning" NAME="vstPlugins" VALUE="DELAY" />
 		 
+		<FACT NAME="filename" VALUE="media/Guitar_44_16.wav" />
+	</MUSICAL_AGENT>
+	
+	<MUSICAL_AGENT NAME="Bassist" CLASS="MUSICIAN">
+		<ARG NAME="POSITION" VALUE="(8;-8;0)" />
+		 
+		<ARG_COMP COMP="GeneratorReasoning" NAME="inputMode" VALUE="FILE_ONLY" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="vstMode" VALUE="FIXED" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="vstPlugins" VALUE="REVERB" />
+		 
 		<FACT NAME="filename" VALUE="media/Bass_44_16.wav" />
 	</MUSICAL_AGENT>
 	
 	
-	<MUSICAL_AGENT NAME="Drums" CLASS="MUSICIAN">
-		<ARG NAME="POSITION" VALUE="(1;3;0)" />
+	<MUSICAL_AGENT NAME="Drummer" CLASS="MUSICIAN">
+		<ARG NAME="POSITION" VALUE="(-7;0;0)" />
 		 
 		<ARG_COMP COMP="GeneratorReasoning" NAME="inputMode" VALUE="FILE_ONLY" />
 		<ARG_COMP COMP="GeneratorReasoning" NAME="vstMode" VALUE="FIXED" />
-		<ARG_COMP COMP="GeneratorReasoning" NAME="vstPlugins" VALUE="TRACKER" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="vstPlugins" VALUE="FLANGER" />
 		
 		<FACT NAME="filename" VALUE="media/Drums_44_16.wav" />
 	</MUSICAL_AGENT>
 	
 	
 	
-	<MUSICAL_AGENT NAME="Listener_1" CLASS="LISTENER">
-		<ARG NAME="POSITION" VALUE="(1;1;0)" />
-		
+	<!-- CONFIGURAÇÃO COM 4 CAIXAS -->
+	
+	<MUSICAL_AGENT NAME="L1" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(2;2;0)" />
 		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_1" />
 	</MUSICAL_AGENT>
 
-	<MUSICAL_AGENT NAME="Listener_2" CLASS="LISTENER">
-		<ARG NAME="POSITION" VALUE="(1;-1;0)" />
-		
+	<MUSICAL_AGENT NAME="L2" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(2;-2;0)" />
 		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_2" />
+	</MUSICAL_AGENT>
+	
+	<MUSICAL_AGENT NAME="L3" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(-2;2;0)" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_3" />
+	</MUSICAL_AGENT>
+
+	<MUSICAL_AGENT NAME="L4" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(-2;-2;0)" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_4" />
 	</MUSICAL_AGENT>
 
 </ENSEMBLE>

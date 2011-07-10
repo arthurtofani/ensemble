@@ -1,5 +1,8 @@
 package ensemble.apps.eg;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 import org.boris.jvst.VSTException;
 
@@ -49,6 +52,7 @@ public class EG_Reasoning extends Reasoning{
 		MIC_ONLY,
 		FILE_ON_PLAY,
 		SUM_ON_PLAY,
+		RANDOM_FILES,
 		VARIABLE
 	}
 	
@@ -68,8 +72,17 @@ public class EG_Reasoning extends Reasoning{
 	//VST LIST
 	public Hashtable<String, String> vstReference =  new Hashtable<String, String>();
 	
+	
 	public String[] vstList;
 
+	//Repertoire
+
+	public Hashtable<String, String> audioFileReference =  new Hashtable<String, String>();
+	
+	
+	public String[] audioFileList;
+
+	
 	// Reasoning state
 	enum ReasoningState {
 		NOT_DEFINED,
@@ -81,6 +94,7 @@ public class EG_Reasoning extends Reasoning{
 	}
 	
 	ReasoningState state = ReasoningState.NOT_DEFINED;
+	
 	
 	
 	
@@ -97,6 +111,36 @@ public class EG_Reasoning extends Reasoning{
 		vstReference.put("REVERB", "lib\\vst\\DX Reverb Light.dll");
 		vstReference.put("EFILTER", "lib\\vst\\EngineersFilter.dll");
 		vstReference.put("TRACKER", "lib\\vst\\mda Tracker.dll");
+		vstReference.put("PITCHSHIFTER", "lib\\vst\\MadShifta.dll");
+		
+		
+		//FILES
+		audioFileReference.put("1", "media/repertorio/01.wav");
+		audioFileReference.put("2", "media/repertorio/02.wav");
+		audioFileReference.put("3", "media/repertorio/03.wav");
+		audioFileReference.put("4", "media/repertorio/04.wav");
+		audioFileReference.put("5", "media/repertorio/05.wav");
+		audioFileReference.put("6", "media/repertorio/06.wav");
+		audioFileReference.put("7", "media/repertorio/07.wav");
+		audioFileReference.put("8", "media/repertorio/08.wav");
+		audioFileReference.put("9", "media/repertorio/09.wav");
+		audioFileReference.put("10", "media/repertorio/10.wav");
+		audioFileReference.put("11", "media/repertorio/11.wav");
+		audioFileReference.put("12", "media/repertorio/12.wav");
+		audioFileReference.put("13", "media/repertorio/13.wav");
+		audioFileReference.put("14", "media/repertorio/14.wav");
+		audioFileReference.put("15", "media/repertorio/15.wav");
+		audioFileReference.put("16", "media/repertorio/16.wav");
+		audioFileReference.put("17", "media/repertorio/17.wav");
+		audioFileReference.put("18", "media/repertorio/18.wav");
+		audioFileReference.put("19", "media/repertorio/19.wav");
+		audioFileReference.put("20", "media/repertorio/20.wav");
+		audioFileReference.put("21", "media/repertorio/21.wav");
+		audioFileReference.put("22", "media/repertorio/22.wav");
+		audioFileReference.put("23", "media/repertorio/23.wav");
+		audioFileReference.put("24", "media/repertorio/24.wav");
+		audioFileReference.put("25", "media/repertorio/25.wav");
+
 		return true;
 		
 	}
@@ -120,14 +164,18 @@ public class EG_Reasoning extends Reasoning{
 				inputMode= InputMode.FILE_ONLY;
 			}else if(str.equalsIgnoreCase("MIC_ONLY")){
 				inputMode= InputMode.MIC_ONLY;
+			}else if(str.equalsIgnoreCase("RANDOM_FILES")){
+				inputMode= InputMode.RANDOM_FILES;
 			}
-			System.out.println("inputMode: " + inputMode.toString());
+			//System.out.println("inputMode: " + inputMode.toString());
 
 			//Defines the VSTMode
 			str = getParameter("vstMode", "");
 			//System.out.println("vstMode: " + str);			
 			if(str.equalsIgnoreCase("FIXED")){
 				vstMode= VSTMode.FIXED;
+			}else if(str.equalsIgnoreCase("VARIABLE")){
+				vstMode= VSTMode.VARIABLE;
 			}
 			
 			// Recover the vstPlugins
@@ -137,11 +185,58 @@ public class EG_Reasoning extends Reasoning{
 				vstList = new String[vsts.length];
 			}
 			
+			
 			for (int i = 0; i<vsts.length; i++){
 				if( vstReference.containsKey(vsts[i])){
 					vstList[i] = vstReference.get(vsts[i]);
 					//System.out.println("vst[" + i +"]: " + vstList[i]);
 				}				
+			}
+			
+			//SETS VST FOR VARIABLE EFFECTS
+			if(vstMode == VSTMode.VARIABLE){
+				str = getParameter("vstNumber", "1");
+				int vstNumber = Integer.parseInt(str);
+				
+				ArrayList<String> vstPaths = new ArrayList<String>();			
+				Iterator itr = vstReference.values().iterator(); 
+				while(itr.hasNext()) {
+					vstPaths.add((String) itr.next());				    
+				} 
+
+			     Collections.shuffle(vstPaths);
+			     
+			     vstList = new String[vstNumber];
+			     
+			     for(int i = 0; i < vstNumber; i++){
+			    	 vstList[i] = vstPaths.get(i);	
+			    	 //System.out.println("vst[" + i +"]: " + vstList[i]);
+			     }
+			     getAgent().getKB().addParameter("VSTIndex", "0");
+			    
+			}
+			
+			
+			//SETS RANDOM FILES
+			if(inputMode == InputMode.RANDOM_FILES){
+				str = getParameter("fileNumber", "1");
+				int fileNumber = Integer.parseInt(str);
+				
+				ArrayList<String> filePaths = new ArrayList<String>();			
+				Iterator itr = audioFileReference.values().iterator(); 
+				while(itr.hasNext()) {
+					filePaths.add((String) itr.next());				    
+				} 
+
+			     Collections.shuffle(filePaths);
+			     
+			     audioFileList = new String[fileNumber];
+			     
+			     for(int i = 0; i < fileNumber; i++){
+			    	 audioFileList[i] = filePaths.get(i);	
+			    	 //System.out.println("file[" + i +"]: " + audioFileList[i]);
+			     }
+			     getAgent().getKB().addParameter("FileIndex", "0");
 			}
 			
 		}else if (evtHdl instanceof Sensor && evtHdl.getEventType().equals(AudioConstants.EVT_TYPE_AUDIO)) {
@@ -187,15 +282,14 @@ public class EG_Reasoning extends Reasoning{
 			try {
 
 				double[] dBuffer = new double[chunk_size];
+				double[] dTransBuffer = new double[chunk_size];
 				dBuffer = (double[])internalMemory.readMemory(instant - duration, duration, TimeUnit.SECONDS);
 				if (vstList != null && vstList.length > 0) {
 
 					switch (vstMode) {
 
 					case FIXED:
-
-						double[] dTransBuffer = new double[chunk_size];
-
+						
 						new VstProcessReasoning().ProcessAudio(vstList[0],dBuffer, dTransBuffer, chunk_size);
 						mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
 
@@ -203,6 +297,9 @@ public class EG_Reasoning extends Reasoning{
 
 					case NOT_DEFINED:
 						mouthMemory.writeMemory(dBuffer, instant + duration, duration, TimeUnit.SECONDS);
+						break;
+					case VARIABLE:
+						
 						break;
 					}
 
@@ -220,6 +317,78 @@ public class EG_Reasoning extends Reasoning{
 			}
 
 			
+			break;
+			
+		case RANDOM_FILES:
+			
+			try {
+
+				double[] dBuffer = new double[chunk_size];
+				double[] dTransBuffer = new double[chunk_size];
+				dBuffer = (double[])internalMemory.readMemory(instant - duration, duration, TimeUnit.SECONDS);
+				if (vstList != null && vstList.length > 0) {
+
+					switch (vstMode) {
+
+					case FIXED:
+						new VstProcessReasoning().ProcessAudio(vstList[0],dBuffer, dTransBuffer, chunk_size);
+						mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
+						break;
+
+					case NOT_DEFINED:
+						mouthMemory.writeMemory(dBuffer, instant + duration, duration, TimeUnit.SECONDS);
+						break;
+					case VARIABLE:
+						
+						//Indice de Arquivo
+						int actualFileIndex = Integer.parseInt(getAgent().getKB().getParameter("FileIndex","0"));
+						//Indice de VST
+						int actualVstIndex = Integer.parseInt(getAgent().getKB().getParameter("VSTIndex","0"));
+						
+						
+						if(getAgent().getKB().getParameter("playState")!=null && getAgent().getKB().getParameter("playState")==AudioConstants.CMD_STOP){
+							Command cmd = new Command(getAddress(), "/"+ Constants.FRAMEWORK_NAME + "/" + getAgent().getAgentName() + "/FileInputReasoning", AudioConstants.CMD_PLAY);
+							cmd.addParameter("filename", audioFileList[actualFileIndex]);
+							//System.out.println("FILE = " + audioFileList[actualFileIndex]);
+							sendCommand(cmd);
+							
+							//Adaptacao do indice
+							if((actualFileIndex +1) < Integer.parseInt(getParameter("fileNumber", "1"))){
+								actualFileIndex++;
+							}else {actualFileIndex = 0;}
+							
+							if((actualVstIndex +1) < Integer.parseInt(getParameter("vstNumber", "1"))){
+								actualVstIndex++;
+							}else {actualVstIndex = 0;}
+								
+							getParameters().put("playState", "PLAY");
+							getParameters().put("FileIndex", String.valueOf(actualFileIndex));
+							getParameters().put("VSTIndex", String.valueOf(actualVstIndex));
+							getAgent().getKB().setParameters(getParameters());
+							
+							
+							
+						}
+						
+						//System.out.println("VST = " +vstList[actualVstIndex]);
+						new VstProcessReasoning().ProcessAudio(vstList[actualVstIndex],dBuffer, dTransBuffer, chunk_size);
+						mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
+						
+						break;
+					}
+
+				}
+				//System.out.println("Instant: " + instant + " Duration: " + duration );
+				
+				//System.out.println("Guardei na memória principal um evento no instante " + instant + " de duração " + duration);
+				mouth.act();
+					
+			} catch (MemoryException e) {
+				e.printStackTrace();
+			} catch (VSTException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		case MIC_ONLY:
 			
@@ -274,7 +443,7 @@ public class EG_Reasoning extends Reasoning{
 			//TESTE COMMAND	
 			//			if(instant >12){
 //				//Stops the input bypass
-//				Command cmd = new Command(getAddress(), "/"+ Constants.FRAMEWORK_NAME + "/" + getAgent().getAgentName() + "/MicInputReasoning", "STOP");
+				Command cmd = new Command(getAddress(), "/"+ Constants.FRAMEWORK_NAME + "/" + getAgent().getAgentName() + "/MicInputReasoning", "STOP");
 //				sendCommand(cmd);
 //				}else if(instant >20){
 //					
@@ -294,6 +463,15 @@ public class EG_Reasoning extends Reasoning{
 //		System.out.println("REAS time = " + (System.currentTimeMillis() - start));
 	}
 
+	@Override
+	public void processCommand(Command cmd) {
+		if (cmd.getCommand().equals(AudioConstants.CMD_VST_OFF)) {
+			vstMode = VSTMode.NOT_DEFINED;
+		} else if (cmd.getCommand().equals(AudioConstants.CMD_VST_ON)) {
+			vstMode = VSTMode.FIXED;
+		} 
+	}
+	
 	public void process() throws Exception {
 
 		switch (state) {
