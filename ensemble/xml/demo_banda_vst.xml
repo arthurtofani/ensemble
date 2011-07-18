@@ -14,8 +14,8 @@
 				<ARG NAME="gravity" VALUE="10" />
 			</LAW>
 		</WORLD>
-		<EVENT_SERVER CLASS="ensemble.audio.AudioEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="100 30 80 1000">
-			<ARG NAME="MASTER_GAIN" VALUE="10.0" />
+		<EVENT_SERVER CLASS="ensemble.audio.AudioEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="120 50 90 1000">
+			<ARG NAME="MASTER_GAIN" VALUE="1.0" />
 			<ARG NAME="SAMPLE_RATE" VALUE="44100" />
 			<ARG NAME="SPEED_SOUND" VALUE="343.3" />
 			<ARG NAME="REFERENCE_DISTANCE" VALUE="1.0" />
@@ -97,9 +97,20 @@
 		<FACT NAME="filename" VALUE="media/Drums_44_16.wav" />
 	</MUSICAL_AGENT>
 	
+	<MUSICAL_AGENT NAME="L1" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(0;4;0)" />
+		
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_3" />
+	</MUSICAL_AGENT>
+
+	<MUSICAL_AGENT NAME="L2" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(0;-4;0)" />
+		
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_4" />
+	</MUSICAL_AGENT>
 	
 	
-	<!-- CONFIGURAÇÃO COM 4 CAIXAS -->
+	<!-- CONFIGURAÇÃO COM 4 CAIXAS --><!--
 	
 	<MUSICAL_AGENT NAME="L1" CLASS="LISTENER">
 		<ARG NAME="POSITION" VALUE="(2;2;0)" />
@@ -121,4 +132,4 @@
 		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_4" />
 	</MUSICAL_AGENT>
 
-</ENSEMBLE>
+--></ENSEMBLE>

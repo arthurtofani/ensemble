@@ -15,7 +15,7 @@
 			</LAW>
 		</WORLD>
 		<EVENT_SERVER CLASS="ensemble.audio.AudioEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="100 30 80 1000">
-			<ARG NAME="MASTER_GAIN" VALUE="10.0" />
+			<ARG NAME="MASTER_GAIN" VALUE="0.03" />
 			<ARG NAME="SAMPLE_RATE" VALUE="44100" />
 			<ARG NAME="SPEED_SOUND" VALUE="343.3" />
 			<ARG NAME="REFERENCE_DISTANCE" VALUE="1.0" />
@@ -69,10 +69,11 @@
 	<MUSICAL_AGENT NAME="G1" CLASS="GENERATOR">
 
 		
-		<ARG NAME="POSITION" VALUE="(1;10;0)" />
+		<ARG NAME="POSITION" VALUE="(-10;0;0)" />
 		 
 		<ARG_COMP COMP="GeneratorReasoning" NAME="inputMode" VALUE="RANDOM_FILES" />
-		<ARG_COMP COMP="GeneratorReasoning" NAME="fileNumber" VALUE="7" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="fileNumber" VALUE="5" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="fileGroup" VALUE="1" />
 		<ARG_COMP COMP="GeneratorReasoning" NAME="vstMode" VALUE="VARIABLE" />
 		<ARG_COMP COMP="GeneratorReasoning" NAME="vstNumber" VALUE="3" />
 		
@@ -81,10 +82,11 @@
 	</MUSICAL_AGENT>
 	
 	<MUSICAL_AGENT NAME="G2" CLASS="GENERATOR">
-		<ARG NAME="POSITION" VALUE="(1;-10;0)" />
+		<ARG NAME="POSITION" VALUE="(10;10;0)" />
 		 
 		<ARG_COMP COMP="GeneratorReasoning" NAME="inputMode" VALUE="RANDOM_FILES" />
-		<ARG_COMP COMP="GeneratorReasoning" NAME="fileNumber" VALUE="3" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="fileNumber" VALUE="6" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="fileGroup" VALUE="2" />
 		<ARG_COMP COMP="GeneratorReasoning" NAME="vstMode" VALUE="VARIABLE" />
 		<ARG_COMP COMP="GeneratorReasoning" NAME="vstNumber" VALUE="2" />
 		
@@ -93,30 +95,32 @@
 	</MUSICAL_AGENT>
 	
 	<MUSICAL_AGENT NAME="G3" CLASS="GENERATOR">
-		<ARG NAME="POSITION" VALUE="(8;-1;0)" />
+		<ARG NAME="POSITION" VALUE="(0;-9;0)" />
 		 
 		<ARG_COMP COMP="GeneratorReasoning" NAME="inputMode" VALUE="RANDOM_FILES" />
 		<ARG_COMP COMP="GeneratorReasoning" NAME="fileNumber" VALUE="3" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="fileGroup" VALUE="3" />
 		<ARG_COMP COMP="GeneratorReasoning" NAME="vstMode" VALUE="VARIABLE" />
 		<ARG_COMP COMP="GeneratorReasoning" NAME="vstNumber" VALUE="4" />
 		
 		 
 		<FACT NAME="filename" VALUE="media/repertorio/03.wav" />
 	</MUSICAL_AGENT>
-	
+	<!--
 	<MUSICAL_AGENT NAME="G4" CLASS="GENERATOR">
-		<ARG NAME="POSITION" VALUE="(-8;1;0)" />
+		<ARG NAME="POSITION" VALUE="(-10;-10;0)" />
 		 
 		<ARG_COMP COMP="GeneratorReasoning" NAME="inputMode" VALUE="RANDOM_FILES" />
-		<ARG_COMP COMP="GeneratorReasoning" NAME="fileNumber" VALUE="3" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="fileNumber" VALUE="2" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="fileGroup" VALUE="4" />
 		<ARG_COMP COMP="GeneratorReasoning" NAME="vstMode" VALUE="VARIABLE" />
-		<ARG_COMP COMP="GeneratorReasoning" NAME="vstNumber" VALUE="6" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="vstNumber" VALUE="5" />
 		
 		 
 		<FACT NAME="filename" VALUE="media/repertorio/04.wav" />
 	</MUSICAL_AGENT>
 	
-	<!--
+	
 	<MUSICAL_AGENT NAME="G5" CLASS="GENERATOR">
 		<ARG NAME="POSITION" VALUE="(16;7;0)" />
 		 
@@ -155,15 +159,15 @@
 	</MUSICAL_AGENT>
 	
 	--><MUSICAL_AGENT NAME="L1" CLASS="LISTENER">
-		<ARG NAME="POSITION" VALUE="(1;1;0)" />
+		<ARG NAME="POSITION" VALUE="(0;4;0)" />
 		
-		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_1" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_3" />
 	</MUSICAL_AGENT>
 
 	<MUSICAL_AGENT NAME="L2" CLASS="LISTENER">
-		<ARG NAME="POSITION" VALUE="(1;-1;0)" />
+		<ARG NAME="POSITION" VALUE="(0;-4;0)" />
 		
-		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_2" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_4" />
 	</MUSICAL_AGENT>
 
 </ENSEMBLE>

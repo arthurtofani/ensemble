@@ -26,6 +26,19 @@ public class Test {
 			@Override
 			public int process(int nframes, double time) {
 //                System.out.printf("Java::callback(%d)\n", nframes);
+				//List the ports 
+				
+				/*String[] playback_ports = jjack.jack_get_ports(client, null, null,JackPortFlags.JackPortIsOutput);
+				if (playback_ports == null) {
+					System.err.println("Cannot find any physical playback ports");
+					System.exit(1);
+				}
+				for (int i = 0; i < playback_ports.length; i++) {
+					System.out.println(playback_ports[i]);
+				}
+*/
+			
+				
 				FloatBuffer fOut = jjack.jack_port_get_buffer(port, nframes).order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer();
                 while (fOut.remaining() > 0) {
                         double dSample = 0.1 * Math.sin(2 * Math.PI * freq * t);

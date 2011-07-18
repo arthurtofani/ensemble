@@ -76,9 +76,12 @@ public class EG_Reasoning extends Reasoning{
 	public String[] vstList;
 
 	//Repertoire
-
-	public Hashtable<String, String> audioFileReference =  new Hashtable<String, String>();
 	
+	public Hashtable<String, String> audioFileReference =  new Hashtable<String, String>();
+	public Hashtable<String, String> audioFileReference1 =  new Hashtable<String, String>();
+	public Hashtable<String, String> audioFileReference2 =  new Hashtable<String, String>();
+	public Hashtable<String, String> audioFileReference3 =  new Hashtable<String, String>();
+	public Hashtable<String, String> audioFileReference4 =  new Hashtable<String, String>();
 	
 	public String[] audioFileList;
 
@@ -115,31 +118,34 @@ public class EG_Reasoning extends Reasoning{
 		
 		
 		//FILES
-		audioFileReference.put("1", "media/repertorio/01.wav");
-		audioFileReference.put("2", "media/repertorio/02.wav");
-		audioFileReference.put("3", "media/repertorio/03.wav");
-		audioFileReference.put("4", "media/repertorio/04.wav");
-		audioFileReference.put("5", "media/repertorio/05.wav");
-		audioFileReference.put("6", "media/repertorio/06.wav");
-		audioFileReference.put("7", "media/repertorio/07.wav");
-		audioFileReference.put("8", "media/repertorio/08.wav");
-		audioFileReference.put("9", "media/repertorio/09.wav");
-		audioFileReference.put("10", "media/repertorio/10.wav");
-		audioFileReference.put("11", "media/repertorio/11.wav");
-		audioFileReference.put("12", "media/repertorio/12.wav");
-		audioFileReference.put("13", "media/repertorio/13.wav");
-		audioFileReference.put("14", "media/repertorio/14.wav");
-		audioFileReference.put("15", "media/repertorio/15.wav");
-		audioFileReference.put("16", "media/repertorio/16.wav");
-		audioFileReference.put("17", "media/repertorio/17.wav");
-		audioFileReference.put("18", "media/repertorio/18.wav");
-		audioFileReference.put("19", "media/repertorio/19.wav");
-		audioFileReference.put("20", "media/repertorio/20.wav");
-		audioFileReference.put("21", "media/repertorio/21.wav");
-		audioFileReference.put("22", "media/repertorio/22.wav");
-		audioFileReference.put("23", "media/repertorio/23.wav");
-		audioFileReference.put("24", "media/repertorio/24.wav");
-		audioFileReference.put("25", "media/repertorio/25.wav");
+		audioFileReference1.put("1", "media/repertorio/01.wav");
+		audioFileReference1.put("2", "media/repertorio/02.wav");
+		audioFileReference1.put("3", "media/repertorio/03.wav");
+		audioFileReference1.put("4", "media/repertorio/04.wav");
+		audioFileReference1.put("5", "media/repertorio/05.wav");
+		audioFileReference1.put("6", "media/repertorio/06.wav");
+		audioFileReference1.put("7", "media/repertorio/07.wav");
+		audioFileReference2.put("8", "media/repertorio/08.wav");
+		audioFileReference2.put("9", "media/repertorio/09.wav");
+		
+		audioFileReference2.put("10", "media/repertorio/10.wav");
+		audioFileReference2.put("11", "media/repertorio/11.wav");
+		audioFileReference2.put("12", "media/repertorio/12.wav");
+		audioFileReference2.put("13", "media/repertorio/13.wav");
+		audioFileReference2.put("14", "media/repertorio/14.wav");
+		audioFileReference3.put("15", "media/repertorio/15.wav");
+		audioFileReference3.put("16", "media/repertorio/16.wav");
+		audioFileReference3.put("17", "media/repertorio/17.wav");
+		audioFileReference3.put("18", "media/repertorio/18.wav");
+		
+		audioFileReference3.put("19", "media/repertorio/19.wav");
+		audioFileReference3.put("20", "media/repertorio/20.wav");
+		audioFileReference3.put("21", "media/repertorio/21.wav");
+		
+		audioFileReference4.put("22", "media/repertorio/22.wav");
+		audioFileReference4.put("23", "media/repertorio/23.wav");
+		audioFileReference4.put("24", "media/repertorio/24.wav");
+		audioFileReference4.put("25", "media/repertorio/25.wav");
 
 		return true;
 		
@@ -195,6 +201,8 @@ public class EG_Reasoning extends Reasoning{
 			
 			//SETS VST FOR VARIABLE EFFECTS
 			if(vstMode == VSTMode.VARIABLE){
+				
+				
 				str = getParameter("vstNumber", "1");
 				int vstNumber = Integer.parseInt(str);
 				
@@ -221,6 +229,17 @@ public class EG_Reasoning extends Reasoning{
 			if(inputMode == InputMode.RANDOM_FILES){
 				str = getParameter("fileNumber", "1");
 				int fileNumber = Integer.parseInt(str);
+				
+				str = getParameter("fileGroup", "1");
+				int fileGroup = Integer.parseInt(str);
+				
+				if(fileGroup==1){
+					audioFileReference = audioFileReference1;
+				}else if(fileGroup==2){
+					audioFileReference = audioFileReference2;
+				}else if(fileGroup==3){
+					audioFileReference = audioFileReference3;
+				}else {audioFileReference = audioFileReference4;}
 				
 				ArrayList<String> filePaths = new ArrayList<String>();			
 				Iterator itr = audioFileReference.values().iterator(); 
