@@ -1,0 +1,136 @@
+<EARS Name="Base Example">
+	<WORLD_VALUES>
+		<WORLD_VALUE Name="World_Length" Type=""/>
+	</WORLD_VALUES>
+	
+	<EVENT_SERVERS>
+		<EVENT_SERVER Class="mms.movement.MovementEventServer">
+			<STATE_VALUES>
+				<STATE_VALUE Name="Current_Position" Type="POSITION" Scope="Agent"/>
+			</STATE_VALUES>
+			
+			<PARAMS_DEFINITIONS>
+				<PARAMETER Name="POSITION">
+					<ALL_VALUES>
+						<PARAM_VALUE Name="X" Order="1"/>
+						<PARAM_VALUE Name="Y" Order="2"/>
+						<PARAM_VALUE Name="Z" Order="3"/>							
+					</ALL_VALUES>
+					<NATURAL_VALUES>
+						<NATURAL Name="Center" Values="50;50;0"/>
+						<NATURAL Name="Upper_Left_Corner" Values="0;0;0"/>
+					</NATURAL_VALUES>
+				</PARAMETER>
+				
+				<PARAMETER Name="SPEED">
+					<ALL_VALUES>
+						<PARAM_VALUE>
+							<PARAM_VALUE Name="Duration" Order="1"/>													
+						</PARAM_VALUE>
+					</ALL_VALUES>
+					<NATURAL_VALUES>
+						<NATURAL Name="Fast" Values="1"/>
+						<NATURAL Name="Slow" Values="10"/>
+					</NATURAL_VALUES>
+				</PARAMETER>
+			</PARAMS_DEFINITIONS>
+			
+			<BASE_ACTIONS>
+				<ACTION Command="transport">
+					<ACTION_DESCRIPTION>Transports agent directly to informed position</ACTION_DESCRIPTION>
+					<ACTION_PARAMS>
+						<ACTION_PARAM Type="POSITION" Default="Center"/>							
+					</ACTION_PARAMS>
+				</ACTION>
+				
+				<ACTION Command="walk">
+					<ACTION_DESCRIPTION>walks to a position</ACTION_DESCRIPTION>
+					<ACTION_PARAMS>
+						<ACTION_PARAM Type="POSITION" Default="Center"/>
+						<ACTION_PARAM Type="SPEED" Default="Slow"/>						
+					</ACTION_PARAMS>
+				</ACTION>
+			</BASE_ACTIONS>
+		</EVENT_SERVER>
+		
+		<EVENT_SERVER CLASS="mms.audio.AudioEventServer" COMM="mms.comm.direct.CommDirect" PERIOD="200 100 160 2000">
+			<PARAMS_DEFINITIONS>
+				<PARAMETER Name="AUDIOFILE">
+					<ALL_VALUES>
+						<PARAM_VALUE Name="path" Order="1"/>
+						<PARAM_VALUE Name="duration" Order="2" Optional="yes"/>					
+					</ALL_VALUES>
+					<NATURAL_VALUES>
+						<NATURAL Name="Bassline" Values="Bass_44_16.wav"/>
+						<NATURAL Name="Drumline" Values="Drums_44_16.wav"/>
+					</NATURAL_VALUES>
+				</PARAMETER>
+			</PARAMS_DEFINITIONS>
+			
+			<BASE_ACTIONS>
+				<ACTION Command="play">
+					<ACTION_DESCRIPTION>Plays an audio file</ACTION_DESCRIPTION>
+					<ACTION_PARAMS>
+						<ACTION_PARAM Type="AUDIOFILE" Default="Bassline"/>		
+					</ACTION_PARAMS>
+				</ACTION>
+			</BASE_ACTIONS>
+		</EVENT_SERVER>
+		
+	</EVENT_SERVERS>
+
+	<SCRIPT>
+		<SCRIPT_ACTIONS>
+			<SCRIPT_ACTION Command="run_around">
+					<SEQ>
+						<ACTION Command="walk" Agent="Bass_player" values="Upper_Left_Corner;Fast"/>		
+						<ACTION Command="walk" Agent="Bass_player" values="Upper_Right_Corner;Fast"/>		
+						<ACTION Command="walk" Agent="Bass_player" values="Bottom_Right_Corner;Fast"/>		
+						<ACTION Command="walk" Agent="Bass_player" values="Bottom_Left_Corner;Fast"/>							
+					</SEQ>														
+			</SCRIPT_ACTION>	
+		</SCRIPT_ACTIONS>
+		
+		<SEQ>
+			<PAR>
+				<ACTION Command="transport" Agent="Bass_player" values="center"/>		
+				<CHOICE>
+					<ACTION Command="play" Agent="Bass_player" values="Bassline"/>
+					<ACTION Command="play" Agent="Bass_player" values="Drumline"/>
+				</CHOICE>
+			</PAR>
+			<REPEAT Times="2">
+				<ACTION Command="run_around" Agent="Bass_player" values=""/>					
+			</REPEAT>					
+			<ACTION Command="walk" Agent="Bass_player" values="Center"/>			
+		</SEQ>
+		
+		<PAR>
+			<ACTION Command="run_around" Agent="Bass_player" values=""/>		
+			<ACTION Command="play" Agent="Bass_player" values="Bassline"/>
+		</PAR>
+		
+		<CHOICE>
+			<ACTION Command="play" Agent="Bass_player" values="Bassline"/>
+			<ACTION Command="play" Agent="Bass_player" values="Drumline"/>
+		</CHOICE>	
+		
+		<REPEAT Times="2">
+			<ACTION Command="run_around" Agent="Bass_player" values=""/>					
+		</REPEAT>	
+	
+		<TEST></TEST>
+		<TEST Meta="World_Length" Operator="INFERIOR_TO" Value="100">
+		
+		</TEST>
+		
+		
+		<DO></DO>
+		<IF Agent="Bassplayer" Meta="Current_Position" Operator="EQUALS" Value="Center" >
+			<THEN>
+			</THEN>
+			<ELSE>			
+			</ELSE>
+		</IF>	
+	</SCRIPT>
+</EARS>
