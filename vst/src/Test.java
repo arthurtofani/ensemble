@@ -19,8 +19,12 @@ public class Test {
 			//AEffect a = VST.load("mda RePsycho!.dll");
 			//AEffect a = VST.load("mda ThruZero.dll");
 			//AEffect a = VST.load("EngineersFilter.dll");
-			AEffect a = VST.load("mda Tracker.dll");
+			//AEffect a = VST.load("mda Tracker.dll");
 			//AEffect a = VST.load("tuner.dll");
+			
+			//AEffect a = VST.load("Auto-Filter.dll");
+			AEffect a = VST.load("PitchShifter.dll");
+			
 			
 			a.open();
 			a.setSampleRate(44100.0f);
@@ -111,6 +115,40 @@ public class Test {
 	        //Output  (dB) 
 	        a.setParameter(5, new Float(0.7));*/
 	        
+	        
+	        //Auto filter Parameters
+	        //Filter = Band-Pass %
+	       /* a.setParameter(0, new Float(0.1));
+	        //Frequency = 1349  Hz %
+	        a.setParameter(1, new Float(0.14));	        
+	        // Feedback = 50.00 % %
+	        a.setParameter(2, new Float(0.35));
+	        //Rate = 7.943 Hz %
+	        //a.setParameter(3, new Float(1.2));
+	        //R. Hold = On %
+	        //a.setParameter(4, new Float(0.7));
+	        
+	        //Parameter[5]: Sync. = On %
+	        a.setParameter(5, new Float(0));
+	        //Parameter[6]: T.S.N = 1 %
+	        //Parameter[7]: T.S.D = 16 %
+	        //Parameter[8]: Spread = 1.000 %
+	        //Parameter[9]: LFO Depth = 50.00 % %
+	        
+	        //Parameter[10]: Attack = 2.000 s %
+	        a.setParameter(10, new Float(0.1));
+	        //Parameter[11]: Release = 10.00 s %
+	        a.setParameter(11, new Float(0.1));
+	        //Parameter[12]: Env Depth = 0.000 % %
+	        a.setParameter(12, new Float(0.42));
+	        //Parameter[13]: Mix = 60:40 % %
+	        a.setParameter(13, new Float(0.88));
+	        //Parameter[14]: Level = 0.000 dB %
+*/	        
+	        a.setProgram(3);
+	        a.setParameter(0, new Float(0.01));
+	        
+	        
 	        float[][] outputs = new float[a.numOutputs][];
 	        for (int i = 0; i < a.numOutputs; i++) {
 	            outputs[i] = new float[blocksize];
@@ -125,7 +163,7 @@ public class Test {
 	        	//VstParameterProperties properties = a.getParameterProperties(i);
 	        	
 	        }
-	        
+	       
 	        
 	        a.processReplacing(inputs, outputs, blocksize);
 	        

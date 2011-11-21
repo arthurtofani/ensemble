@@ -1,0 +1,103 @@
+#N canvas 365 19 950 535 10;
+#X obj 20 -402 dumpOSC 57110;
+#X obj 35 -354 print osc_rcv;
+#X obj 20 -379 OSCroute /pd;
+#X msg 20 181 send /ensemble/ENVIRONMENT/MOVEMENT TRANSPORT :AGENT
+\$1 :POS (\$2 \$3 \$4);
+#X obj 213 -352 sendOSC;
+#X obj 139 -402 loadbang;
+#X msg 160 -388 connect localhost 57111;
+#X obj 563 94 s osc;
+#X obj 304 -378 r osc;
+#X obj 185 289 s osc;
+#X floatatom 655 -392 5 0 0 0 - - x;
+#X floatatom 655 -366 5 0 0 0 - - y;
+#X obj 601 -397 vradio 15 1 0 3 cmd empty empty 0 -8 0 10 -262144 -1
+-1 0;
+#X obj 582 -136 select 0 1 2;
+#X obj 616 105 print msg;
+#X obj 458 -77 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 628 -397 vradio 15 1 0 4 agent empty empty 0 -8 0 10 -262144
+-1 -1 0;
+#X obj 714 -222 select 0 1 2 3;
+#X obj 582 -163 r cmd;
+#X obj 714 -247 r agent;
+#X obj 654 -22 r x;
+#X obj 682 -19 r y;
+#X msg 563 48 send /ensemble/ENVIRONMENT/MOVEMENT \$2 :AGENT \$3 :ACC
+(\$4 \$5 0);
+#X obj 563 16 pack s s s f f;
+#X symbolatom 578 -80 10 0 0 0 - - -;
+#X msg 578 -102 symbol WALK;
+#X msg 661 -102 symbol TURN;
+#X msg 740 -102 symbol STOP;
+#X msg 695 -197 symbol Listener_1;
+#X msg 779 -193 symbol Drummer;
+#X msg 795 -167 symbol Bassist;
+#X msg 716 -171 symbol Guitarist;
+#X symbolatom 700 -140 10 0 0 0 - - -;
+#X obj 20 221 s osc;
+#X msg 541 154 send /ensemble/Listener_1/MovementReasoning WALK :POS
+(12 5 0) :TIME 2;
+#X msg 195 267 send /ensemble/ENVIRONMENT/MOVEMENT STOP :AGENT Ambulance
+;
+#X msg 550 197 send /ensemble/Listener_1/MovementReasoning STOP;
+#X msg 185 229 send /ensemble/ENVIRONMENT/MOVEMENT WALK :AGENT Listener_1
+:ACC (0 1 0);
+#X obj 67 222 print osc_snd;
+#X obj 122 -354 print rejected;
+#X obj 851 -361 print osc_rcv2;
+#X obj 811 -392 dumpOSC 57109;
+#X msg 610 -326 connect localhost 57111;
+#X obj 746 -398 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 849 -305 s spin_osc;
+#X obj 765 -325 r spin_osc;
+#X msg 622 -283 sendOSC /ensemble/ENVIRONMENT/MOVEMENT STOP :AGENT
+Ambulance;
+#X obj 605 -230 print res;
+#X msg 68 -276 connect localhost 57111;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 2 1 39 0;
+#X connect 3 0 33 0;
+#X connect 3 0 38 0;
+#X connect 5 0 6 0;
+#X connect 6 0 4 0;
+#X connect 8 0 4 0;
+#X connect 13 0 25 0;
+#X connect 13 1 26 0;
+#X connect 13 2 27 0;
+#X connect 13 3 27 0;
+#X connect 15 0 23 0;
+#X connect 17 0 28 0;
+#X connect 17 1 31 0;
+#X connect 17 2 29 0;
+#X connect 17 3 30 0;
+#X connect 18 0 13 0;
+#X connect 19 0 17 0;
+#X connect 20 0 23 3;
+#X connect 21 0 23 4;
+#X connect 22 0 7 0;
+#X connect 22 0 14 0;
+#X connect 23 0 22 0;
+#X connect 24 0 23 1;
+#X connect 25 0 24 0;
+#X connect 26 0 24 0;
+#X connect 27 0 24 0;
+#X connect 28 0 32 0;
+#X connect 29 0 32 0;
+#X connect 30 0 32 0;
+#X connect 31 0 32 0;
+#X connect 32 0 23 2;
+#X connect 34 0 9 0;
+#X connect 35 0 9 0;
+#X connect 36 0 9 0;
+#X connect 37 0 9 0;
+#X connect 41 0 40 0;
+#X connect 41 0 44 0;
+#X connect 42 0 46 0;
+#X connect 43 0 42 0;
+#X connect 45 0 46 0;
+#X connect 46 0 47 0;

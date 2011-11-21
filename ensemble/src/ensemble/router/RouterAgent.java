@@ -190,10 +190,42 @@ public class RouterAgent extends Agent {
 		}
 	}
 	
+	/**
+	 * @author Santiago
+	 *
+	 */
 	public class Listener implements OSCListener {
 
 		@Override
 		public void messageReceived(OSCMessage m, SocketAddress addr, long time) {
+			
+			
+			
+			//Controla mensagens integradas do SPIN OSC
+			/*System.out.println("mensagem OSC:" + m.getName() + " indexof=" +m.getName().indexOf(MessageConstants.ANDOSC_ACC) +" address "
+					+ addr.toString());
+			*/
+			if (m.getName().indexOf(MessageConstants.SPIN_OSC_SEARCH) > 0 && m.getName().indexOf(MessageConstants.SPIN_OSC_DATA) > 0) {
+				Command cmd = processSpinOsc(m);
+				cmd.setRecipient("/ensemble/ENVIRONMENT/MESSAGE");
+				cmd.setSender("/osc");
+				processCommand(cmd);
+				
+				System.out.println("mensagem OSC:" + m.getName() + " address "
+						+ addr.toString());
+			}
+			
+			//Controla mensagens do ANDOSC
+			if (m.getName().indexOf(MessageConstants.ANDOSC_ACC) >= 0 || m.getName().indexOf(MessageConstants.ANDOSC_ORI) >= 0 || m.getName().indexOf(MessageConstants.ANDOSC_TOUCH) >= 0) {
+				Command cmd = processAndOsc(m);
+				cmd.setRecipient("/ensemble/ENVIRONMENT/MESSAGE");
+				cmd.setSender("/osc");
+				processCommand(cmd);
+				
+				System.out.println("mensagem OSC:" + m.getName() + " address "
+						+ addr.toString());
+			}
+			
 			// Obtém o agente e componente destino
 			String[] address = m.getName().split("/");
 			if (address.length <= 1 || !address[1].equals(Constants.FRAMEWORK_NAME)) {
@@ -205,12 +237,118 @@ public class RouterAgent extends Agent {
 				sb.append(m.getArg(i));
 				sb.append(" ");
 			}
+			
 			Command cmd = Command.parse(sb.toString());
 			cmd.setRecipient(m.getName());
 			cmd.setSender("/osc");
 			processCommand(cmd);
 		}
+
 		
+		/**
+		 * 
+		 * @param message
+		 * @return
+		 */
+		private Command processAndOsc(OSCMessage message) {
+			
+			//Touch
+			if (message.getName().indexOf(MessageConstants.ANDOSC_TOUCH)>=0 && message.getArgCount() == 2){
+				
+				Command andOscCmd = new Command(MessageConstants.CMD_RECEIVE);
+				andOscCmd.addParameter(MessageConstants.PARAM_DOMAIN, MessageConstants.EXT_OSC_DOMAIN);
+				andOscCmd.addParameter(MessageConstants.PARAM_TYPE, MessageConstants.ANDOSC_TYPE);
+				andOscCmd.addParameter(MessageConstants.PARAM_ACTION, MessageConstants.ANDOSC_TOUCH_POS);
+				
+				/*String[] address = message.getName().split("/");
+				spinCmd.addParameter(MessageConstants.SPIN_OSC_IDNUMBER, address[2]);
+				spinCmd.addParameter(MessageConstants.SPIN_OSC_CMD, address[3]);*/			
+				StringBuilder sb = new StringBuilder();
+				
+				for (int i = 0; i < message.getArgCount(); i++) {
+					sb.append(message.getArg(i));
+					sb.append(" ");
+				}
+				andOscCmd.addParameter(MessageConstants.PARAM_ARGS, sb.toString());
+				//System.out.println(sb.toString());
+				return andOscCmd;
+			}else
+			//Accelerometer
+			if (message.getName().indexOf(MessageConstants.ANDOSC_ACC)>=0 && message.getArgCount() == 3){
+				
+				Command andOscCmd = new Command(MessageConstants.CMD_RECEIVE);
+				andOscCmd.addParameter(MessageConstants.PARAM_DOMAIN, MessageConstants.EXT_OSC_DOMAIN);
+				andOscCmd.addParameter(MessageConstants.PARAM_TYPE, MessageConstants.ANDOSC_TYPE);
+				andOscCmd.addParameter(MessageConstants.PARAM_ACTION, MessageConstants.ANDOSC_ACCELEROMETER);
+				
+				StringBuilder sb = new StringBuilder();
+				
+				for (int i = 0; i < message.getArgCount(); i++) {
+					sb.append(message.getArg(i));
+					sb.append(" ");
+				}
+				andOscCmd.addParameter(MessageConstants.PARAM_ARGS, sb.toString());
+				//System.out.println(sb.toString());
+				return andOscCmd;
+			}
+			else
+				//Orientation
+				if (message.getName().indexOf(MessageConstants.ANDOSC_ORI)>=0 && message.getArgCount() == 3){
+					
+					Command andOscCmd = new Command(MessageConstants.CMD_RECEIVE);
+					andOscCmd.addParameter(MessageConstants.PARAM_DOMAIN, MessageConstants.EXT_OSC_DOMAIN);
+					andOscCmd.addParameter(MessageConstants.PARAM_TYPE, MessageConstants.ANDOSC_TYPE);
+					andOscCmd.addParameter(MessageConstants.PARAM_ACTION, MessageConstants.ANDOSC_ORIENTATION);
+					
+					StringBuilder sb = new StringBuilder();
+					
+					for (int i = 0; i < message.getArgCount(); i++) {
+						sb.append(message.getArg(i));
+						sb.append(" ");
+					}
+					andOscCmd.addParameter(MessageConstants.PARAM_ARGS, sb.toString());
+					//System.out.println(sb.toString());
+					return andOscCmd;
+				}
+
+			return null;
+
+		}
+
+		private Command processSpinOsc(OSCMessage message) {
+			
+			
+//			//Considers a regular position SpinOSC message
+			// This is the format of the message :
+			// "/spin/IDnumber/data horizontalLoc verticalLoc rotation width "
+			// Creating a spin sends out a message like
+			// "/spin/IDnumber/born bang"
+			// Killing a spin sends out a message like
+			// "/spin/IDnumber/dead bang"
+
+			if (message.getArgCount() == 4){
+				Command spinCmd = new Command(MessageConstants.CMD_RECEIVE);
+				spinCmd.addParameter(MessageConstants.PARAM_DOMAIN, MessageConstants.EXT_OSC_DOMAIN);
+				spinCmd.addParameter(MessageConstants.PARAM_TYPE, MessageConstants.SPIN_OSC_TYPE);
+				spinCmd.addParameter(MessageConstants.PARAM_ACTION, MessageConstants.SPIN_OSC_POSITION);
+				
+				String[] address = message.getName().split("/");
+				spinCmd.addParameter(MessageConstants.SPIN_OSC_IDNUMBER, address[2]);
+				spinCmd.addParameter(MessageConstants.SPIN_OSC_CMD, address[3]);
+				
+				StringBuilder sb = new StringBuilder();
+				
+				for (int i = 0; i < message.getArgCount(); i++) {
+					sb.append(message.getArg(i));
+					sb.append(" ");
+				}
+				spinCmd.addParameter(MessageConstants.PARAM_ARGS, sb.toString());
+				//System.out.println(sb.toString());
+				return spinCmd;
+			}
+			return null;
+		}
+
 	}
 	
 }

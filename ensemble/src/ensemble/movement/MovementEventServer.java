@@ -158,7 +158,7 @@ public class MovementEventServer extends EventServer {
     	// Informs the agent, if it has any sensor, about the its position
 //    	informAgent(agentName, movState);
 
-		// Mensagem OSC
+    	// Mensagem OSC
     	if (osc) {
     		// Register the agent
     		String str = "agent " + agentName + " src";
@@ -290,6 +290,8 @@ public class MovementEventServer extends EventServer {
 					EventHandlerInfo info = EventHandlerInfo.parse(sensors[i]);
 					informAgent(info.agentName, info.componentName, newState);
 				}
+				
+				//System.out.println("OSC?" +osc + " entityName?" + entityName + " " + newState.position.toString());
 				
 				// Sends an OSC message
 				if (osc) {

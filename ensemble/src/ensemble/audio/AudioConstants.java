@@ -34,6 +34,10 @@ public class AudioConstants {
 	public static final String CMD_PLAY 		= "PLAY";
 	public static final String CMD_VST_OFF 		= "VST_OFF";
 	public static final String CMD_VST_ON 		= "VST_ON";
+
+	public static final String CMD_ZONE_OFF 	= "ZONE_OFF";
+	public static final String CMD_ZONE_ON 		= "ZONE_ON";
+
 	
 	public static final String PARAM_AGENT 		= "AGENT";
 

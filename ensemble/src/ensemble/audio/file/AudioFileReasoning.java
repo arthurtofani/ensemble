@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
 
 import ensemble.Actuator;
@@ -33,9 +34,27 @@ public class AudioFileReasoning extends Reasoning {
 	
 	int chunk_size;
 	
+	//Ref datetime
+	long dt;
+	
+	// Reasoning state
+	enum ReasoningState {
+		NOT_DEFINED,
+		RECORDING,
+		STOPPED,
+		PLAYING,
+		ERROR
+	}
+	
+	ReasoningState state = ReasoningState.NOT_DEFINED;
+	
 	@Override
 	public boolean init() {
 		
+		dt = System.currentTimeMillis();
+		/*
+		*/
+		System.out.println("Iniciou! " + dt);
 		return true;
 		
 	}
@@ -99,7 +118,42 @@ public class AudioFileReasoning extends Reasoning {
 	
 	@Override
 	public void needAction(Actuator sourceActuator, double instant, double duration) throws Exception {
-
+ 
+		System.out.println("Status: " + state.toString() + " time:" + (System.currentTimeMillis() - this.dt));
+		if (state != ReasoningState.PLAYING){
+			
+		
+		if ((System.currentTimeMillis() - this.dt) >= 5000 && state == ReasoningState.NOT_DEFINED) {
+			Command cmd = new Command(getAddress(), "/"+ Constants.FRAMEWORK_NAME + "/" + getAgent().getAgentName() + "/RecReasoning", "RECORD");
+			cmd.addParameter("SENSOR", "EAR");
+			cmd.addParameter("FILE", "TEST");
+			System.out.println("Iniciou REC " );
+			
+			sendCommand(cmd);
+			}else if ((System.currentTimeMillis() - this.dt) >= 15000) {
+				if (state != ReasoningState.STOPPED) {
+					Command cmd = new Command(getAddress(), "/"
+							+ Constants.FRAMEWORK_NAME + "/"
+							+ getAgent().getAgentName()
+							+ "/RecReasoning", "STOP");
+					if (state == ReasoningState.RECORDING){
+						cmd.addParameter("EH", "EAR");
+					}else cmd.addParameter("EH", "MOUTH");
+					
+					sendCommand(cmd);
+				} 
+				else if ((System.currentTimeMillis() - this.dt) >= 18000){
+					Command cmd = new Command(getAddress(), "/"
+							+ Constants.FRAMEWORK_NAME + "/"
+							+ getAgent().getAgentName()
+							+ "/RecReasoning", "PLAY");
+					cmd.addParameter("ACTUATOR", "MOUTH");
+					cmd.addParameter("FILE", "TEST");
+					sendCommand(cmd);
+				}
+			}
+		}
+		
 		// Checks if there's a mapping for this actuator
 		if (mappings.containsKey(sourceActuator.getComponentName())) {
 			
@@ -108,6 +162,9 @@ public class AudioFileReasoning extends Reasoning {
 			int res = ((FileInputStream)map.stream).read(b);
 			try {
 				map.ehMemory.writeMemory(AudioTools.convertByteDouble(b, 0, b.length), instant, duration, TimeUnit.SECONDS);
+				sourceActuator.act();
+				
+				
 			} catch (MemoryException e1) {
 				e1.printStackTrace();
 			}
@@ -117,6 +174,8 @@ public class AudioFileReasoning extends Reasoning {
 			if (res == -1) {
 				System.out.println("Fim do arquivo!");
 				mappings.remove(sourceActuator.getComponentName());
+				
+				
 			}
 
 		}
@@ -135,13 +194,15 @@ public class AudioFileReasoning extends Reasoning {
 			
 			if (!mappings.containsKey(sensorName)) {
 				Mapping map = new Mapping();
-				map.playing = false;
+				map.playing = true;
 				map.ehMemory = sensorMemories.get(sensorName);
 				if (map.ehMemory == null) {
 					return;
 				}
 				try {
 					map.stream = new FileOutputStream(new File(file));
+					
+					state = ReasoningState.RECORDING;
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 					return;
@@ -167,6 +228,8 @@ public class AudioFileReasoning extends Reasoning {
 				}
 				try {
 					map.stream = new FileInputStream(file);
+					
+					state = ReasoningState.PLAYING;
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 					return;
@@ -178,18 +241,33 @@ public class AudioFileReasoning extends Reasoning {
 		}
 		else if (cmd.getCommand().equals("STOP")) {
 			
+			
+		    Iterator iterator = mappings.keySet().iterator();  
+		       
+		    while (iterator.hasNext()) {  
+		       String key = iterator.next().toString();  
+		       String value = mappings.get(key).toString();  
+		       
+		       System.out.println(key + " " + value);  
+		    }  
+						
 			String mapping = cmd.getParameter("EH");
+			System.out.println("Command STOP " + mapping);
+			
 			if (mappings.containsKey(mapping)) {
 				Mapping map = mappings.remove(mapping);
 				if (map.playing) {
 					try {
 						((FileOutputStream)map.stream).close();
+						
+						state = ReasoningState.STOPPED;
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				} else {
 					try {
 						((FileInputStream)map.stream).close();
+						state = ReasoningState.STOPPED;
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

@@ -113,8 +113,12 @@
 	
 	<MUSICAL_AGENT NAME="Listener_1" CLASS="LISTENER_AMB">
 		<ARG NAME="POSITION" VALUE="(0;0;0)" />
-		<ARG_COMP COMP="AudioReasoning" NAME="SPEAKERS_LAYOUT" VALUE="SQUARE" />
+		
+			<ARG_COMP COMP="AudioReasoning" NAME="SPEAKERS_LAYOUT" VALUE="STEREO" />
+		<ARG_COMP COMP="AudioReasoning" NAME="MAPPING" VALUE="speaker_1-system:playback_1,speaker_2-system:playback_2" />
+		<!-- <ARG_COMP COMP="AudioReasoning" NAME="SPEAKERS_LAYOUT" VALUE="SQUARE" />
 		<ARG_COMP COMP="AudioReasoning" NAME="MAPPING" VALUE="speaker_1-system:playback_1,speaker_2-system:playback_2,speaker_3-system:playback_3,speaker_4-system:playback_4" />
+	 -->
 	</MUSICAL_AGENT>
 	
 </ENSEMBLE>

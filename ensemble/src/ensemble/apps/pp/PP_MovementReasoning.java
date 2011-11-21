@@ -1,20 +1,17 @@
 package ensemble.apps.pp;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import ensemble.Actuator;
 import ensemble.Command;
-import ensemble.Constants;
 import ensemble.EventHandler;
 import ensemble.Reasoning;
 import ensemble.Sensor;
@@ -22,15 +19,19 @@ import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
 import ensemble.movement.MovementConstants;
+import ensemble.router.MessageConstants;
 import ensemble.world.Vector;
+import ensemble.world.World;
 
 public class PP_MovementReasoning extends Reasoning {
 
 	private Actuator	legs;
 	private Sensor 		eyes;
+	private Sensor 		antenna;
 	
 	private Memory 		legsMemory;
 	private Memory 		eyesMemory;
+	private Memory 		antennaMemory;
 	
 	// Waypoints
 	private ArrayList<Vector> waypoints = new ArrayList<Vector>();
@@ -122,47 +123,6 @@ public class PP_MovementReasoning extends Reasoning {
 				}
 			}
 		}
-
-		// Adiciona alguns waypoints para fazer um círculo
-//		waypoints.add(new Vector(0,-40,0));
-//		time_constrains.add(4.0);
-//		waypoints.add(new Vector(28.2842712474,-28.2842712474,0));
-//		time_constrains.add(4.0);
-//		waypoints.add(new Vector(40,0,0));
-//		time_constrains.add(4.0);
-//		waypoints.add(new Vector(28.2842712474,28.2842712474,0));
-//		time_constrains.add(4.0);
-//		waypoints.add(new Vector(0,40,0));
-//		time_constrains.add(4.0);
-//		waypoints.add(new Vector(-28.2842712474,28.2842712474,0));
-//		time_constrains.add(4.0);
-//		waypoints.add(new Vector(-40,0,0));
-//		time_constrains.add(4.0);
-//		waypoints.add(new Vector(-28.2842712474,-28.2842712474,0));
-//		time_constrains.add(4.0);
-//		waypoints.add(new Vector(30,40,0));
-//		time_constrains.add(8.0);
-//		waypoints.add(new Vector(-40,-30,0));
-//		time_constrains.add(7.0);
-//		waypoints.add(new Vector(60,-80,0));
-//		time_constrains.add(10.0);
-//		loop = true;
-		
-//		String str = getParameter("waypoints", null);
-//		if (str != null) {
-//			String[] wps = str.split(":");
-//			for (int i = 0; i < wps.length; i++) {
-//				String[] wp = wps[i].split(" "); 
-//				waypoints.add(Vector.parse(wp[0]));
-//				time_constrains.add(Double.valueOf(wp[1]));
-////				System.out.println("add wp " + waypoints.get(i) + " - time " + time_constrains.get(i));
-//			}
-//			
-//			
-//			
-//			loop = Boolean.parseBoolean(getParameter("loop", "false"));
-////			System.out.println("loop = " + loop);
-//		}
 		
 		
 		return true;
@@ -179,19 +139,45 @@ public class PP_MovementReasoning extends Reasoning {
 			eyes = (Sensor)evtHdl;
 			eyes.registerListener(this);
 			eyesMemory = getAgent().getKB().getMemory(eyes.getComponentName());
+		}else if (evtHdl instanceof Sensor && evtHdl.getEventType().equals(MessageConstants.EVT_TYPE_MESSAGE)) {
+			antenna = (Sensor)evtHdl;
+			antenna.registerListener(this);
+			antennaMemory = getAgent().getKB().getMemory(antenna.getComponentName());
 		}
+		
 	}
 
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 		
-		String str = (String)eyesMemory.readMemory(instant, TimeUnit.SECONDS);
-		Command cmd = Command.parse(str);
-		if (cmd != null) {
-			actual_pos = Vector.parse(cmd.getParameter(MovementConstants.PARAM_POS));
-			actual_vel = Vector.parse(cmd.getParameter(MovementConstants.PARAM_VEL));
-			actual_ori = Vector.parse(cmd.getParameter(MovementConstants.PARAM_ORI));
+		if (sourceSensor.getEventType().equals(
+				MovementConstants.EVT_TYPE_MOVEMENT)) {
+			String str = (String) eyesMemory.readMemory(instant,
+					TimeUnit.SECONDS);
+			Command cmd = Command.parse(str);
+			if (cmd != null) {
+				actual_pos = Vector.parse(cmd
+						.getParameter(MovementConstants.PARAM_POS));
+				actual_vel = Vector.parse(cmd
+						.getParameter(MovementConstants.PARAM_VEL));
+				actual_ori = Vector.parse(cmd
+						.getParameter(MovementConstants.PARAM_ORI));
+			}
+		}else if(sourceSensor.getEventType().equals(
+				MessageConstants.EVT_TYPE_MESSAGE)){
+			
+			String str = (String) antennaMemory.readMemory(instant,
+					TimeUnit.SECONDS);
+			Command cmd = Command.parse(str);
+			
+			if (cmd != null && cmd.getCommand()!=MessageConstants.CMD_INFO) {
+			System.out.println("Recebeu mensagem " + cmd.getParameter(MessageConstants.PARAM_ARGS));
+			
+			}
+			//sendTransportCommand(new Vector(3));
+			
 		}
+		
 		//System.out.println("New position " + actual_pos + " velocity " + actual_vel);
 
 	}
@@ -304,6 +290,19 @@ public class PP_MovementReasoning extends Reasoning {
 		}
 	}
 	
+	@SuppressWarnings("unused")
+	private void sendTransportCommand(Vector pos) {
+		String cmd = MovementConstants.CMD_TRANSPORT+ 
+			" :" + MovementConstants.PARAM_POS + " (0;0;0)";
+		
+		System.out.println("transport command: " + cmd);
+		try {
+			legsMemory.writeMemory(cmd);
+			legs.act();
+		} catch (MemoryException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	//Metodos auxiliares
 		private static Document loadXMLFile(String xmlFile) {

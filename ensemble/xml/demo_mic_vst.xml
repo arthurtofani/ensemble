@@ -14,7 +14,7 @@
 				<ARG NAME="gravity" VALUE="10" />
 			</LAW>
 		</WORLD>
-		<EVENT_SERVER CLASS="ensemble.audio.AudioEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="100 30 80 150">
+		<EVENT_SERVER CLASS="ensemble.audio.AudioEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="120 40 80 140">
 			<ARG NAME="MASTER_GAIN" VALUE="10.0" />
 			<ARG NAME="SAMPLE_RATE" VALUE="44100" />
 			<ARG NAME="SPEED_SOUND" VALUE="343.3" />
@@ -71,7 +71,7 @@
 		<ARG_COMP COMP="MicInputReasoning" NAME="mapping" VALUE="Mouth-system:capture_1" />
 		<ARG_COMP COMP="GeneratorReasoning" NAME="inputMode" VALUE="MIC_ONLY" />
 		<ARG_COMP COMP="GeneratorReasoning" NAME="vstMode" VALUE="FIXED" />
-		<ARG_COMP COMP="GeneratorReasoning" NAME="vstPlugins" VALUE="OVERDRIVE" />
+		<ARG_COMP COMP="GeneratorReasoning" NAME="vstPlugins" VALUE="TRACKER" />
 		 <!-- PITCHSHIFTER -->
 		
 	</MUSICAL_AGENT>
@@ -81,12 +81,12 @@
 	
 	<MUSICAL_AGENT NAME="L1" CLASS="LISTENER">
 		<ARG NAME="POSITION" VALUE="(2;2;0)" />
-		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_3" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_1" />
 	</MUSICAL_AGENT>
 
 	<MUSICAL_AGENT NAME="L2" CLASS="LISTENER">
 		<ARG NAME="POSITION" VALUE="(2;-2;0)" />
-		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_4" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_2" />
 	</MUSICAL_AGENT>
 
 	

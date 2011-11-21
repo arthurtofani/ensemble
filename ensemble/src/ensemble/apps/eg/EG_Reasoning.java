@@ -105,16 +105,16 @@ public class EG_Reasoning extends Reasoning{
 	public boolean init() {
 		
 
-		vstReference.put("OVERDRIVE", "lib\\vst\\mda Overdrive.dll");
+//		vstReference.put("OVERDRIVE", "lib\\vst\\mda Overdrive.dll");
 		vstReference.put("DELAY", "lib\\vst\\mda Delay.dll");
-		vstReference.put("FILTER", "lib\\vst\\mda MultiBand.dll");
-		vstReference.put("TALKBOX", "lib\\vst\\mda TalkBox.dll");
-		vstReference.put("REPYSCHO", "lib\\vst\\mda RePsycho!.dll");
-		vstReference.put("FLANGER", "lib\\vst\\mda ThruZero.dll");
-		vstReference.put("REVERB", "lib\\vst\\DX Reverb Light.dll");
-		vstReference.put("EFILTER", "lib\\vst\\EngineersFilter.dll");
-		vstReference.put("TRACKER", "lib\\vst\\mda Tracker.dll");
-		vstReference.put("PITCHSHIFTER", "lib\\vst\\MadShifta.dll");
+//		vstReference.put("FILTER", "lib\\vst\\mda MultiBand.dll");
+//		vstReference.put("TALKBOX", "lib\\vst\\mda TalkBox.dll");
+//		vstReference.put("REPYSCHO", "lib\\vst\\mda RePsycho!.dll");
+//		vstReference.put("FLANGER", "lib\\vst\\mda ThruZero.dll");
+//		vstReference.put("REVERB", "lib\\vst\\DX Reverb Light.dll");
+//		vstReference.put("EFILTER", "lib\\vst\\EngineersFilter.dll");
+//		vstReference.put("TRACKER", "lib\\vst\\mda Tracker.dll");
+//		vstReference.put("PITCHSHIFTER", "lib\\vst\\MadShifta.dll");
 		
 		
 		//FILES
@@ -367,6 +367,7 @@ public class EG_Reasoning extends Reasoning{
 						
 						if(getAgent().getKB().getParameter("playState")!=null && getAgent().getKB().getParameter("playState")==AudioConstants.CMD_STOP){
 							Command cmd = new Command(getAddress(), "/"+ Constants.FRAMEWORK_NAME + "/" + getAgent().getAgentName() + "/FileInputReasoning", AudioConstants.CMD_PLAY);
+							System.out.println("INDEX = " + actualFileIndex);
 							cmd.addParameter("filename", audioFileList[actualFileIndex]);
 							//System.out.println("FILE = " + audioFileList[actualFileIndex]);
 							sendCommand(cmd);
