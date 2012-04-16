@@ -1,0 +1,193 @@
+<EARS Name="PP Example">
+	<WORLD_VALUES>
+		<WORLD_VALUE Name="World_Length" Type=""/>
+	</WORLD_VALUES>
+	
+	<EVENT_SERVERS>
+		<EVENT_SERVER Class="mms.movement.MovementEventServer" Name="MOVEMENT">
+			<STATE_VALUES>
+				<STATE_VALUE Name="Current_Position" Type="POSITION" Scope="Agent"/>
+				<STATE_VALUE Name="Current_Direction" Type="DIRECTION" Scope="Agent"/>
+			</STATE_VALUES>
+			
+			<PARAMS_DEFINITIONS>
+				<PARAMETER Name="POSITION">
+					<ALL_VALUES>
+						<PARAM_VALUE Name="X" Order="1" Type="NUMERIC"/>
+						<PARAM_VALUE Name="Y" Order="2" Type="NUMERIC"/>
+						<PARAM_VALUE Name="Z" Order="3" Type="NUMERIC"/>							
+					</ALL_VALUES>
+					<NATURAL_VALUES>
+						<NATURAL Name="Center" Values="50;50;0"/>
+						<NATURAL Name="Upper_Left_Corner" Values="0;0;0"/>
+					</NATURAL_VALUES>
+				</PARAMETER>
+				
+				<PARAMETER Name="DIRECTION">
+					<ALL_VALUES>
+						<PARAM_VALUE Name="VALUE" Order="1" Type="STRING"/>
+					</ALL_VALUES>
+					<NATURAL_VALUES>
+						<NATURAL Name="Right" Values="RIGHT"/>
+						<NATURAL Name="Left" Values="LEFT"/>
+						<NATURAL Name="Up" Values="UP"/>
+						<NATURAL Name="Down" Values="DOWN"/>						
+					</NATURAL_VALUES>
+				</PARAMETER>
+				
+				<PARAMETER Name="SPEED">
+					<ALL_VALUES>
+						<PARAM_VALUE>
+							<PARAM_VALUE Name="Duration" Order="1"/>													
+						</PARAM_VALUE>
+					</ALL_VALUES>
+					<NATURAL_VALUES>
+						<NATURAL Name="Fast" Values="1"/>
+						<NATURAL Name="Slow" Values="10"/>
+					</NATURAL_VALUES>
+				</PARAMETER>
+			</PARAMS_DEFINITIONS>
+			
+			<BASE_ACTIONS>
+				<ACTION Command="transport">
+					<ACTION_DESCRIPTION>Transports agent directly to informed position</ACTION_DESCRIPTION>
+					<ACTION_PARAMS>
+						<ACTION_PARAM Type="POSITION" Default="Center"/>							
+					</ACTION_PARAMS>
+				</ACTION>
+				
+				<ACTION Command="walk">
+					<ACTION_DESCRIPTION>walks to a position</ACTION_DESCRIPTION>
+					<ACTION_PARAMS>
+						<ACTION_PARAM Type="POSITION" Default="Center"/>
+						<ACTION_PARAM Type="SPEED" Default="Slow"/>						
+					</ACTION_PARAMS>
+				</ACTION>
+			</BASE_ACTIONS>
+		</EVENT_SERVER>
+		
+		<EVENT_SERVER CLASS="mms.audio.AudioEventServer" COMM="mms.comm.direct.CommDirect" PERIOD="200 100 160 2000">
+			<STATE_VALUES>
+				<STATE_VALUE Name="Current_File" Type="AUDIOFILE" Scope="Agent"/>
+				<STATE_VALUE Name="Current_Process" Type="AUDIOPROCESS" Scope="Agent"/>
+			</STATE_VALUES>
+			
+			<PARAMS_DEFINITIONS>
+				<PARAMETER Name="AUDIOFILE">
+					<ALL_VALUES>
+						<PARAM_VALUE Name="path" Order="1" Type="STRING"/>
+						<PARAM_VALUE Name="duration" Order="2" Optional="yes" Type="TIMESPAN"/>
+						<PARAM_VALUE Name="classification" Order="3" Optional="yes" Type="STRING"/>
+					</ALL_VALUES>
+					<NATURAL_VALUES>
+						<NATURAL Name="Bassline" Values="Bass_44_16.wav"/>
+						<NATURAL Name="Drumline" Values="Drums_44_16.wav"/>
+						<NATURAL Name="Drumline" Values="Drums_44_16.wav;02:00:12;SINO"/>
+					</NATURAL_VALUES>
+				</PARAMETER>
+				<PARAMETER Name="AUDIOPROCESS">
+					<ALL_VALUES>
+						<PARAM_VALUE Name="type" Order="1" Optional="no" Type="STRING"/>
+						<PARAM_VALUE Name="vstFile" Order="2" Optional="yes" Type="STRING"/>
+						<PARAM_VALUE Name="classification" Order="3" Optional="yes" Type="STRING"/>
+						<PARAM_VALUE Name="preset" Order="4" Optional="yes" Type="STRING"/>
+					</ALL_VALUES>
+					<NATURAL_VALUES>
+						<NATURAL Name="AudioFilter_lowpass" Values="VST;lib\\vst\\Auto-Filter.dll;FILTER;1"/>
+					</NATURAL_VALUES>
+				</PARAMETER>
+				
+				<PARAMETER Name="AUDIOANALYSIS">
+					<ALL_VALUES>
+						<PARAM_VALUE Name="type" Order="1" Optional="no" Type="STRING"/>
+						<PARAM_VALUE Name="target" Order="2" Optional="yes" Type="STRING"/>
+						<PARAM_VALUE Name="unit" Order="3" Optional="no" Type="STRING"/>
+					</ALL_VALUES>
+					<NATURAL_VALUES>
+						<NATURAL Name="RMS_ENVELOPPE" Values="RMS;rmsKb;percent"/>
+						
+					</NATURAL_VALUES>
+				</PARAMETER>
+			</PARAMS_DEFINITIONS>
+			
+			<BASE_ACTIONS>
+				<ACTION Command="play">
+					<ACTION_DESCRIPTION>Plays an audio file</ACTION_DESCRIPTION>
+					<ACTION_PARAMS>
+						<ACTION_PARAM Type="AUDIOFILE" Default="Bassline"/>		
+					</ACTION_PARAMS>
+				</ACTION>
+				<ACTION Command="processPlay">
+					<ACTION_DESCRIPTION>Plays an audio file with an audio process</ACTION_DESCRIPTION>
+					<ACTION_PARAMS>
+						<ACTION_PARAM Type="AUDIOFILE" Default="Bassline"/>
+						<ACTION_PARAM Type="AUDIOPROCESS" Default="Bypass"/>
+					</ACTION_PARAMS>
+				</ACTION>
+				<ACTION Command="analize">
+					<ACTION_DESCRIPTION>Analyze an audio file with an audio process</ACTION_DESCRIPTION>
+					<ACTION_PARAMS>
+						<ACTION_PARAM Type="AUDIOFILE" Default="Bassline"/>
+						<ACTION_PARAM Type="AUDIOPROCESS" Default="Bypass"/>
+					</ACTION_PARAMS>
+				</ACTION>
+			</BASE_ACTIONS>
+		</EVENT_SERVER>
+		
+	</EVENT_SERVERS>
+
+	<SCRIPT>
+		<SCRIPT_ACTIONS>
+			<SCRIPT_ACTION Command="run_around">
+					<SEQ>
+						<ACTION Command="walk" Agent="Bass_player" values="Upper_Left_Corner;Fast"/>		
+						<ACTION Command="walk" Agent="Bass_player" values="Upper_Right_Corner;Fast"/>		
+						<ACTION Command="walk" Agent="Bass_player" values="Bottom_Right_Corner;Fast"/>		
+						<ACTION Command="walk" Agent="Bass_player" values="Bottom_Left_Corner;Fast"/>							
+					</SEQ>														
+			</SCRIPT_ACTION>	
+		</SCRIPT_ACTIONS>
+		
+		<SEQ>
+			<PAR>
+				<ACTION Command="transport" Agent="Bass_player" values="center"/>		
+				<CHOICE>
+					<ACTION Command="play" Agent="Bass_player" values="Bassline"/>
+					<ACTION Command="play" Agent="Bass_player" values="Drumline"/>
+				</CHOICE>
+			</PAR>
+			<REPEAT Times="2">
+				<ACTION Command="run_around" Agent="Bass_player" values=""/>					
+			</REPEAT>					
+			<ACTION Command="walk" Agent="Bass_player" values="Center"/>			
+		</SEQ>
+		
+		<PAR>
+			<ACTION Command="run_around" Agent="Bass_player" values=""/>		
+			<ACTION Command="play" Agent="Bass_player" values="Bassline"/>
+		</PAR>
+		
+		<CHOICE>
+			<ACTION Command="play" Agent="Bass_player" values="Bassline"/>
+			<ACTION Command="play" Agent="Bass_player" values="Drumline"/>
+		</CHOICE>	
+		
+		<REPEAT Times="2">
+			<ACTION Command="run_around" Agent="Bass_player" values=""/>					
+		</REPEAT>	
+	
+		<TEST></TEST>
+		<TEST Meta="World_Length" Operator="INFERIOR_TO" Value="100">
+		
+		</TEST>
+		
+		
+		<DO></DO>
+		<IF Agent="Bassplayer" Meta="Current_Position" Operator="EQUALS" Value="Center" >
+			<THEN>
+			</THEN>
+			<ELSE>			
+			</ELSE>
+		</IF>	
+	</SCRIPT>
+</EARS>

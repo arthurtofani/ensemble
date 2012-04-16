@@ -1,0 +1,155 @@
+<ENSEMBLE NAME="Message server Test">
+
+	<GLOBAL_PARAMETERS CLOCK_MODE="CLOCK_CPU" PROCESS_MODE="REAL_TIME" SCHEDULER_THREADS="5" />
+<!-- 
+
+Exemplo com o proposito de mostrar o uso do servidor de mensagens
+
+-->
+
+  	<!-- ********** ENVIRONMENT AGENT ********** -->
+
+	<ENVIRONMENT_AGENT_CLASS NAME="ENVIRONMENT" CLASS="ensemble.EnvironmentAgent">
+		<WORLD CLASS="ensemble.world.World">
+			<ARG NAME="dimensions" VALUE="3" />
+			<ARG NAME="structure" VALUE="continuous" />
+			<ARG NAME="form" VALUE="cube:100:loop" />
+			<LAW CLASS="ensemble.movement.MovementLaw">
+				<ARG NAME="friction_coefficient" VALUE="0.0" />
+				<ARG NAME="gravity" VALUE="10" />
+			</LAW>
+		</WORLD>
+		<EVENT_SERVER CLASS="ensemble.audio.AudioEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="200 50 150 200">
+			<ARG NAME="MASTER_GAIN" VALUE="8.0" />
+			<ARG NAME="SAMPLE_RATE" VALUE="44100" />
+			<ARG NAME="SPEED_SOUND" VALUE="343.3" />
+			<ARG NAME="REFERENCE_DISTANCE" VALUE="1.0" />
+			<ARG NAME="ROLLOFF_FACTOR" VALUE="1.0" />
+			<ARG NAME="LOOP_HEARING" VALUE="FALSE" />
+			<ARG NAME="INTERPOLATION_MODE" VALUE="POLYNOMIAL" />
+			<ARG NAME="NUMBER_POINTS" VALUE="4" />
+		</EVENT_SERVER>
+		<EVENT_SERVER CLASS="ensemble.movement.MovementEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="150 0" />
+		
+		<EVENT_SERVER CLASS="ensemble.router.MessageEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="1500 0" />
+		
+	</ENVIRONMENT_AGENT_CLASS>
+	
+  <!-- ********** MUSICAL AGENT CLASSES ********** -->
+
+	<MUSICAL_AGENT_CLASS NAME="MIC" CLASS="ensemble.MusicalAgent">
+		<KB CLASS="ensemble.KnowledgeBase">
+			
+		</KB>
+		<COMPONENTS>
+
+			<REASONING NAME="MovementReasoning" CLASS="ensemble.apps.pp.PP_OscMovementReasoning" REASONING_MODE="PERIODIC" PERIOD="500" /> -->
+			
+			<REASONING NAME="MicInputReasoning" CLASS="ensemble.apps.pp.PP_IntegratedMInstrumentReasoning" /> 			
+		 	<REASONING NAME="FileInputReasoning" CLASS="ensemble.audio.file.AudioFileInputStateReasoning" />
+		<!--	
+			<REASONING NAME="PeakReasoning" CLASS="ensemble.apps.pp.PP_PeakReasoning" REASONING_MODE="PERIODIC" PERIOD="400"/>			
+		 -->	
+			<ACTUATOR NAME="Mouth" CLASS="ensemble.apps.eg.GeneratorActuator" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" />
+			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+			<SENSOR NAME="Eyes" CLASS="ensemble.Sensor" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+		    <ACTUATOR NAME="Messenger" CLASS="ensemble.Actuator" EVENT_TYPE="MESSAGE" COMM="ensemble.comm.direct.CommDirect" />
+		<SENSOR NAME="Antenna" CLASS="ensemble.Sensor" EVENT_TYPE="MESSAGE" COMM="ensemble.comm.direct.CommDirect" />
+		   
+		</COMPONENTS>
+	</MUSICAL_AGENT_CLASS>
+	
+	<MUSICAL_AGENT_CLASS NAME="LISTENER" CLASS="ensemble.MusicalAgent">
+		<KB CLASS="ensemble.KnowledgeBase">
+			<FACT NAME="waypoints" VALUE="(0;0;0)" PUBLIC="false" />
+		</KB>
+		<COMPONENTS>
+			<REASONING NAME="AudioReasoning" CLASS="ensemble.audio.jack.JACKOutputReasoning" />
+
+			<REASONING NAME="MovementReasoning" CLASS="ensemble.movement.MovementReasoning" REASONING_MODE="PERIODIC" PERIOD="150" /> -->
+			<SENSOR NAME="Ear" CLASS="ensemble.Sensor" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" POSITION="(0;0;0)"/>
+			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+			<SENSOR NAME="Eyes" CLASS="ensemble.Sensor" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+		</COMPONENTS>
+	</MUSICAL_AGENT_CLASS>
+	
+	
+  <!-- ********** MUSICAL AGENT INSTANCES ********** -->
+
+	<MUSICAL_AGENT NAME="M1" CLASS="MIC">
+	
+	    <ARG NAME="POSITION" VALUE="(7;10;0)" />
+		<ARG_COMP COMP="MicInputReasoning" NAME="mapping" VALUE="Mouth-system:capture_1" />
+		<ARG_COMP COMP="MovementReasoning" NAME="waypoints" VALUE="(-5;-12;0) 22.0" />
+
+	</MUSICAL_AGENT>
+
+<!-- 	<MUSICAL_AGENT NAME="M2" CLASS="MIC">
+	
+	    <ARG NAME="POSITION" VALUE="(0;-10;0)" />
+		<ARG_COMP COMP="MicInputReasoning" NAME="mapping" VALUE="Mouth-system:capture_1" />
+		<ARG_COMP COMP="MovementReasoning" NAME="waypoints" VALUE="(5;-2;0) 15.0" />
+
+	</MUSICAL_AGENT>
+ -->
+<!-- CONFIGURAÇÃO COM 4 MICROFONES -->
+<!-- 
+	<MUSICAL_AGENT NAME="M2" CLASS="MIC">
+		<ARG NAME="POSITION" VALUE="(14;-10;0)" />
+		<ARG_COMP COMP="MicInputReasoning" NAME="mapping" VALUE="Mouth-system:capture_2" />
+	</MUSICAL_AGENT>
+	
+	
+	
+
+	<MUSICAL_AGENT NAME="M3" CLASS="MIC">
+		<ARG NAME="POSITION" VALUE="(-7;10;0)" />
+		<ARG_COMP COMP="MicInputReasoning" NAME="mapping" VALUE="Mouth-system:capture_2" />
+	</MUSICAL_AGENT>
+
+	<MUSICAL_AGENT NAME="M4" CLASS="MIC">
+		<ARG NAME="POSITION" VALUE="(-7;-10;0)" />
+		<ARG_COMP COMP="MicInputReasoning" NAME="mapping" VALUE="Mouth-system:capture_2" />
+	</MUSICAL_AGENT>
+ -->
+	
+	<!-- CONFIGURAÇÃO COM 2 CAIXAS -->
+	
+	<MUSICAL_AGENT NAME="L1" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(2;2;0)" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_1" />
+	</MUSICAL_AGENT>
+
+	<MUSICAL_AGENT NAME="L2" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(2;-2;0)" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_2" />
+	</MUSICAL_AGENT>
+
+	
+	
+	<!-- CONFIGURAÇÃO COM 4 CAIXAS -->
+	
+	<!--<MUSICAL_AGENT NAME="L1" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(2;2;0)" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_1" />
+	</MUSICAL_AGENT>
+
+	<MUSICAL_AGENT NAME="L2" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(2;-2;0)" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_2" />
+	</MUSICAL_AGENT>
+	
+	<MUSICAL_AGENT NAME="L3" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(-2;2;0)" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_3" />
+	</MUSICAL_AGENT>
+
+	<MUSICAL_AGENT NAME="L4" CLASS="LISTENER">
+		<ARG NAME="POSITION" VALUE="(-2;-2;0)" />
+		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_4" />
+	</MUSICAL_AGENT>
+
+	
+	
+
+--></ENSEMBLE>

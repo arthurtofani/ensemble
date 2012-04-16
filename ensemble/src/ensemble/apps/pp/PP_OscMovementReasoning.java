@@ -2,14 +2,18 @@ package ensemble.apps.pp;
 
  
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Hashtable;
+import java.util.Iterator;
 
 import ensemble.Actuator;
 import ensemble.Command;
+import ensemble.Constants;
 import ensemble.EventHandler;
-import ensemble.KnowledgeBase;
 import ensemble.Reasoning;
 import ensemble.Sensor;
-import ensemble.apps.pp.PP_FilterZoneReasoning.WorldZone;
+import ensemble.apps.pp.PP_SampleReasoning.ReasoningState;
+import ensemble.audio.AudioConstants;
 import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
@@ -53,8 +57,37 @@ public class PP_OscMovementReasoning extends Reasoning {
 	private Vector 				actual_vel = null;
 	private Vector 				actual_ori = null;
 	
+	
+	private Hashtable<String, String> audioFileReference =  new Hashtable<String, String>();
+	
+	private Hashtable<String, String> sinos =  new Hashtable<String, String>();
+	private Hashtable<String, String> tremolos =  new Hashtable<String, String>();
+	private Hashtable<String, String> nylon =  new Hashtable<String, String>();
+	private Hashtable<String, String> percussaoSino =  new Hashtable<String, String>();
+	private Hashtable<String, String> pizzicatos =  new Hashtable<String, String>();
+	private Hashtable<String, String> percussoes =  new Hashtable<String, String>();
+	
+	private Hashtable<String, String> curto =  new Hashtable<String, String>();
+	private Hashtable<String, String> longo =  new Hashtable<String, String>();
+	
 	// 
 	private double MAX_ACELERATION = 10.0;
+	
+	private double DEFAULT_ACELERATION = 0.2;
+	private double DEFAULT_DURATION = 2;
+	
+	
+	// Direction state
+	enum DirectionState {
+		NOT_DEFINED,
+		UP,
+		DOWN,
+		RIGHT,
+		LEFT,
+		STILL
+	}
+	
+	DirectionState state = DirectionState.NOT_DEFINED;
 	
 	public boolean init() {
 		
@@ -72,6 +105,57 @@ public class PP_OscMovementReasoning extends Reasoning {
 			loop = Boolean.parseBoolean(getParameter("loop", "false"));
 //			System.out.println("loop = " + loop);
 		}
+		
+		//Inicializa vetores dos samples
+		
+		//FILES
+		sinos.put("1", "media/piano_preparado/sino/sino_.wav");
+		sinos.put("2", "media/piano_preparado/sino/sino_abismo_.wav");
+		sinos.put("3", "media/piano_preparado/sino/sino_agudo_perc_.wav");
+		sinos.put("4", "media/piano_preparado/sino/sino_vertigem_.wav");
+		sinos.put("5", "media/piano_preparado/sino/sinoressonancia_.wav");
+		
+		
+		tremolos.put("1", "media/piano_preparado/glissando_ataque_raspado_.wav");
+		tremolos.put("2", "media/piano_preparado/notagrave_ress_aguda_.wav");
+		tremolos.put("3", "media/piano_preparado/tremolo_.wav");
+		tremolos.put("4", "media/piano_preparado/tremolo_gliss_.wav");
+		
+		nylon.put("1", "media/piano_preparado/nylon/nylon.wav");
+		nylon.put("2", "media/piano_preparado/nylon/nylongravelongo.wav");
+		
+		percussaoSino.put("1", "media/piano_preparado/percussao_sino/ataque_perc_.wav");
+		percussaoSino.put("2", "media/piano_preparado/percussao_sino/bolinha_gliss_.wav");
+		percussaoSino.put("3", "media/piano_preparado/percussao_sino/frase_agudopizz_.wav");
+		percussaoSino.put("4", "media/piano_preparado/percussao_sino/perc_sino2_.wav");
+		percussaoSino.put("5", "media/piano_preparado/percussao_sino/pizzicato_madeira@_.wav");
+		
+		pizzicatos.put("1", "media/piano_preparado/pizzicato/estalos_otimos_.wav");
+		pizzicatos.put("2", "media/piano_preparado/pizzicato/pizzicato_.wav");
+		pizzicatos.put("3", "media/piano_preparado/pizzicato/pizzicato_seco2_.wav");
+		pizzicatos.put("4", "media/piano_preparado/pizzicato/pizzicato2_.wav");
+		
+		percussoes.put("1", "media/piano_preparado/percussoes/bass_curto_.wav");
+		percussoes.put("2", "media/piano_preparado/percussoes/perc_sino_madeira_ress_.wav");
+		percussoes.put("3", "media/piano_preparado/percussoes/perc_sino_madeira_ress2_.wav");
+		percussoes.put("4", "media/piano_preparado/percussoes/perc_sino_ress_batimento_.wav");
+		percussoes.put("5", "media/piano_preparado/percussoes/perc_tamborilando_.wav");
+		percussoes.put("6", "media/piano_preparado/percussoes/percussao_surda_.wav");
+		
+		
+		curto.put("1", "media/piano_preparado/curto/perc_sino_madeira_ress2_.wav");
+		curto.put("2", "media/piano_preparado/curto/perc_sino_ress_batimento_.wav");
+		curto.put("3", "media/piano_preparado/curto/pizzicato_madeira@_.wav");
+		curto.put("4", "media/piano_preparado/curto/pizzicato_seco2_.wav");
+		curto.put("5", "media/piano_preparado/curto/pizzicato2_.wav");
+		curto.put("6", "media/piano_preparado/curto/sino_.wav");
+		curto.put("1", "media/piano_preparado/curto/sino_agudo_perc_.wav");
+		
+		longo.put("1", "media/piano_preparado/longo/tremolo_.wav");
+		longo.put("2", "media/piano_preparado/longo/notagrave_ress_aguda.wav");
+		longo.put("3", "media/piano_preparado/longo/perc_tamborilando_.wav");
+		longo.put("4", "media/piano_preparado/longo/tremolo_gliss_.wav");
+		
 		
 		
 		return true;
@@ -112,12 +196,16 @@ public class PP_OscMovementReasoning extends Reasoning {
 		}else if(sourceSensor.getEventType().equals(
 				MessageConstants.EVT_TYPE_MESSAGE)){
 			
+			
 			String str = (String) antennaMemory.readMemory(instant,
 					TimeUnit.SECONDS);
+			
+		
+			
 			Command cmd = Command.parse(str);
 			
 			
-			if (cmd != null && cmd.getCommand()!=MessageConstants.CMD_INFO) {
+			if (cmd != null && cmd.getCommand()!= MessageConstants.CMD_INFO) {
 				
 				
 				
@@ -135,6 +223,50 @@ public class PP_OscMovementReasoning extends Reasoning {
 						double valX = Double.parseDouble(val[0]);
 						double valY = Double.parseDouble(val[1]);
 						sendTransportCommand(getOscVector(100, valX,valY));
+						}
+					}
+				}else if (cmd.getParameter(MessageConstants.PARAM_TYPE).equals(MessageConstants.DIRECTION_TYPE)){
+					// Considers a change of direction
+					String[] val = cmd
+							.getParameter(MessageConstants.PARAM_ARGS).split(
+									" ");
+					if (val.length == 1) {
+						System.out.println("Changed direction: " + val[0]);
+
+						int valX = Integer.parseInt(val[0]);
+						changeDirection(valX);
+						changeSample(valX);
+
+					}
+				} else if (cmd.getParameter(MessageConstants.PARAM_TYPE)
+						.equals(MessageConstants.ISO_TYPE)) {
+
+					if (cmd.getParameter(MessageConstants.PARAM_ACTION).equals(
+							MessageConstants.ISO_POSITION)) {
+
+						String[] val = cmd.getParameter(
+								MessageConstants.PARAM_ARGS).split(" ");
+
+						/*
+						 * System.out.println("Recebeu mensagem " +
+						 * cmd.getParameter(MessageConstants.PARAM_TYPE));
+						 */
+
+						if (val.length == 5) {
+							int agentNum = 1 + Integer.parseInt(val[4]);
+
+							if (getAgent().getAgentName().trim()
+									.indexOf("M" + agentNum) >= 0) {
+
+								// System.out.println( getAgent().getAgentName()
+								// + " M" + agentNum);
+
+								double valX = Double.parseDouble(val[0]);
+								double valY = Double.parseDouble(val[1]);
+								sendTransportCommand(getIsoOscVector(100, valX,
+										valY));
+
+							}
 						}
 					}
 				}
@@ -289,8 +421,9 @@ public class PP_OscMovementReasoning extends Reasoning {
 		if (dur > 0.0) {
 			cmd += " :" + MovementConstants.PARAM_DUR + " " + Double.toString(dur);
 		}
-//		System.out.println("acc command: " + cmd);
+		//System.out.println("acc command: " + cmd);
 		try {
+			
 			legsMemory.writeMemory(cmd);
 			legs.act();
 		} catch (MemoryException e) {
@@ -304,7 +437,7 @@ public class PP_OscMovementReasoning extends Reasoning {
 		String cmd = MovementConstants.CMD_TRANSPORT+ 
 			" :" + MovementConstants.PARAM_POS + " (" + pos.getValue(0)+ ";" + pos.getValue(1)+ ";" + pos.getValue(2)+ ")";
 		
-		System.out.println("transport command: " + cmd);
+		//System.out.println("transport command: " + cmd);
 		try {
 			legsMemory.writeMemory(cmd);
 			legs.act();
@@ -329,10 +462,146 @@ private Vector getOscVector(int size, double oscX, double oscY ){
 		double valZ = 0;
 					
 		Vector v = new Vector(valY,valX, valZ );
-		System.out.println("X: " + valX + " Y:" + valY + " Z:"+ valZ );
+		//System.out.println("X: " + valX + " Y:" + valY + " Z:"+ valZ );
 			return v; 
 		
 	}
-		
+
+private Vector getIsoOscVector(int size, double oscX, double oscY ){
 	
+	
+	int x = 0;
+	double valX = -oscX;
+	double valY = oscY;
+	double valZ = 0;
+				
+	Vector v = new Vector(valY,valX, valZ );
+	//System.out.println("X: " + valX + " Y:" + valY + " Z:"+ valZ );
+		return v; 
+	
+}
+
+
+private void changeDirection(int direction)
+ {
+		
+	System.out.println("Change direction " + direction);
+		
+		// Calcular a direção na qual deve andar
+		Vector acc;
+		switch (direction) {
+		case 1:
+			// Direita
+			acc = new Vector(0, 1, 0);
+			break;
+		case 2:
+			// Esquerda
+			acc = new Vector(0, -1, 0);
+			break;
+		case 3:
+			// Acima
+			acc = new Vector(1, 0, 0);
+			break;
+		case 4:
+			// Baixo
+			acc = new Vector(-1, 0, 0);
+			break;
+
+		default:
+			acc = null;
+			break;
+
+		}
+
+		/*
+		 * new Vector((dest_pos.getValue(0)-actual_pos.getValue(0)),
+		 * (dest_pos.getValue(1)-actual_pos.getValue(1)),
+		 * (0-actual_pos.getValue(2)));
+		 */
+		if (acc != null && (getAgent().getKB().getParameter("directionState")==null || getAgent().getKB().getParameter("directionState")!=""+direction)) {
+			acc.normalizeVector();
+			acc.product(DEFAULT_ACELERATION);
+
+			// Enviar comando
+			//System.out.println(acc.toString());
+			waypoints.clear();
+			
+			sendAccCommand(acc, DEFAULT_DURATION);
+			
+			getParameters().put("directionState", ""+direction);
+
+		}
+	}
+
+
+
+private void changeSample(int direction)
+{
+	
+
+	String audioFileName;
+	
+	System.out.println("Change sample" + direction);
+	
+	
+	ArrayList<String> filePaths = new ArrayList<String>();			
+		
+		// Calcular a direção na qual deve andar
+		Vector acc;
+		switch (direction) {
+		case 1:
+			// Direita
+			audioFileReference = longo;
+			break;
+		case 2:
+			// Esquerda
+			audioFileReference = curto;
+			break;
+		case 3:
+			// Acima - Percussivo
+			audioFileReference = percussoes;
+			break;
+		case 4:
+			// Baixo
+			audioFileReference = sinos;
+			break;
+
+		default:
+			acc = null;
+			break;
+
+		}
+
+		Iterator<String> itr = audioFileReference.values().iterator(); 
+		String files = new String();
+		while(itr.hasNext()) {
+			String aux = itr.next();
+			filePaths.add((String) aux);
+			files = files + (String) aux + ";";
+		} 		
+		 Collections.shuffle(filePaths);
+		 audioFileName = filePaths.get(0);
+	     //System.out.println(files);
+		 
+		 
+		 if(getAgent().getKB().getParameter("playState")!=null && getAgent().getKB().getParameter("playState")==AudioConstants.CMD_STOP){
+				Command cmd = new Command(getAddress(), "/"+ Constants.FRAMEWORK_NAME + "/" + getAgent().getAgentName() + "/FileInputReasoning", AudioConstants.CMD_PLAY);
+				
+				cmd.addParameter("filename", audioFileName);
+				cmd.addParameter("files", files);
+				
+				sendCommand(cmd);
+									
+				getParameters().put("playState", "PLAY");
+				getParameters().put("FileIndex", String.valueOf(0));
+
+				
+				
+				
+			}
+			
+
+	}
+
+
 }

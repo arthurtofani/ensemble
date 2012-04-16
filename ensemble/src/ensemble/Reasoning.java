@@ -70,6 +70,7 @@ public class Reasoning extends MusicalAgentComponent {
 		if (rm.equals("PERIODIC")) {
 			reasoningMode = ReasoningMode.PERIODIC;
 			reasoningPeriod = Long.valueOf(parameters.get(Constants.PARAM_PERIOD, "100"));
+			
 		}
 		else if (rm.equals("CYCLIC")) {
 			reasoningMode = ReasoningMode.CYCLIC;

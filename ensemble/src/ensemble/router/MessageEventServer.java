@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
+
 import ensemble.Command;
 import ensemble.Constants;
 import ensemble.Event;
@@ -201,9 +203,12 @@ public class MessageEventServer extends EventServer {
 						}else entitySearched = entityName;
 					}
 				}
+			}else if(parameters.get(MessageConstants.PARAM_DOMAIN)!=null && parameters.get(MessageConstants.PARAM_DOMAIN)==MessageConstants.INTERNAL_DOMAIN)
+			{
+				
 			}
 			
-			String[] sensors1 = searchRegisteredEventHandler(entitySearched, "", MessageConstants.EVT_TYPE_MESSAGE, Constants.COMP_SENSOR);
+			//String[] sensors1 = searchRegisteredEventHandler(entitySearched, "", MessageConstants.EVT_TYPE_MESSAGE, Constants.COMP_SENSOR);
 			//for (int i = 0; i < sensors1.length; i++) {
 				//System.out.println(sensors1[i]);
 			//}
@@ -264,10 +269,11 @@ public class MessageEventServer extends EventServer {
 	public void processSense(Event evt) {
 		
 			// Process the command
-			Command cmd = Command.parse((String)evt.objContent);
+		Command cmd = (Command)evt.objContent;
+			//Command cmd = Command.parse((String)evt.objContent);
 //			System.out.println("processSense(): " + cmd);
 			if (cmd != null) {
-//				System.out.println("Processing command of '" + evt.oriAgentName + "' at t = " + t + " " + evt.objContent);
+				//System.out.println("Processing command of '" + evt.oriAgentName + "' at t = "  + " " + evt.objContent);
 				executeMessageInstruction(evt.oriAgentName, cmd.getCommand(), cmd.getParameters());
 			}
 

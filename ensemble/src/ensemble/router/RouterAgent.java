@@ -107,7 +107,8 @@ public class RouterAgent extends Agent {
             System.err.println("[" + getName() + "] Malformed address: " + cmd.getRecipient());
             return;
         }
-		
+        
+        
         // Fowards the command
         if (str[1].equals(Constants.FRAMEWORK_NAME)) {
         	
@@ -201,7 +202,7 @@ public class RouterAgent extends Agent {
 			
 			
 			
-			//Controla mensagens integradas do SPIN OSC
+			//Controla mensagens integradas de OSC
 			/*System.out.println("mensagem OSC:" + m.getName() + " indexof=" +m.getName().indexOf(MessageConstants.ANDOSC_ACC) +" address "
 					+ addr.toString());
 			*/
@@ -211,8 +212,8 @@ public class RouterAgent extends Agent {
 				cmd.setSender("/osc");
 				processCommand(cmd);
 				
-				System.out.println("mensagem OSC:" + m.getName() + " address "
-						+ addr.toString());
+				//System.out.println("mensagem OSC:" + m.getName() + " address "
+				//		+ addr.toString());
 			}
 			
 			//Controla mensagens do ANDOSC
@@ -222,8 +223,16 @@ public class RouterAgent extends Agent {
 				cmd.setSender("/osc");
 				processCommand(cmd);
 				
-				System.out.println("mensagem OSC:" + m.getName() + " address "
-						+ addr.toString());
+				//System.out.println("mensagem OSC:" + m.getName() + " address "
+				//		+ addr.toString());
+			}
+			//Controla mensagens do ISO
+			if (m.getName().indexOf(MessageConstants.ISO_SWARM) >= 0 ) {
+				
+				Command cmd = processIsoSwarmOsc(m);
+				cmd.setRecipient("/ensemble/ENVIRONMENT/MESSAGE");
+				cmd.setSender("/osc");
+				processCommand(cmd);
 			}
 			
 			// Obtém o agente e componente destino
@@ -310,9 +319,47 @@ public class RouterAgent extends Agent {
 					//System.out.println(sb.toString());
 					return andOscCmd;
 				}
-
+			
 			return null;
 
+		}
+		
+		private Command processIsoSwarmOsc(OSCMessage message) {
+			if (message.getName().indexOf(MessageConstants.ISO_SWARM)>=0 && message.getArgCount() == 3){
+				Command swarmOscCmd = new Command(MessageConstants.CMD_RECEIVE);
+				swarmOscCmd.addParameter(MessageConstants.PARAM_DOMAIN, MessageConstants.EXT_OSC_DOMAIN);
+				swarmOscCmd.addParameter(MessageConstants.PARAM_TYPE, MessageConstants.ISO_TYPE);
+				swarmOscCmd.addParameter(MessageConstants.PARAM_ACTION, MessageConstants.ISO_POSITION);
+
+				
+				/*for (int i = 0; i < swrm.length-1; i++) {
+					System.out.println(swrm[i] +i );
+				}*/
+				
+				
+				
+				StringBuilder sb = new StringBuilder();
+				
+				for (int i = 0; i < message.getArgCount(); i++) {
+					sb.append(message.getArg(i));
+					sb.append(" ");
+				}
+				
+				String[] swrm = message.getName().split("/");
+				if (swrm.length == 5) {					
+					sb.append(swrm[2].replace("swarm", ""));
+					sb.append(" ");
+					//swarmOscCmd.addParameter(MessageConstants.SWARM_NUMBER, swrm[2].replace("swarm", ""));
+					sb.append(swrm[3]);
+					sb.append(" ");					
+					//swarmOscCmd.addParameter(MessageConstants.AGENT_NUMBER, swrm[3]);
+				}
+				
+				swarmOscCmd.addParameter(MessageConstants.PARAM_ARGS, sb.toString());
+				return swarmOscCmd;
+			}
+			
+			return null;
 		}
 
 		private Command processSpinOsc(OSCMessage message) {

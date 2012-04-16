@@ -19,7 +19,7 @@ Exemplo com o proposito de mostrar o uso do servidor de mensagens
 				<ARG NAME="gravity" VALUE="10" />
 			</LAW>
 		</WORLD>
-		<EVENT_SERVER CLASS="ensemble.audio.AudioEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="100 30 80 110">
+		<EVENT_SERVER CLASS="ensemble.audio.AudioEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="50 30 44 50">
 			<ARG NAME="MASTER_GAIN" VALUE="8.0" />
 			<ARG NAME="SAMPLE_RATE" VALUE="44100" />
 			<ARG NAME="SPEED_SOUND" VALUE="343.3" />
@@ -29,7 +29,7 @@ Exemplo com o proposito de mostrar o uso do servidor de mensagens
 			<ARG NAME="INTERPOLATION_MODE" VALUE="POLYNOMIAL" />
 			<ARG NAME="NUMBER_POINTS" VALUE="4" />
 		</EVENT_SERVER>
-		<EVENT_SERVER CLASS="ensemble.movement.MovementEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="50 0" />
+		<EVENT_SERVER CLASS="ensemble.movement.MovementEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="150 0" />
 		
 		<EVENT_SERVER CLASS="ensemble.router.MessageEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="1500 0" />
 		

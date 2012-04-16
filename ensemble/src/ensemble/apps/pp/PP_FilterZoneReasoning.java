@@ -12,8 +12,10 @@ import ensemble.EventHandler;
 import ensemble.Reasoning;
 import ensemble.Sensor;
 import ensemble.audio.AudioConstants;
+import ensemble.audio.dsp.AnalysisProcessing;
 import ensemble.audio.dsp.FftProcessing;
 import ensemble.audio.dsp.FilterProcessing;
+import ensemble.audio.dsp.PitchShiftProcessing;
 import ensemble.audio.vst.VstConstants.FilterMode;
 import ensemble.audio.vst.VstProcessReasoning;
 import ensemble.clock.TimeUnit;
@@ -173,31 +175,33 @@ public class PP_FilterZoneReasoning extends Reasoning{
 				dBuffer = (double[])internalMemory.readMemory(instant - duration, duration, TimeUnit.SECONDS);
 				
 				//get actual zone
-				VstProcessReasoning vstFilterProcess = new VstProcessReasoning();
+				//VstProcessReasoning vstFilterProcess = new VstProcessReasoning();
 				
 				FilterProcessing filterProcess = new FilterProcessing();
 				WorldZone currentZone = getZone(10);
+				
+				PitchShiftProcessing pitchProcess = new PitchShiftProcessing();
 				
 				
 				switch(currentZone){
 				
 				case BRIGHT:
-					vstFilterProcess.ProcessFilter(dBuffer, dTransBuffer, chunk_size, FilterMode.HIGH_PASS);
-					mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
-					
-					//filterProcess.FourPolesHighPass(dBuffer, dTransBuffer, chunk_size, 600);
-					//filterProcess.ProcessLPF(dBuffer, dTransBuffer, chunk_size, 600, sampleRate);
-					
+					//vstFilterProcess.ProcessFilter(dBuffer, dTransBuffer, chunk_size, FilterMode.HIGH_PASS);
 					//mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
 					
+					//filterProcess.FourPolesHighPass(dBuffer, dTransBuffer, chunk_size, 600);
+					filterProcess.highPass(dBuffer, dTransBuffer, chunk_size, 400, 44100);
+					
+					//mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
+					mouthMemory.writeMemory(dBuffer, instant + duration, duration, TimeUnit.SECONDS);
 					break;
 				case GRAY:
-					vstFilterProcess.ProcessFilter(dBuffer, dTransBuffer, chunk_size, FilterMode.MID_PASS);
+					//vstFilterProcess.ProcessFilter(dBuffer, dTransBuffer, chunk_size, FilterMode.MID_PASS);
 					//vstFilterProcess.filter(dBuffer, chunk_size);
 					
 					//mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
 					
-					mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
+					mouthMemory.writeMemory(dBuffer, instant + duration, duration, TimeUnit.SECONDS);
 					
 					break;
 				case DARK:
@@ -209,8 +213,11 @@ public class PP_FilterZoneReasoning extends Reasoning{
 					vstFilterProcess.lowPass(dBuffer, dTransBuffer, chunk_size, 1400, sampleRate);
 					mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
 					 */
+					//filterProcess.lowPass(dBuffer, dTransBuffer, chunk_size, 500, 44100);
 					
-					vstFilterProcess.ProcessFilter(dBuffer, dTransBuffer, chunk_size, FilterMode.LOW_PASS);
+					pitchProcess.PitchShift(dBuffer, dTransBuffer, chunk_size, 1, 44100);
+					
+					//vstFilterProcess.ProcessFilter(dBuffer, dTransBuffer, chunk_size, FilterMode.LOW_PASS);
 					mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
 		
 					break;
@@ -232,9 +239,7 @@ public class PP_FilterZoneReasoning extends Reasoning{
 					
 			} catch (MemoryException e) {
 				e.printStackTrace();
-			} catch (VSTException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			
 			}
 
 			

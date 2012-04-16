@@ -1,24 +1,3 @@
-/******************************************************************************
-
-Copyright 2011 Leandro Ferrari Thomaz
-
-This file is part of Ensemble.
-
-Ensemble is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Ensemble is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
-
-******************************************************************************/
-
 package ensemble.audio.jack;
 
 import java.nio.ByteOrder;
@@ -39,6 +18,7 @@ import ensemble.Constants;
 import ensemble.EventHandler;
 import ensemble.Reasoning;
 import ensemble.audio.AudioConstants;
+import ensemble.audio.dsp.AnalysisProcessing;
 import ensemble.audio.vst.VstProcessReasoning;
 import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
@@ -204,6 +184,8 @@ public class JACKInputReasoning extends Reasoning {
 //					
 //					new VstProcessReasoning().ProcessAudio("lib\\vst\\mda Overdrive.dll", dBuffer, dTransBuffer, nframes);
 //					 
+					//double peak = AnalysisProcessing.peakFollower(44100, dBuffer, nframes);	
+					//System.out.println("Peak: " + peak);
 					
 					mouthMemory.writeMemory(dBuffer, instant, duration, TimeUnit.SECONDS);
  					

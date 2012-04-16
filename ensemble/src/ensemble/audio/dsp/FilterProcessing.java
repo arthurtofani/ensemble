@@ -4,6 +4,13 @@ public class FilterProcessing {
 	
 	double pi= 3.14159265;
 	
+
+	static double in_1=0;
+	static double in_2=0;
+	static double out_1=0;
+	static double out_2=0;
+	
+	
 	public static void getLPCoefficientsButterworth2Pole(int samplerate,
 			double cutoff, double[] ax, double[] by) {
 		double PI = 3.1415926535897932385;
@@ -153,24 +160,86 @@ public class FilterProcessing {
 		The filter algo:
 		out(n) = a1 * in + a2 * in(n-1) + a3 * in(n-2) - b1*out(n-1) - b2*out(n-2)
 */		
-		double r = Math.sqrt(2);
+		double r = 1; //Math.sqrt(2);
 		
 		//Lowpass:
-		      double c = 1.0 / Math.tan(pi * freq / sampleRate);
+		      double c = 1.0 / Math.tan(pi * freq / sampleRate) * 0.957;
 		      double a1 = 1.0 / ( 1.0 + r * c + c * c);
 		      double a2 = 2* a1;
 		      double a3 = a1;
 		      double b1 = 2.0 * ( 1.0 - c*c) * a1;
 		      double b2 = ( 1.0 - r * c + c * c) * a1;
 		      
-		      out[0]= samples[0];
-		      out[1]= samples[1];
+		      out[0]= a1 * samples[0] + a2 * in_1 + a3 * in_2 - b1*out_1 - b2*out_2;
+		      out[1]= a1 * samples[1] + a2 * samples[0] + a3 * in_1 - b1*out[0] - b2*out_1;
 		      
+		      //double max = 0;
+		      //System.out.println("in-1" + in_1 + "in-2" + in_2 + "out-1" + out_1 + "out-2" + out_2); 
 		      for (int i = 2; i < count; i++) {
-		    	  out[i] = a1 * samples[i] + a2 * samples[i-1] + a3 * samples[i-2] - b1*out[i-1] - b2*out[i-1];
-			  }
+		    	  out[i] = a1 * samples[i] + a2 * samples[i-1] + a3 * samples[i-2] - b1*out[i-1] - b2*out[i-2];
+		    	  //if(out[i]< max)max = out[i];
+		      }
+		      //System.out.println("sampleRate = "+ sampleRate +  "f = "+ freq + "  Coefs: a1 " + a1  +" a2"+ a2 +" a3"+ a3 +" b1 "+ b1 +" b2 " +b2);
+		      //System.out.println("out-1 = " + out[count-1]);
+		      //System.out.println("out-2 = " + out[count-2]);
+		      //System.out.println("MAX = " + max);
+		      
+		      in_1 = samples[count-1];
+		      in_2 = samples[count-2];
+		      out_1 = out[count-1];
+		      out_2 = out[count-2];
 		      
 	}
+
+	
+	public void highPass(double[] samples, double[] out, int count, double freq, float sampleRate){
+		/*
+				r  = rez amount, from sqrt(2) to ~ 0.1
+				f  = cutoff frequency
+				(from ~0 Hz to SampleRate/2 - though many
+				synths seem to filter only  up to SampleRate/4)
+				
+				The filter algo:
+				out(n) = a1 * in + a2 * in(n-1) + a3 * in(n-2) - b1*out(n-1) - b2*out(n-2)
+				
+				Hipass:
+			      c = tan(pi * f / sample_rate);
+			
+			      a1 = 1.0 / ( 1.0 + r * c + c * c);
+			      a2 = -2*a1;
+			      a3 = a1;
+			      b1 = 2.0 * ( c*c - 1.0) * a1;
+			      b2 = ( 1.0 - r * c + c * c) * a1;
+		*/		
+				double r = 1; //Math.sqrt(2);
+				
+				//Hipass:
+				      double c = Math.tan(pi * freq / sampleRate) * 0.957;
+				      double a1 = 1.0 / ( 1.0 + r * c + c * c);
+				      double a2 = -2* a1;
+				      double a3 = a1;
+				      double b1 = 2.0 * (c*c - 1.0) * a1;
+				      double b2 = ( 1.0 - r * c + c * c) * a1;
+				      
+				      out[0]= a1 * samples[0] + a2 * in_1 + a3 * in_2 - b1*out_1 - b2*out_2;
+				      out[1]= a1 * samples[1] + a2 * samples[0] + a3 * in_1 - b1*out[0] - b2*out_1;
+				      
+				      //System.out.println("in-1" + in_1 + "in-2" + in_2 + "out-1" + out_1 + "out-2" + out_2); 
+				      for (int i = 2; i < count; i++) {
+				    	  out[i] = a1 * samples[i] + a2 * samples[i-1] + a3 * samples[i-2] - b1*out[i-1] - b2*out[i-2];
+					  
+				      }
+				      //System.out.println("sampleRate = "+ sampleRate +  "f = "+ freq + "  Coefs: a1 " + a1  +" a2"+ a2 +" a3"+ a3 +" b1 "+ b1 +" b2 " +b2);
+				      //System.out.println("out-1 = " + out[count-1]);
+				      //System.out.println("out-2 = " + out[count-2]);
+				      
+				      
+				      in_1 = samples[count-1];
+				      in_2 = samples[count-2];
+				      out_1 = out[count-1];
+				      out_2 = out[count-2];
+				      
+			}
 
 	
 	public void SetLPF(double fCut, double fSampling, double a0, double a1, double b1)
@@ -208,7 +277,7 @@ public class FilterProcessing {
 
 		    freq *= 2.0F * pi;
 		    
-		//SetLPF(freq, sampleRate, a0, a1, b1);
+		SetLPF(freq, sampleRate, a0, a1, b1);
 
 		// out[n] = in[n]*a0 + in[n-1]*a1 + out[n-1]*b1;
 

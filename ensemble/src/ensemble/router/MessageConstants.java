@@ -39,4 +39,21 @@ public class MessageConstants {
 	public static final String ANDOSC_ACCELEROMETER = "ANDOSC_ACCELEROMETER";
 	public static final String ANDOSC_TOUCH_POS  	= "ANDOSC_TOUCH_POS";
 	
+	public static final String INTERNAL_DOMAIN 	= "INTERNAL_DOMAIN";
+	//DIRECTION CHANGE
+	public static final String DIRECTION_TYPE 			= "DIRECTION_TYPE";
+	public static final String DIRECTION_CHANGE 			= "DIRECTION_CHANGE";
+	public static final String DIRECTION_RIGHT 			= "1";
+	public static final String DIRECTION_LEFT 			= "2";
+	public static final String DIRECTION_UP 			= "3";
+	public static final String DIRECTION_DOWN 			= "4";
+
+	//ISO - Interactive Swarm Orchestra
+	public static final String ISO_SWARM 			= "/swarm";
+	
+	public static final String ISO_TYPE 			= "ISO_TYPE";
+	public static final String ISO_POSITION  		= "ISO_POSITION";
+	public static final String SWARM_NUMBER			= "SWARM_NUMBER";
+	public static final String AGENT_NUMBER			= "AGENT_NUMBER";
+	
 }
