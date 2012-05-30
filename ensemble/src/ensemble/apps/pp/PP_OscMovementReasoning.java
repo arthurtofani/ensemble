@@ -3,8 +3,11 @@ package ensemble.apps.pp;
  
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
+
+import FIPA.DateTime;
 
 import ensemble.Actuator;
 import ensemble.Command;
@@ -40,6 +43,11 @@ public class PP_OscMovementReasoning extends Reasoning {
 	private Memory 		legsMemory;
 	private Memory 		eyesMemory;
 	private Memory 		antennaMemory;
+	
+	private boolean 			active;
+	private boolean 			allowChange;
+	private long				timeDiff;
+	private Date				lastChange;
 	
 	// Waypoints
 	private ArrayList<Vector> 	waypoints = new ArrayList<Vector>();
@@ -106,6 +114,10 @@ public class PP_OscMovementReasoning extends Reasoning {
 //			System.out.println("loop = " + loop);
 		}
 		
+		active = true;
+		allowChange = true;
+		
+		
 		//Inicializa vetores dos samples
 		
 		//FILES
@@ -152,7 +164,7 @@ public class PP_OscMovementReasoning extends Reasoning {
 		curto.put("1", "media/piano_preparado/curto/sino_agudo_perc_.wav");
 		
 		longo.put("1", "media/piano_preparado/longo/tremolo_.wav");
-		longo.put("2", "media/piano_preparado/longo/notagrave_ress_aguda.wav");
+		longo.put("2", "media/piano_preparado/longo/notagrave_ress_aguda_.wav");
 		longo.put("3", "media/piano_preparado/longo/perc_tamborilando_.wav");
 		longo.put("4", "media/piano_preparado/longo/tremolo_gliss_.wav");
 		
@@ -207,8 +219,7 @@ public class PP_OscMovementReasoning extends Reasoning {
 			
 			if (cmd != null && cmd.getCommand()!= MessageConstants.CMD_INFO) {
 				
-				
-				
+			
 				if (cmd.getParameter(MessageConstants.PARAM_TYPE).equals(MessageConstants.ANDOSC_TYPE)) {
 					
 					
@@ -224,6 +235,35 @@ public class PP_OscMovementReasoning extends Reasoning {
 						double valY = Double.parseDouble(val[1]);
 						sendTransportCommand(getOscVector(100, valX,valY));
 						}
+					}else  if (cmd.getParameter(MessageConstants.PARAM_ACTION).equals(
+							MessageConstants.ANDOSC_ACCELEROMETER)) {
+
+						
+						
+						String[] val = cmd.getParameter(
+								MessageConstants.PARAM_ARGS).split(" ");
+
+					//SWITCH
+						float orientacaoX = Float.parseFloat(val[0]);
+						
+						/*System.out.println("X: " + orientacaoX + "allowChange "
+								+ allowChange);*/
+						
+						if (orientacaoX <= -7 && allowChange) {
+							active = !active;
+							allowChange = false;
+							lastChange = new Date();
+							 
+							//System.out.println("CHUTE!!" + lastChange.toString());
+						} else if (orientacaoX >= -0.5 && !allowChange && lastChange != null) {
+							timeDiff = Math.abs((new Date()).getTime() - lastChange.getTime());
+							if(timeDiff > 800){
+								allowChange = true;
+								//System.out.println("PODE chutar de novo!! " + timeDiff);	
+							}
+							
+						}
+
 					}
 				}else if (cmd.getParameter(MessageConstants.PARAM_TYPE).equals(MessageConstants.DIRECTION_TYPE)){
 					// Considers a change of direction
@@ -240,7 +280,7 @@ public class PP_OscMovementReasoning extends Reasoning {
 					}
 				} else if (cmd.getParameter(MessageConstants.PARAM_TYPE)
 						.equals(MessageConstants.ISO_TYPE)) {
-
+						//TRATAMENTO DE ISO SWARM para posicao
 					if (cmd.getParameter(MessageConstants.PARAM_ACTION).equals(
 							MessageConstants.ISO_POSITION)) {
 
@@ -269,6 +309,15 @@ public class PP_OscMovementReasoning extends Reasoning {
 							}
 						}
 					}
+				}else if (cmd.getParameter(MessageConstants.PARAM_TYPE)
+						.equals(MessageConstants.CONTROL_OSC_TYPE)) {
+					
+					//CONTROL OSC
+					String[] val = cmd.getParameter(
+							MessageConstants.PARAM_ARGS).split(" ");
+
+					//System.out.println("ARGS SLIDER1:" +val[0]);
+					
 				}
 			}
 		}

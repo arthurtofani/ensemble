@@ -39,6 +39,7 @@ public class MessageConstants {
 	public static final String ANDOSC_ACCELEROMETER = "ANDOSC_ACCELEROMETER";
 	public static final String ANDOSC_TOUCH_POS  	= "ANDOSC_TOUCH_POS";
 	
+	
 	public static final String INTERNAL_DOMAIN 	= "INTERNAL_DOMAIN";
 	//DIRECTION CHANGE
 	public static final String DIRECTION_TYPE 			= "DIRECTION_TYPE";
@@ -56,4 +57,14 @@ public class MessageConstants {
 	public static final String SWARM_NUMBER			= "SWARM_NUMBER";
 	public static final String AGENT_NUMBER			= "AGENT_NUMBER";
 	
+	//CONTROL OSC
+	public static final String CONTROL_OSC_TYPE 		= "CONTROL_OSC_TYPE";
+	public static final String CONTROL_OSC_POSITION  	= "CONTROL_OSC_POSITION";
+	public static final String CONTROL_OSC_DELAY  		= "CONTROL_OSC_DELAY";
+	public static final String CONTROL_OSC_VOLUME  		= "CONTROL_OSC_VOLUME";
+	public static final String CONTROL_OSC_MVT_TYPE  	= "CONTROL_OSC_MVT_TYPE";
+	public static final String CONTROL_OSC_FREQ  		= "CONTROL_OSC_FREQ";
+	public static final String CONTROL_SLIDER1 			= "/slider1";
+	public static final String CONTROL_SLIDER2 			= "/slider2";
+	public static final String CONTROL_MONO 			= "/mlr";
 }

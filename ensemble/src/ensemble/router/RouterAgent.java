@@ -49,6 +49,8 @@ public class RouterAgent extends Agent {
 	private OSCClient 	oscClient;
 	private OSCServer 	oscServer;
 	
+	private int 		oscIsoSendPort 	= 7500;
+    private int 		oscIsoListenPort 	= 7400;
 	
 	@Override
 	protected void setup() {
@@ -60,6 +62,16 @@ public class RouterAgent extends Agent {
 			oscClient.start();
 			
 			oscServer = OSCServer.newUsing(OSCChannel.UDP, oscListenPort);
+			oscServer.addOSCListener(new Listener());
+			oscServer.start();
+			
+			//Portas para integracao direta com ISO
+			
+			oscClient = OSCClient.newUsing(OSCChannel.UDP);
+			oscClient.setTarget(new InetSocketAddress(InetAddress.getLocalHost(), oscIsoSendPort));
+			oscClient.start();
+			
+			oscServer = OSCServer.newUsing(OSCChannel.UDP, oscIsoListenPort);
 			oscServer.addOSCListener(new Listener());
 			oscServer.start();
 		}
@@ -204,8 +216,8 @@ public class RouterAgent extends Agent {
 			
 			//Controla mensagens integradas de OSC
 			/*System.out.println("mensagem OSC:" + m.getName() + " indexof=" +m.getName().indexOf(MessageConstants.ANDOSC_ACC) +" address "
-					+ addr.toString());
-			*/
+					+ addr.toString() + " arg count " + m.getArgCount());
+			 */
 			if (m.getName().indexOf(MessageConstants.SPIN_OSC_SEARCH) > 0 && m.getName().indexOf(MessageConstants.SPIN_OSC_DATA) > 0) {
 				Command cmd = processSpinOsc(m);
 				cmd.setRecipient("/ensemble/ENVIRONMENT/MESSAGE");
@@ -230,6 +242,15 @@ public class RouterAgent extends Agent {
 			if (m.getName().indexOf(MessageConstants.ISO_SWARM) >= 0 ) {
 				
 				Command cmd = processIsoSwarmOsc(m);
+				cmd.setRecipient("/ensemble/ENVIRONMENT/MESSAGE");
+				cmd.setSender("/osc");
+				processCommand(cmd);
+			}
+			
+			//Controla mensagens ControlOSC
+			if (m.getName().indexOf(MessageConstants.CONTROL_MONO) >= 0 || m.getName().indexOf(MessageConstants.CONTROL_SLIDER2) >= 0 || m.getName().indexOf(MessageConstants.CONTROL_SLIDER1) >= 0) {
+				
+				Command cmd = processControlOsc(m);
 				cmd.setRecipient("/ensemble/ENVIRONMENT/MESSAGE");
 				cmd.setSender("/osc");
 				processCommand(cmd);
@@ -260,6 +281,8 @@ public class RouterAgent extends Agent {
 		 * @return
 		 */
 		private Command processAndOsc(OSCMessage message) {
+			//System.out.println( message.getName());
+			
 			
 			//Touch
 			if (message.getName().indexOf(MessageConstants.ANDOSC_TOUCH)>=0 && message.getArgCount() == 2){
@@ -269,9 +292,7 @@ public class RouterAgent extends Agent {
 				andOscCmd.addParameter(MessageConstants.PARAM_TYPE, MessageConstants.ANDOSC_TYPE);
 				andOscCmd.addParameter(MessageConstants.PARAM_ACTION, MessageConstants.ANDOSC_TOUCH_POS);
 				
-				/*String[] address = message.getName().split("/");
-				spinCmd.addParameter(MessageConstants.SPIN_OSC_IDNUMBER, address[2]);
-				spinCmd.addParameter(MessageConstants.SPIN_OSC_CMD, address[3]);*/			
+				
 				StringBuilder sb = new StringBuilder();
 				
 				for (int i = 0; i < message.getArgCount(); i++) {
@@ -323,6 +344,78 @@ public class RouterAgent extends Agent {
 			return null;
 
 		}
+		
+		private Command processControlOsc(OSCMessage message) {
+			
+			//Tratamento de grade
+			if (message.getName().indexOf(MessageConstants.CONTROL_MONO)>=0 && message.getArgCount() == 3){
+				
+				Command controlOscCmd = new Command(MessageConstants.CMD_RECEIVE);
+				controlOscCmd.addParameter(MessageConstants.PARAM_DOMAIN, MessageConstants.EXT_OSC_DOMAIN);
+				controlOscCmd.addParameter(MessageConstants.PARAM_TYPE, MessageConstants.CONTROL_OSC_TYPE);
+				controlOscCmd.addParameter(MessageConstants.PARAM_ACTION, MessageConstants.CONTROL_OSC_POSITION);
+
+				// PARAMETROS X[0-7], Y[0-7], PRESSED(1)-OFF(0) 
+				StringBuilder sb = new StringBuilder();
+				
+				for (int i = 0; i < message.getArgCount(); i++) {
+					sb.append(message.getArg(i));
+					sb.append(" ");
+				}
+				
+				/*String[] swrm = message.getName().split("/");
+				if (swrm.length == 5) {					
+					sb.append(swrm[2].replace("swarm", ""));
+					sb.append(" ");
+					//swarmOscCmd.addParameter(MessageConstants.SWARM_NUMBER, swrm[2].replace("swarm", ""));
+					sb.append(swrm[3]);
+					sb.append(" ");					
+					//swarmOscCmd.addParameter(MessageConstants.AGENT_NUMBER, swrm[3]);
+				}*/
+				
+				controlOscCmd.addParameter(MessageConstants.PARAM_ARGS, sb.toString());
+				return controlOscCmd;
+			}if (message.getName().indexOf(MessageConstants.CONTROL_SLIDER1)>=0 && message.getArgCount() == 1){
+
+				Command controlOscCmd = new Command(MessageConstants.CMD_RECEIVE);
+				controlOscCmd.addParameter(MessageConstants.PARAM_DOMAIN, MessageConstants.EXT_OSC_DOMAIN);
+				controlOscCmd.addParameter(MessageConstants.PARAM_TYPE, MessageConstants.CONTROL_OSC_TYPE);
+				controlOscCmd.addParameter(MessageConstants.PARAM_ACTION, MessageConstants.CONTROL_OSC_DELAY);
+
+				// PARAMETROS [0 - 1] 
+				StringBuilder sb = new StringBuilder();
+				
+				for (int i = 0; i < message.getArgCount(); i++) {
+					sb.append(message.getArg(i));
+					sb.append(" ");
+				}				
+				
+				//System.out.println("ARGS SLIDER1:" +sb.toString());
+				
+				controlOscCmd.addParameter(MessageConstants.PARAM_ARGS, sb.toString());
+				return controlOscCmd;
+			}if (message.getName().indexOf(MessageConstants.CONTROL_SLIDER2)>=0 && message.getArgCount() == 1){
+
+				Command controlOscCmd = new Command(MessageConstants.CMD_RECEIVE);
+				controlOscCmd.addParameter(MessageConstants.PARAM_DOMAIN, MessageConstants.EXT_OSC_DOMAIN);
+				controlOscCmd.addParameter(MessageConstants.PARAM_TYPE, MessageConstants.CONTROL_OSC_TYPE);
+				controlOscCmd.addParameter(MessageConstants.PARAM_ACTION, MessageConstants.CONTROL_OSC_VOLUME);
+
+				// PARAMETROS  
+				StringBuilder sb = new StringBuilder();
+				
+				for (int i = 0; i < message.getArgCount(); i++) {
+					sb.append(message.getArg(i));
+					sb.append(" ");
+				}				
+				controlOscCmd.addParameter(MessageConstants.PARAM_ARGS, sb.toString());
+				return controlOscCmd;
+			}
+
+			
+			return null;
+		}
+
 		
 		private Command processIsoSwarmOsc(OSCMessage message) {
 			if (message.getName().indexOf(MessageConstants.ISO_SWARM)>=0 && message.getArgCount() == 3){

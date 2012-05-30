@@ -14,10 +14,10 @@
 				<ARG NAME="gravity" VALUE="10" />
 			</LAW>
 		</WORLD>
-		<EVENT_SERVER CLASS="ensemble.audio.AudioEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="90 15 80 85">
+		<EVENT_SERVER CLASS="ensemble.audio.AudioEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="190 60 140 185">
 			<ARG NAME="MASTER_GAIN" VALUE="10.0" />
 			<ARG NAME="SAMPLE_RATE" VALUE="44100" />
-			<ARG NAME="SPEED_SOUND" VALUE="343.3" />
+			<ARG NAME="SPEED_SOUND" VALUE="243.3" />
 			<ARG NAME="REFERENCE_DISTANCE" VALUE="1.0" />
 			<ARG NAME="ROLLOFF_FACTOR" VALUE="1.0" />
 			<ARG NAME="LOOP_HEARING" VALUE="FALSE" />

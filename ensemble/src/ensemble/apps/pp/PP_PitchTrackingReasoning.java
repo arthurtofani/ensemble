@@ -12,6 +12,7 @@ import ensemble.Reasoning;
 import ensemble.Sensor;
 import ensemble.audio.AudioConstants;
 import ensemble.audio.dsp.AnalysisProcessing;
+import ensemble.audio.dsp.TarsosProcessing;
 import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.router.MessageConstants;
@@ -37,7 +38,8 @@ public class PP_PitchTrackingReasoning extends Reasoning{
 	private int MIN_PITCH = 150;
 	private int MAX_PITCH = 3500;
 	private boolean checkPitch = false; 
-	
+
+	private TarsosProcessing tarsos = new TarsosProcessing();
 	
 	@Override
 	public boolean init() {
@@ -104,29 +106,32 @@ public class PP_PitchTrackingReasoning extends Reasoning{
 
 				dBuffer = (double[]) mouthMemory.readMemory(instant - duration,
 						duration, TimeUnit.SECONDS);
+				float pitch = tarsos.pitchTrack(dBuffer, chunk_size, 44100);
+				// int pitch = AnalysisProcessing.pitchFollower(44100, dBuffer,
+				// chunk_size);
 
-				int pitch = AnalysisProcessing.pitchFollower(44100, dBuffer,
-						chunk_size);
-				System.out.println("Pitch" + pitch + " Time:" + now());
-				if (pitch < MIN_PITCH || pitch > MAX_PITCH) {
+				System.out.println("Pitch " + pitch + "Hz Time:" + now());
+				if (pitch > 0) {
+					if (pitch < MIN_PITCH || pitch > MAX_PITCH) {
 
-					Command cmd = new Command(MessageConstants.CMD_RECEIVE);
-					cmd.addParameter(MessageConstants.PARAM_TYPE,
-							MessageConstants.DIRECTION_TYPE);
-					cmd.addParameter(MessageConstants.PARAM_DOMAIN,
-							MessageConstants.INTERNAL_DOMAIN);
-					cmd.addParameter(MessageConstants.PARAM_ACTION,
-							MessageConstants.DIRECTION_CHANGE);
+						Command cmd = new Command(MessageConstants.CMD_RECEIVE);
+						cmd.addParameter(MessageConstants.PARAM_TYPE,
+								MessageConstants.DIRECTION_TYPE);
+						cmd.addParameter(MessageConstants.PARAM_DOMAIN,
+								MessageConstants.INTERNAL_DOMAIN);
+						cmd.addParameter(MessageConstants.PARAM_ACTION,
+								MessageConstants.DIRECTION_CHANGE);
 
-					if (pitch < MAX_PITCH)
-						cmd.addParameter(MessageConstants.PARAM_ARGS,
-								MessageConstants.DIRECTION_LEFT);
-					else
-						cmd.addParameter(MessageConstants.PARAM_ARGS,
-								MessageConstants.DIRECTION_RIGHT);
+						if (pitch < MAX_PITCH)
+							cmd.addParameter(MessageConstants.PARAM_ARGS,
+									MessageConstants.DIRECTION_LEFT);
+						else
+							cmd.addParameter(MessageConstants.PARAM_ARGS,
+									MessageConstants.DIRECTION_RIGHT);
 
-					messengerMemory.writeMemory(cmd);
-					messenger.act();
+						messengerMemory.writeMemory(cmd);
+						messenger.act();
+					}
 				}
 			}
 		} catch (Exception e) {

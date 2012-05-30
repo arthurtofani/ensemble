@@ -21,7 +21,10 @@ along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 
 package ensemble.audio.file;
 
+import java.util.Date;
 import java.util.Random;
+
+import FIPA.DateTime;
 
 import ensemble.Actuator;
 import ensemble.Command;
@@ -56,7 +59,9 @@ public class AudioFileInputStateReasoning extends Reasoning {
 
 	// Desempenho
 	private long sentChunks = 0;
-
+	
+	private boolean active = true;
+	long rest;
 	// Arquivo de áudio
 	AudioInputFile in;
 
@@ -128,6 +133,13 @@ public class AudioFileInputStateReasoning extends Reasoning {
 
 		// notifica fim de arquivo
 		if (!hasFile || in.hasEnded || changed) {
+			
+			if(rest ==0){
+				//Calcula o descanso
+				rest = (new Date()).getTime() + rnd.nextInt(2500);
+				
+			}
+			
 			// && getAgent().getKB().getParameter("playState") != "STOP")) {
 			if(changed)getParameters().put("changed", "false");
 			
@@ -140,18 +152,23 @@ public class AudioFileInputStateReasoning extends Reasoning {
 				String[] fls = str.split(";");
 
 				int next = Math.max(rnd.nextInt(fls.length) - 1, 0);
+				
+				
+				if (new Date().getTime() >= rest)
+				{
+					rest=0;
+					try {
+						in = new AudioInputFile(fls[next], false);
 
-				try {
-					in = new AudioInputFile(fls[next], false);
-
-				} catch (Exception e) {
-					// getAgent().logger.severe("[" + getComponentName() + "] "
-					// + "Error in opening the file " + filename);
-					System.out.println("[" + getAgent().getAgentName() + ":"
-							+ getComponentName() + "] "
-							+ "Error in opening the file " + fls[next]);
+					} catch (Exception e) {
+						// getAgent().logger.severe("[" + getComponentName() +
+						// "] "
+						// + "Error in opening the file " + filename);
+						System.out.println("[" + getAgent().getAgentName()
+								+ ":" + getComponentName() + "] "
+								+ "Error in opening the file " + fls[next]);
+					}
 				}
-
 				/*
 				 * else { getParameters().put("playState", "STOP");
 				 * getAgent().getKB().setParameters(getParameters()); }
@@ -249,7 +266,7 @@ public class AudioFileInputStateReasoning extends Reasoning {
 			 */}
 
 		if (cmd.getCommand().equals(AudioConstants.CMD_STOP)) {
-
+			
 		}
 	}
 

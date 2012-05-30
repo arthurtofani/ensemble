@@ -95,9 +95,9 @@ public class PP_PeakReasoning extends Reasoning{
 				dBuffer = (double[]) mouthMemory.readMemory(instant - duration,
 						duration, TimeUnit.SECONDS);
 
-				double peak = AnalysisProcessing.peakFollower(44100, dBuffer,
+				double peak =  AnalysisProcessing.peakFollower(44100, dBuffer,
 						chunk_size);
-
+				
 				/*
 				 * double fft = MinimFftProcessing.getBandFft(dBuffer, 44100,
 				 * (int) frame_duration, chunk_size);

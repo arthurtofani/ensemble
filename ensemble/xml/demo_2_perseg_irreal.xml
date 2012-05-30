@@ -63,7 +63,7 @@
 	
   <!-- ********** MUSICAL AGENT INSTANCES ********** -->
 
-	<!--   
+	 
   	<MUSICAL_AGENT NAME="Police" CLASS="MUSICIAN">
 		<ARG NAME="POSITION" VALUE="(-25;-15;0)" />
 		<ARG_COMP COMP="MovementReasoning" NAME="waypoints" VALUE="(30;40;0) 5.0:(-40;-30;0) 5.0:(20;-40;0) 6.0" />
@@ -77,7 +77,7 @@
 		<ARG_COMP COMP="MovementReasoning" NAME="loop" VALUE="true" />
 		<FACT NAME="filename" VALUE="media/shifting.wav" />
 	</MUSICAL_AGENT>
-	 -->
+	
 
 	<MUSICAL_AGENT NAME="Listener_1" CLASS="LISTENER">
 		<ARG NAME="POSITION" VALUE="(15;15;0)" />
@@ -89,7 +89,7 @@
 		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_2" />
 	</MUSICAL_AGENT>
 	
-	<MUSICAL_AGENT NAME="Listener_3" CLASS="LISTENER">
+	<!-- <MUSICAL_AGENT NAME="Listener_3" CLASS="LISTENER">
 		<ARG NAME="POSITION" VALUE="(-15;-15;0)" />
 		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_3" />
 	</MUSICAL_AGENT>
@@ -97,6 +97,6 @@
 	<MUSICAL_AGENT NAME="Listener_4" CLASS="LISTENER">
 		<ARG NAME="POSITION" VALUE="(-15;15;0)" />
 		<ARG_COMP COMP="AudioReasoning" NAME="mapping" VALUE="Ear-system:playback_4" />
-	</MUSICAL_AGENT>
+	</MUSICAL_AGENT> -->
 	
 </ENSEMBLE>

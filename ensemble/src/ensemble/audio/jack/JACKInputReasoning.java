@@ -8,18 +8,11 @@ import jjack.JackCallback;
 import jjack.JackPortFlags;
 import jjack.jjack;
 import jjack.jjackConstants;
-
-import org.boris.jvst.AEffect;
-import org.boris.jvst.VST;
-import org.boris.jvst.VSTException;
-
 import ensemble.Actuator;
 import ensemble.Constants;
 import ensemble.EventHandler;
 import ensemble.Reasoning;
 import ensemble.audio.AudioConstants;
-import ensemble.audio.dsp.AnalysisProcessing;
-import ensemble.audio.vst.VstProcessReasoning;
 import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;

@@ -10,6 +10,9 @@ import ensemble.Reasoning;
 import ensemble.Sensor;
 import ensemble.audio.AudioConstants;
 import ensemble.audio.dsp.FilterProcessing;
+import ensemble.audio.dsp.SmbPitchProcess;
+import ensemble.audio.dsp.SmbtPitchProcessing;
+import ensemble.audio.dsp.SoundTouchProcessing;
 import ensemble.audio.vst.VstProcessReasoning;
 import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
@@ -131,17 +134,22 @@ public class PP_QuadrantReasoning extends Reasoning{
 
 				double[] dBuffer = new double[chunk_size];
 				double[] dTransBuffer = new double[chunk_size];
+				
 				dBuffer = (double[])internalMemory.readMemory(instant - duration, duration, TimeUnit.SECONDS);
 				
 				FilterProcessing filterProcess = new FilterProcessing();
+				//SoundTouchProcessing soundT = new SoundTouchProcessing();
+				
 				WorldZone currentZone = getZone(10);
 				
 				switch(currentZone){
 				
 				case UPPER_LEFT:
 					filterProcess.highPass(dBuffer, dTransBuffer, chunk_size, 400, 44100);
-					
-					mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
+					//System.out.println("Entrei " + chunk_size);
+					//SmbPitchProcess.smbPitchShift((float) 1, chunk_size, 1024, 8, 44100, dBuffer, dTransBuffer);
+					//soundT.test();
+					mouthMemory.writeMemory(dBuffer, instant + duration, duration, TimeUnit.SECONDS);
 					break;
 				case UPPER_RIGHT:
 					filterProcess.highPass(dBuffer, dTransBuffer, chunk_size, 800, 44100);
