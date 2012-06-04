@@ -49,8 +49,8 @@ public class RouterAgent extends Agent {
 	private OSCClient 	oscClient;
 	private OSCServer 	oscServer;
 	
-	private int 		oscIsoSendPort 	= 7500;
-    private int 		oscIsoListenPort 	= 7400;
+	private int 		oscIsoSendPort 	= 7400;
+    private int 		oscIsoListenPort 	= 7500;
 	
 	@Override
 	protected void setup() {
@@ -215,9 +215,9 @@ public class RouterAgent extends Agent {
 			
 			
 			//Controla mensagens integradas de OSC
-			/*System.out.println("mensagem OSC:" + m.getName() + " indexof=" +m.getName().indexOf(MessageConstants.ANDOSC_ACC) +" address "
+			System.out.println("mensagem OSC:" + m.getName() + " indexof=" +m.getName().indexOf(MessageConstants.ANDOSC_ACC) +" address "
 					+ addr.toString() + " arg count " + m.getArgCount());
-			 */
+			 
 			if (m.getName().indexOf(MessageConstants.SPIN_OSC_SEARCH) > 0 && m.getName().indexOf(MessageConstants.SPIN_OSC_DATA) > 0) {
 				Command cmd = processSpinOsc(m);
 				cmd.setRecipient("/ensemble/ENVIRONMENT/MESSAGE");
@@ -423,6 +423,7 @@ public class RouterAgent extends Agent {
 				swarmOscCmd.addParameter(MessageConstants.PARAM_DOMAIN, MessageConstants.EXT_OSC_DOMAIN);
 				swarmOscCmd.addParameter(MessageConstants.PARAM_TYPE, MessageConstants.ISO_TYPE);
 				swarmOscCmd.addParameter(MessageConstants.PARAM_ACTION, MessageConstants.ISO_POSITION);
+			
 
 				
 				/*for (int i = 0; i < swrm.length-1; i++) {
@@ -438,6 +439,7 @@ public class RouterAgent extends Agent {
 					sb.append(" ");
 				}
 				
+				
 				String[] swrm = message.getName().split("/");
 				if (swrm.length == 5) {					
 					sb.append(swrm[2].replace("swarm", ""));
@@ -446,6 +448,45 @@ public class RouterAgent extends Agent {
 					sb.append(swrm[3]);
 					sb.append(" ");					
 					//swarmOscCmd.addParameter(MessageConstants.AGENT_NUMBER, swrm[3]);
+					
+					
+				}
+				
+				
+				if (swrm.length == 4) {
+					
+					swarmOscCmd.addParameter(MessageConstants.AGENT_NUMBER,swrm[2]);
+					
+					//System.out.println("0: " +swrm[0] +" 1: " + swrm[1] +" 2: " + swrm[2] +" 3: " + swrm[3]+ " ISO msg "+sb.toString());
+					
+					//ADICIONA TIPO DE MVT
+					
+					if(swrm[1].equals("swarm1")){
+						
+						swarmOscCmd.addParameter(MessageConstants.SWARM_MOVEMENT_TYPE, MessageConstants.SWARM_DEFAULT_MVT);
+						sb.append("1");
+						
+					}else if(swrm[1].equals("swarm2")){
+						
+						swarmOscCmd.addParameter(MessageConstants.SWARM_MOVEMENT_TYPE, MessageConstants.SWARM_CIRCULAR_MVT);
+						sb.append("2");
+						
+					}else if(swrm[1].equals("swarm3")){
+						
+						swarmOscCmd.addParameter(MessageConstants.SWARM_MOVEMENT_TYPE, MessageConstants.SWARM_FAST_MVT);
+						sb.append("3");
+					}else sb.append("0");
+					
+					sb.append(" ");
+					
+					//ADICIONA NUMERO DE AGENTE
+					sb.append(swrm[2]);
+					sb.append(" ");
+					
+					//ADICIONA TIPO DO COMANDO
+					sb.append(swrm[3]);
+					//sb.append(" ");
+						
 				}
 				
 				swarmOscCmd.addParameter(MessageConstants.PARAM_ARGS, sb.toString());

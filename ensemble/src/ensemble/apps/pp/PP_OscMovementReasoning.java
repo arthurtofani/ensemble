@@ -84,6 +84,7 @@ public class PP_OscMovementReasoning extends Reasoning {
 	private double DEFAULT_ACELERATION = 0.2;
 	private double DEFAULT_DURATION = 2;
 	
+	private int ISO_MVT_TYPE = 1;
 	
 	// Direction state
 	enum DirectionState {
@@ -292,6 +293,9 @@ public class PP_OscMovementReasoning extends Reasoning {
 						 * cmd.getParameter(MessageConstants.PARAM_TYPE));
 						 */
 
+						//System.out.println("Recebeu mensagem " + cmd.getParameter(MessageConstants.PARAM_ARGS));
+						//System.out.println("val.length =" + val.length + val[4]);
+
 						if (val.length == 5) {
 							int agentNum = 1 + Integer.parseInt(val[4]);
 
@@ -307,16 +311,56 @@ public class PP_OscMovementReasoning extends Reasoning {
 										valY));
 
 							}
+						} else if (val.length == 6 && Integer.parseInt(val[3]) == ISO_MVT_TYPE) {
+							// Recebimento direto de ISO Position
+
+							//&& Integer.parseInt(val[3]) == ISO_MVT_TYPE
+							
+							
+							int agentNum = 1 + Integer.parseInt(val[4]);
+							
+							//System.out.println("AGENT_NUMBER: " + agentNum);
+							
+							if (getAgent().getAgentName().trim()
+									.indexOf("M" + agentNum) >= 0 ) {
+								double valX = -Double.parseDouble(val[0]);
+								double valY = Double.parseDouble(val[1]);
+								sendTransportCommand(getIsoOscVector(100, valX,
+										valY));
+							}
+
 						}
 					}
 				}else if (cmd.getParameter(MessageConstants.PARAM_TYPE)
 						.equals(MessageConstants.CONTROL_OSC_TYPE)) {
 					
-					//CONTROL OSC
-					String[] val = cmd.getParameter(
-							MessageConstants.PARAM_ARGS).split(" ");
+					if (cmd.getParameter(MessageConstants.PARAM_ACTION).equals(MessageConstants.CONTROL_OSC_POSITION)) {
+						if (cmd.containsParameter(MessageConstants.PARAM_ARGS)) {
 
-					//System.out.println("ARGS SLIDER1:" +val[0]);
+							System.out.println("[" + getAgent().getAgentName()
+									+ "] movement type...");
+
+							String[] val = cmd.getParameter(
+									MessageConstants.PARAM_ARGS).split(" ");
+							
+							// PARAMETROS X[0-7], Y[0-7], PRESSED(1)-OFF(0) 
+							int novoX = Integer.parseInt(val[0]);
+							int novoY = Integer.parseInt(val[1]);
+							
+							//0, 1, 2 Movement types
+							if(novoX>=0 && novoX<=1){
+								ISO_MVT_TYPE = 1;							
+							}else if(novoX>=2 && novoX<=3){
+								ISO_MVT_TYPE = 2;							
+							}if(novoX>=4 && novoX<=5){
+								ISO_MVT_TYPE = 3;							
+							}if(novoX>=6 && novoX<=7){
+								ISO_MVT_TYPE = -1;							
+							}
+														
+							System.out.println("MOVEMENT:" + ISO_MVT_TYPE);
+						}
+					}
 					
 				}
 			}

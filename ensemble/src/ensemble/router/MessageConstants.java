@@ -54,6 +54,10 @@ public class MessageConstants {
 	
 	public static final String ISO_TYPE 			= "ISO_TYPE";
 	public static final String ISO_POSITION  		= "ISO_POSITION";
+	public static final String SWARM_MOVEMENT_TYPE  = "SWARM_MOVEMENT_TYPE";
+	public static final String SWARM_DEFAULT_MVT  	= "SWARM_DEFAULT_MVT";
+	public static final String SWARM_CIRCULAR_MVT  	= "SWARM_CIRCULAR_MVT";
+	public static final String SWARM_FAST_MVT  		= "SWARM_FAST_MVT";
 	public static final String SWARM_NUMBER			= "SWARM_NUMBER";
 	public static final String AGENT_NUMBER			= "AGENT_NUMBER";
 	
