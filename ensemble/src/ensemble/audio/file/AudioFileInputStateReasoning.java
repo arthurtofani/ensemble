@@ -36,6 +36,7 @@ import ensemble.audio.AudioConstants;
 import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
+import ensemble.router.MessageConstants;
 
 public class AudioFileInputStateReasoning extends Reasoning {
 
@@ -43,6 +44,9 @@ public class AudioFileInputStateReasoning extends Reasoning {
 	Memory mouthMemory;
 	// Sensor ear;
 	// Memory earMemory;
+
+	private Sensor 		antenna;
+	private Memory 		antennaMemory;
 
 	// número de samples (frame) em um chunk
 	int chunk_size;
@@ -99,7 +103,13 @@ public class AudioFileInputStateReasoning extends Reasoning {
 
 			chunk_size = Integer.parseInt(mouth.getParameter(
 					Constants.PARAM_CHUNK_SIZE, "0"));
+		}else if (evtHdl instanceof Sensor && evtHdl.getEventType().equals(MessageConstants.EVT_TYPE_MESSAGE)) {
+			antenna = (Sensor)evtHdl;
+			antenna.registerListener(this);
+			antennaMemory = getAgent().getKB().getMemory(antenna.getComponentName());
 		}
+
+
 
 		// Checar se é um atuador de som e adicionar na lista
 		// if (evtHdl instanceof Sensor &&
@@ -115,6 +125,7 @@ public class AudioFileInputStateReasoning extends Reasoning {
 	public void needAction(Actuator sourceActuator, double instant,
 			double duration) {
 
+		if (active) {
 		boolean hasFile = in != null;
 		boolean changed = getParameter("changed")== "true";
 		Random rnd = new Random();
@@ -218,6 +229,8 @@ public class AudioFileInputStateReasoning extends Reasoning {
 				}
 			}
 		}
+		
+		}
 		// System.out.println(System.currentTimeMillis() +
 		// " MusicalAgent: enviei chunk de tamanho " + chunk.length);
 		// System.out.println(System.currentTimeMillis() + " " +
@@ -228,13 +241,34 @@ public class AudioFileInputStateReasoning extends Reasoning {
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 
-		// Reads ear's memory
-		// System.out.println("Entrei no newSense()");
-		// double[] buf = (double[])earMemory.readMemory(instant, duration,
-		// TimeUnit.SECONDS);
+		if (sourceSensor.getEventType().equals(
+				MessageConstants.EVT_TYPE_MESSAGE)) {
+			String str = (String) antennaMemory.readMemory(instant,
+					TimeUnit.SECONDS);
+			 
+			Command cmd = Command.parse(str);
+			if (cmd != null
+					&& cmd.getParameter(MessageConstants.PARAM_TYPE) != null
+					&& cmd.getParameter(MessageConstants.PARAM_TYPE).equals(
+							MessageConstants.PP_OSC_TYPE)) {
 
-		// Analisa o evento e modifica as notas escutadas
-		// notes = ...
+					if (cmd.getParameter(MessageConstants.PARAM_ACTION).equals(
+							MessageConstants.PP_OSC_SWITCH)) {
+
+						String[] val = cmd.getParameter(
+								MessageConstants.PARAM_ARGS).split(" ");
+
+						//System.out.println("Mensagem =  "+ str + " valor: " +val[0] + " agente: " + getAgent().getAgentName());			
+						if (val[0] .equals(getAgent().getAgentName())) {
+							active = !active;
+							// System.out.println("Mudanca de estado:" +active);
+
+						}
+
+					}
+
+				}
+		}
 	}
 
 	@Override

@@ -337,9 +337,9 @@ public class PP_OscMovementReasoning extends Reasoning {
 					if (cmd.getParameter(MessageConstants.PARAM_ACTION).equals(MessageConstants.CONTROL_OSC_POSITION)) {
 						if (cmd.containsParameter(MessageConstants.PARAM_ARGS)) {
 
-							System.out.println("[" + getAgent().getAgentName()
+/*							System.out.println("[" + getAgent().getAgentName()
 									+ "] movement type...");
-
+*/
 							String[] val = cmd.getParameter(
 									MessageConstants.PARAM_ARGS).split(" ");
 							
@@ -361,6 +361,19 @@ public class PP_OscMovementReasoning extends Reasoning {
 							System.out.println("MOVEMENT:" + ISO_MVT_TYPE);
 						}
 					}
+					
+				} else if (cmd.getParameter(MessageConstants.PARAM_TYPE)
+						.equals(MessageConstants.PP_OSC_TYPE)) {
+					if (cmd.getParameter(MessageConstants.PARAM_ACTION).equals(
+							MessageConstants.CONTROL_OSC_POSITION)) {
+						String[] val = cmd.getParameter(
+								MessageConstants.PARAM_ARGS).split(" ");
+
+						int novoMvt = Integer.parseInt(val[0]) + 1;
+
+						ISO_MVT_TYPE = novoMvt;
+					}
+					
 					
 				}
 			}

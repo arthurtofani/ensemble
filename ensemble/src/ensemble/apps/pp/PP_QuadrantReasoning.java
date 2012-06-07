@@ -18,6 +18,7 @@ import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
 import ensemble.movement.MovementConstants;
+import ensemble.router.MessageConstants;
 import ensemble.world.Vector;
 
 
@@ -46,6 +47,15 @@ public class PP_QuadrantReasoning extends Reasoning{
 	Sensor 		eyes;
 	Memory 		eyesMemory;
 
+	//Messages
+	private Sensor 		antenna;
+	private Memory 		antennaMemory;
+	
+	private double LOW_PASS1 = 300;
+	private double LOW_PASS2 = 500;
+	
+	private double HIGH_PASS1 = 400;
+	private double HIGH_PASS2 = 800;
 	
 	//private World 	world;
 	private Vector 	actual_pos = null;
@@ -108,6 +118,10 @@ public class PP_QuadrantReasoning extends Reasoning{
 			eyes = (Sensor)evtHdl;
 			eyes.registerListener(this);
 			eyesMemory = getAgent().getKB().getMemory(eyes.getComponentName());
+		}else if (evtHdl instanceof Sensor && evtHdl.getEventType().equals(MessageConstants.EVT_TYPE_MESSAGE)) {
+			antenna = (Sensor)evtHdl;
+			antenna.registerListener(this);
+			antennaMemory = getAgent().getKB().getMemory(antenna.getComponentName());
 		}
 	
 	}
@@ -115,11 +129,41 @@ public class PP_QuadrantReasoning extends Reasoning{
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 		
-		if (sourceSensor == ear) {
+		if(sourceSensor.getEventType().equals(
+				MessageConstants.EVT_TYPE_MESSAGE)){
 			
-		} else if (sourceSensor == eyes) {
+			//System.out.println(" ENtrou em message");
+			
+			String str = (String) antennaMemory.readMemory(instant,
+					TimeUnit.SECONDS);
 			
 		
+			
+			Command cmd = Command.parse(str);
+			
+			if (cmd != null && cmd.getCommand()!= MessageConstants.CMD_INFO) {
+			
+				if (cmd.getParameter(MessageConstants.PARAM_TYPE)
+						.equals(MessageConstants.PP_OSC_TYPE)) {
+					if (cmd.getParameter(MessageConstants.PARAM_ACTION).equals(
+							MessageConstants.CONTROL_OSC_FREQ)) {
+						String[] val = cmd.getParameter(
+								MessageConstants.PARAM_ARGS).split(" ");
+						
+						//System.out.println(val[0] + " LOW_PASS1 " + LOW_PASS1 +" LOW_PASS2" + LOW_PASS2 +" HIGH_PASS1" + HIGH_PASS1 +" HIGH_PASS2" + HIGH_PASS2);
+
+						if (val[0].equals("LP1")) {
+							LOW_PASS1 = Double.parseDouble(val[1]);
+						} else if (val[0].equals("LP2")) {
+							LOW_PASS2 = Double.parseDouble(val[1]);
+						} else if (val[0].equals("HP1")) {
+							HIGH_PASS1 = Double.parseDouble(val[1]);
+						} else if (val[0].equals("HP2")) {
+							HIGH_PASS2 = Double.parseDouble(val[1]);
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -145,14 +189,14 @@ public class PP_QuadrantReasoning extends Reasoning{
 				switch(currentZone){
 				
 				case UPPER_LEFT:
-					filterProcess.highPass(dBuffer, dTransBuffer, chunk_size, 400, 44100);
+					filterProcess.highPass(dBuffer, dTransBuffer, chunk_size, HIGH_PASS1, 44100);
 					//System.out.println("Entrei " + chunk_size);
 					//SmbPitchProcess.smbPitchShift((float) 1, chunk_size, 1024, 8, 44100, dBuffer, dTransBuffer);
 					//soundT.test();
 					mouthMemory.writeMemory(dBuffer, instant + duration, duration, TimeUnit.SECONDS);
 					break;
 				case UPPER_RIGHT:
-					filterProcess.highPass(dBuffer, dTransBuffer, chunk_size, 800, 44100);
+					filterProcess.highPass(dBuffer, dTransBuffer, chunk_size, HIGH_PASS2, 44100);
 					
 					//mouthMemory.writeMemory(dBuffer, instant + duration, duration, TimeUnit.SECONDS);
 					
@@ -160,13 +204,13 @@ public class PP_QuadrantReasoning extends Reasoning{
 					
 					break;
 				case LOWER_LEFT:
-					filterProcess.lowPass(dBuffer, dTransBuffer, chunk_size, 300, 44100);
+					filterProcess.lowPass(dBuffer, dTransBuffer, chunk_size, LOW_PASS1, 44100);
 					
 					mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
 		
 					break;
 				case LOWER_RIGHT:
-					filterProcess.lowPass(dBuffer, dTransBuffer, chunk_size, 500, 44100);
+					filterProcess.lowPass(dBuffer, dTransBuffer, chunk_size, LOW_PASS2, 44100);
 					
 					mouthMemory.writeMemory(dTransBuffer, instant + duration, duration, TimeUnit.SECONDS);
 		

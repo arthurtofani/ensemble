@@ -153,7 +153,8 @@ public class PP_IntegratedMInstrumentReasoning extends Reasoning {
 				ports.remove(actuatorName);
 				jjack.jack_port_unregister(client, ports.get(actuatorName));
 			}
-		}else if (evtHdl instanceof Sensor && evtHdl.getEventType().equals(MessageConstants.EVT_TYPE_MESSAGE)) {
+		}
+		/*else if (evtHdl instanceof Sensor && evtHdl.getEventType().equals(MessageConstants.EVT_TYPE_MESSAGE)) {
 			
 			antenna = (Sensor)evtHdl;
 			antenna.registerListener(this);
@@ -163,7 +164,7 @@ public class PP_IntegratedMInstrumentReasoning extends Reasoning {
 			messenger = (Actuator)evtHdl;
 			messenger.registerListener(this);
 			messengerMemory = getAgent().getKB().getMemory(messenger.getComponentName());
-		}
+		}*/
 	}
 
 	@Override

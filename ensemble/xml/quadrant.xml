@@ -25,6 +25,9 @@
 			<ARG NAME="NUMBER_POINTS" VALUE="4" />
 		</EVENT_SERVER>
 		<EVENT_SERVER CLASS="ensemble.movement.MovementEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="150 0" />
+		
+		<EVENT_SERVER CLASS="ensemble.router.MessageEventServer" COMM="ensemble.comm.direct.CommDirect" PERIOD="1000 0" />
+		
 	</ENVIRONMENT_AGENT_CLASS>
 	
   <!-- ********** MUSICAL AGENT CLASSES ********** -->
@@ -47,6 +50,8 @@
 			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
 			<SENSOR NAME="Eyes" CLASS="ensemble.Sensor" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
 		   
+		   <SENSOR NAME="Antenna" CLASS="ensemble.Sensor" EVENT_TYPE="MESSAGE" COMM="ensemble.comm.direct.CommDirect" />
+		  
 		</COMPONENTS>
 	</MUSICAL_AGENT_CLASS>
 	

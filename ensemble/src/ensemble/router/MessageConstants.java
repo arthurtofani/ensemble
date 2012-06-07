@@ -68,7 +68,18 @@ public class MessageConstants {
 	public static final String CONTROL_OSC_VOLUME  		= "CONTROL_OSC_VOLUME";
 	public static final String CONTROL_OSC_MVT_TYPE  	= "CONTROL_OSC_MVT_TYPE";
 	public static final String CONTROL_OSC_FREQ  		= "CONTROL_OSC_FREQ";
+	
 	public static final String CONTROL_SLIDER1 			= "/slider1";
 	public static final String CONTROL_SLIDER2 			= "/slider2";
 	public static final String CONTROL_MONO 			= "/mlr";
+	
+	//INTERFACE PIANO PREPARADO
+	public static final String PP_OSC_TYPE 		= "PP_OSC_TYPE";
+	public static final String PP_SWITCH_TYPE 	= "PP_SWITCH_TYPE";
+	public static final String PP_OSC_SWITCH 	= "/M";
+	public static final String PP_OSC_ISO 		= "/ISO";
+	public static final String PP_OSC_LP 		= "/LP";
+	public static final String PP_OSC_HP 		= "/HP";
+	
+	
 }

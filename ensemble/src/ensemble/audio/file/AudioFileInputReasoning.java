@@ -21,7 +21,10 @@ along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 
 package ensemble.audio.file;
 
+import java.util.Date;
+
 import ensemble.Actuator;
+import ensemble.Command;
 import ensemble.Constants;
 import ensemble.EventHandler;
 import ensemble.MusicalAgent;
@@ -31,6 +34,7 @@ import ensemble.audio.AudioConstants;
 import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
+import ensemble.router.MessageConstants;
 
 public class AudioFileInputReasoning extends Reasoning {
 
@@ -39,6 +43,13 @@ public class AudioFileInputReasoning extends Reasoning {
 	Sensor 		ear;
 	Memory 		earMemory;
 			
+	
+
+	private Sensor 		antenna;
+	private Memory 		antennaMemory;
+	
+	private boolean				active = true;
+	
 	// número de samples (frame) em um chunk
 	int chunk_size;
 	
@@ -96,12 +107,18 @@ public class AudioFileInputReasoning extends Reasoning {
 			ear = (Sensor)evtHdl;
 			ear.registerListener(this);
 			earMemory = getAgent().getKB().getMemory(ear.getComponentName());
+		}else if (evtHdl instanceof Sensor && evtHdl.getEventType().equals(MessageConstants.EVT_TYPE_MESSAGE)) {
+			antenna = (Sensor)evtHdl;
+			antenna.registerListener(this);
+			antennaMemory = getAgent().getKB().getMemory(antenna.getComponentName());
 		}
 
 	}
 
 	@Override
 	public void needAction(Actuator sourceActuator, double instant, double duration) {
+
+		if (active) {
 
 //		System.out.println(System.currentTimeMillis() + " " + getAgent().getAgentName() + " Entrei no needAction() - instant " + instant);
 
@@ -136,18 +153,41 @@ public class AudioFileInputReasoning extends Reasoning {
 
 //			System.out.println(System.currentTimeMillis() + " MusicalAgent: enviei chunk de tamanho " + chunk.length);
 //		System.out.println(System.currentTimeMillis() + " " + getAgent().getAgentName() + " Sai do needAction() - " + num);
-
+		}
 	}
 
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 
-		// Reads ear's memory
-//		System.out.println("Entrei no newSense()");
-		double[] buf = (double[])earMemory.readMemory(instant, duration, TimeUnit.SECONDS);
+		if (sourceSensor.getEventType().equals(
+				MessageConstants.EVT_TYPE_MESSAGE)) {
+			String str = (String) antennaMemory.readMemory(instant,
+					TimeUnit.SECONDS);
+			// System.out.println("Mensagem =  "+ str);
+			Command cmd = Command.parse(str);
+			if (cmd != null
+					&& cmd.getParameter(MessageConstants.PARAM_TYPE) != null
+					&& cmd.getParameter(MessageConstants.PARAM_TYPE).equals(
+							MessageConstants.PP_OSC_TYPE)) {
 
-		// Analisa o evento e modifica as notas escutadas
-		// notes = ...
+					if (cmd.getParameter(MessageConstants.PARAM_ACTION).equals(
+							MessageConstants.PP_OSC_SWITCH)) {
+
+						String[] val = cmd.getParameter(
+								MessageConstants.PARAM_ARGS).split(" ");
+
+						
+						if (val[0] == getAgent().getAgentName()) {
+							active = !active;
+							// System.out.println("Mudanca de estado:" +active);
+
+						}
+
+					}
+
+				}
+			}
+		
 	}
 
 	@Override

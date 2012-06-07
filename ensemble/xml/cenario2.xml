@@ -49,7 +49,14 @@
 
 			<REASONING NAME="MovementReasoning" CLASS="ensemble.apps.pp.PP_OscMovementReasoning" REASONING_MODE="PERIODIC" PERIOD="500" /> -->
 			
-			<REASONING NAME="MicInputReasoning" CLASS="ensemble.audio.jack.JackInputDelayReasoning" />			
+						
+			<REASONING NAME="MicInputReasoning" CLASS="ensemble.audio.jack.JACKInputReasoning" />			
+			
+			<REASONING NAME="FileInputReasoning" CLASS="ensemble.audio.file.AudioFileInputStateReasoning" />
+			
+			<REASONING NAME="PitchReasoning" CLASS="ensemble.apps.pp.PP_PitchTrackingReasoning" REASONING_MODE="PERIODIC" PERIOD="1500"/>			
+			
+			
 			
 			<ACTUATOR NAME="Mouth" CLASS="ensemble.apps.eg.GeneratorActuator" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" />
 			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />

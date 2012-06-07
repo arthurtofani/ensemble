@@ -215,9 +215,9 @@ public class RouterAgent extends Agent {
 			
 			
 			//Controla mensagens integradas de OSC
-			System.out.println("mensagem OSC:" + m.getName() + " indexof=" +m.getName().indexOf(MessageConstants.ANDOSC_ACC) +" address "
+			/*System.out.println("1mensagem OSC:" + m.getName() + " indexof=" +m.getName().indexOf(MessageConstants.ANDOSC_ACC) +" address "
 					+ addr.toString() + " arg count " + m.getArgCount());
-			 
+			*/ 
 			if (m.getName().indexOf(MessageConstants.SPIN_OSC_SEARCH) > 0 && m.getName().indexOf(MessageConstants.SPIN_OSC_DATA) > 0) {
 				Command cmd = processSpinOsc(m);
 				cmd.setRecipient("/ensemble/ENVIRONMENT/MESSAGE");
@@ -255,6 +255,16 @@ public class RouterAgent extends Agent {
 				cmd.setSender("/osc");
 				processCommand(cmd);
 			}
+
+			//Controla mensagens ControlOSC Piano preparado
+			if (m.getName().indexOf(MessageConstants.PP_OSC_SWITCH) >= 0 || m.getName().indexOf(MessageConstants.PP_OSC_ISO) >= 0 || m.getName().indexOf(MessageConstants.PP_OSC_LP) >= 0 || m.getName().indexOf(MessageConstants.PP_OSC_HP) >= 0) 
+			{
+				Command cmd = processPpOsc(m);
+				cmd.setRecipient("/ensemble/ENVIRONMENT/MESSAGE");
+				cmd.setSender("/osc");
+				processCommand(cmd);
+			}
+
 			
 			// Obtém o agente e componente destino
 			String[] address = m.getName().split("/");
@@ -409,6 +419,69 @@ public class RouterAgent extends Agent {
 					sb.append(" ");
 				}				
 				controlOscCmd.addParameter(MessageConstants.PARAM_ARGS, sb.toString());
+				return controlOscCmd;
+			}
+
+			
+			return null;
+		}
+
+		
+private Command processPpOsc(OSCMessage message) {
+			
+	
+	
+			//Tratamento de Movimento ISO
+			if (message.getName().indexOf(MessageConstants.PP_OSC_ISO)>=0 && message.getArgCount() == 1  ){ //&& message.getArg(0) =="1"
+				
+				Command controlOscCmd = new Command(MessageConstants.CMD_RECEIVE);
+				controlOscCmd.addParameter(MessageConstants.PARAM_DOMAIN, MessageConstants.EXT_OSC_DOMAIN);
+				controlOscCmd.addParameter(MessageConstants.PARAM_TYPE, MessageConstants.PP_OSC_TYPE);
+				controlOscCmd.addParameter(MessageConstants.PARAM_ACTION, MessageConstants.CONTROL_OSC_POSITION);
+
+				String[] address = message.getName().split("/");
+				//System.out.println("0> " + address[1]+ " 1 " + address[2]);
+				// 0 - randomico 1- Circular 2-rapido 3- parar
+				StringBuilder sb = new StringBuilder();
+				sb.append(address[2]);
+				
+				//System.out.println("ISO PP ARGS :" +sb.toString());
+				
+				controlOscCmd.addParameter(MessageConstants.PARAM_ARGS, sb.toString());
+				
+				return controlOscCmd;
+				
+			}if (message.getName().indexOf(MessageConstants.PP_OSC_HP)>=0 || message.getName().indexOf(MessageConstants.PP_OSC_LP)>=0 && message.getArgCount() == 1){
+
+				Command controlOscCmd = new Command(MessageConstants.CMD_RECEIVE);
+				controlOscCmd.addParameter(MessageConstants.PARAM_DOMAIN, MessageConstants.EXT_OSC_DOMAIN);
+				controlOscCmd.addParameter(MessageConstants.PARAM_TYPE, MessageConstants.PP_OSC_TYPE);
+				controlOscCmd.addParameter(MessageConstants.PARAM_ACTION, MessageConstants.CONTROL_OSC_FREQ);
+
+				// PARAMETROS FREQUENCIA 
+				StringBuilder sb = new StringBuilder();
+				
+				String[] address = message.getName().split("/");
+				sb.append(address[1]);
+				sb.append(" ");
+				sb.append(message.getArg(0));
+				
+				//System.out.println("FREQ ARGS :" +sb.toString());
+				
+				controlOscCmd.addParameter(MessageConstants.PARAM_ARGS, sb.toString());
+				return controlOscCmd;
+			}if (message.getName().indexOf(MessageConstants.PP_OSC_SWITCH)>=0 && message.getArgCount() == 1){
+
+				Command controlOscCmd = new Command(MessageConstants.CMD_RECEIVE);
+				controlOscCmd.addParameter(MessageConstants.PARAM_DOMAIN, MessageConstants.EXT_OSC_DOMAIN);
+				controlOscCmd.addParameter(MessageConstants.PARAM_TYPE, MessageConstants.PP_OSC_TYPE);
+				controlOscCmd.addParameter(MessageConstants.PARAM_ACTION, MessageConstants.PP_OSC_SWITCH);
+
+				// PARAMETROS  
+				
+				//System.out.println("SWTICH PP ARGS :" + message.getName().replace("/", "") + " MSG=" + message.getName());
+				
+				controlOscCmd.addParameter(MessageConstants.PARAM_ARGS, message.getName().replace("/", ""));
 				return controlOscCmd;
 			}
 
