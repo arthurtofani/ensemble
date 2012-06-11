@@ -41,31 +41,48 @@
 	
   <!-- ********** MUSICAL AGENT CLASSES ********** -->
 
-	<MUSICAL_AGENT_CLASS NAME="MIC" CLASS="ensemble.MusicalAgent">
+	<MUSICAL_AGENT_CLASS NAME="MICP" CLASS="ensemble.MusicalAgent">
 		<KB CLASS="ensemble.KnowledgeBase">
 			
+		</KB>
+		<COMPONENTS>
+					
+			<REASONING NAME="MovementReasoning" CLASS="ensemble.apps.pp.PP_OscMovementReasoning" REASONING_MODE="PERIODIC" PERIOD="500" /> -->
+			<REASONING NAME="FileInputReasoning" CLASS="ensemble.audio.file.AudioFileInputStateReasoning" />
+			
+			<REASONING NAME="PitchReasoning" CLASS="ensemble.apps.pp.PP_IntPitchTrackingReasoning" REASONING_MODE="PERIODIC" PERIOD="1500"/>			
+			
+			<REASONING NAME="MicInputReasoning" CLASS="ensemble.apps.pp.PP_IntegratedMInstReasoning" /> 	
+			
+			<ACTUATOR NAME="Mouth" CLASS="ensemble.apps.eg.GeneratorActuator" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" />
+			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+			<SENSOR NAME="Eyes" CLASS="ensemble.Sensor" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
+		   <ACTUATOR NAME="Messenger" CLASS="ensemble.Actuator" EVENT_TYPE="MESSAGE" COMM="ensemble.comm.direct.CommDirect" />
+		   <SENSOR NAME="Antenna" CLASS="ensemble.Sensor" EVENT_TYPE="MESSAGE" COMM="ensemble.comm.direct.CommDirect" />
+		   
+		</COMPONENTS>
+	</MUSICAL_AGENT_CLASS>
+<MUSICAL_AGENT_CLASS NAME="MICM" CLASS="ensemble.MusicalAgent">
+		<KB CLASS="ensemble.KnowledgeBase">
+
 		</KB>
 		<COMPONENTS>
 
 			<REASONING NAME="MovementReasoning" CLASS="ensemble.apps.pp.PP_OscMovementReasoning" REASONING_MODE="PERIODIC" PERIOD="500" /> -->
 			
-						
-			<REASONING NAME="MicInputReasoning" CLASS="ensemble.audio.jack.JACKInputReasoning" />			
-			
-			<REASONING NAME="FileInputReasoning" CLASS="ensemble.audio.file.AudioFileInputStateReasoning" />
-			
-			<REASONING NAME="PitchReasoning" CLASS="ensemble.apps.pp.PP_PitchTrackingReasoning" REASONING_MODE="PERIODIC" PERIOD="1500"/>			
-			
-			
+			<REASONING NAME="MicInputReasoning" CLASS="ensemble.apps.pp.PP_IntegratedMInstrumentReasoning" /> 			
+		 	<REASONING NAME="FileInputReasoning" CLASS="ensemble.audio.file.AudioFileInputStateReasoning" />
 			
 			<ACTUATOR NAME="Mouth" CLASS="ensemble.apps.eg.GeneratorActuator" EVENT_TYPE="AUDIO" COMM="ensemble.comm.direct.CommDirect" />
 			<ACTUATOR NAME="Legs" CLASS="ensemble.Actuator" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
 			<SENSOR NAME="Eyes" CLASS="ensemble.Sensor" EVENT_TYPE="MOVEMENT" COMM="ensemble.comm.direct.CommDirect" />
-		   
-		   <SENSOR NAME="Antenna" CLASS="ensemble.Sensor" EVENT_TYPE="MESSAGE" COMM="ensemble.comm.direct.CommDirect" />
+		    <ACTUATOR NAME="Messenger" CLASS="ensemble.Actuator" EVENT_TYPE="MESSAGE" COMM="ensemble.comm.direct.CommDirect" />
+		<SENSOR NAME="Antenna" CLASS="ensemble.Sensor" EVENT_TYPE="MESSAGE" COMM="ensemble.comm.direct.CommDirect" />
 		   
 		</COMPONENTS>
 	</MUSICAL_AGENT_CLASS>
+	
+			
 	
 	<MUSICAL_AGENT_CLASS NAME="LISTENER" CLASS="ensemble.MusicalAgent">
 		<KB CLASS="ensemble.KnowledgeBase">
@@ -84,34 +101,35 @@
 	
   <!-- ********** MUSICAL AGENT INSTANCES ********** -->
 
-	<MUSICAL_AGENT NAME="M1" CLASS="MIC">
+	<MUSICAL_AGENT NAME="M1" CLASS="MICM">
 		<ARG NAME="POSITION" VALUE="(7;10;0)" />
-		<ARG_COMP COMP="MicInputReasoning" NAME="mapping" VALUE="Mouth-system:capture_1" />
-		<ARG_COMP COMP="MovementReasoning" NAME="waypoints" VALUE="(-5;-2;0) 22.0:(-2;-3;0) 12.0:(4;-3;0) 10.0" />
+		<ARG_COMP COMP="MicInputReasoning" NAME="mapping"
+			VALUE="Mouth-system:capture_1" />
+		<ARG_COMP COMP="MovementReasoning" NAME="waypoints"
+			VALUE="(-5;-2;0) 22.0:(-2;-3;0) 12.0:(4;-3;0) 10.0" />
 	</MUSICAL_AGENT>
 
 
-<!-- CONFIGURAÇÃO COM 4 MICROFONES -->
-<!-- 
-	<MUSICAL_AGENT NAME="M2" CLASS="MIC">
-		<ARG NAME="POSITION" VALUE="(14;-10;0)" />
-		<ARG_COMP COMP="MicInputReasoning" NAME="mapping" VALUE="Mouth-system:capture_2" />
+<!-- 	<MUSICAL_AGENT NAME="M2" CLASS="MICP">
+
+		<ARG NAME="POSITION" VALUE="(0;5;0)" />
+		<ARG_COMP COMP="MicInputReasoning" NAME="mapping"
+			VALUE="Mouth-system:capture_1" />
+		<ARG_COMP COMP="MovementReasoning" NAME="waypoints" VALUE="(5;-12;0) 22.0" />
+
 	</MUSICAL_AGENT>
-	
-	
+	 -->
+<!-- 	
+	<MUSICAL_AGENT NAME="M3" CLASS="MICM">
+		<ARG NAME="POSITION" VALUE="(2;-10;0)" />
+		<ARG_COMP COMP="MicInputReasoning" NAME="mapping"
+			VALUE="Mouth-system:capture_1" />
+		<ARG_COMP COMP="MovementReasoning" NAME="waypoints"
+			VALUE="(5;2;0) 22.0:(2;3;0) 12.0:(-4;3;0) 10.0" />
+	</MUSICAL_AGENT> -->
+
 	
 
-	<MUSICAL_AGENT NAME="M3" CLASS="MIC">
-		<ARG NAME="POSITION" VALUE="(-7;10;0)" />
-		<ARG_COMP COMP="MicInputReasoning" NAME="mapping" VALUE="Mouth-system:capture_2" />
-	</MUSICAL_AGENT>
-
-	<MUSICAL_AGENT NAME="M4" CLASS="MIC">
-		<ARG NAME="POSITION" VALUE="(-7;-10;0)" />
-		<ARG_COMP COMP="MicInputReasoning" NAME="mapping" VALUE="Mouth-system:capture_2" />
-	</MUSICAL_AGENT>
- -->
-	
 	<!-- CONFIGURAÇÃO COM 2 CAIXAS -->
 	
 	<MUSICAL_AGENT NAME="L1" CLASS="LISTENER">

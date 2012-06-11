@@ -25,11 +25,14 @@ import ensemble.router.MessageConstants;
 public class PP_IntegratedMInstReasoning extends Reasoning {
 
 	
-	private int MIN_PITCH = 300;
+	private int MIN_PITCH = 500;
 	private int MAX_PITCH = 1400;
 	private boolean checkPitch = false;
+	private int MAX_PITCH_CHECK_NUMBER = 20;
+	private int MIN_PITCH_CHECK_NUMBER = 20;
+	private int checkMinPitchCount = 0; 
+	private int checkMaxPitchCount = 0; 
 	
-
 	private TarsosProcessing tarsos = new TarsosProcessing();
 
 	
@@ -204,7 +207,7 @@ public class PP_IntegratedMInstReasoning extends Reasoning {
 			
 			double duration = (double)(nframes) * step;
 //			System.out.println("Java::callback - t = " + instant + " até " + (instant+duration));
-			
+			boolean writeCommand = false;
 			
 			
 			for (String actuatorName : ports.keySet()) {
@@ -232,14 +235,29 @@ public class PP_IntegratedMInstReasoning extends Reasoning {
 									MessageConstants.DIRECTION_CHANGE);
 
 							if (pitch < MAX_PITCH)
-								cmd.addParameter(MessageConstants.PARAM_ARGS,
-										MessageConstants.DIRECTION_LEFT);
-							else
+								if (checkMaxPitchCount >= MAX_PITCH_CHECK_NUMBER) {
+									cmd.addParameter(
+											MessageConstants.PARAM_ARGS,
+											MessageConstants.DIRECTION_LEFT);
+									writeCommand = true;
+									checkMaxPitchCount = 0;
+									checkMinPitchCount = 0;
+								} else
+									checkMaxPitchCount++;
+
+							else if (checkMinPitchCount >= MIN_PITCH_CHECK_NUMBER) {
 								cmd.addParameter(MessageConstants.PARAM_ARGS,
 										MessageConstants.DIRECTION_RIGHT);
+								writeCommand = true;
+								checkMaxPitchCount = 0;
+								checkMinPitchCount = 0;
+							} else
+								checkMinPitchCount++;
 
-							messengerMemory.writeMemory(cmd);
-							messenger.act();
+							if (writeCommand) {
+								messengerMemory.writeMemory(cmd);
+								messenger.act();
+							}
 						}
 					}
 

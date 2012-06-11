@@ -24,8 +24,8 @@ import ensemble.router.MessageConstants;
 public class PP_IntegratedMInstrumentReasoning extends Reasoning {
 
 	
-	private double MIN_PEAK = 0.4;
-	private double MAX_PEAK = 0.7;
+	private double MIN_PEAK = 0.5;
+	private double MAX_PEAK = 0.9;
 	
 	//Messages
 	private Sensor 		antenna;
@@ -35,6 +35,11 @@ public class PP_IntegratedMInstrumentReasoning extends Reasoning {
 
 	private boolean checkPeak = false;
 
+	private int MAX_PEAK_CHECK_NUMBER = 20;
+	private int MIN_PEAK_CHECK_NUMBER = 20;
+	private int checkMinPeakCount = 0; 
+	private int checkMaxPeakCount = 0; 
+	
 	// Log
 //	public static Logger logger = Logger.getMyLogger(MusicalAgent.class.getName());
 
@@ -210,11 +215,13 @@ public class PP_IntegratedMInstrumentReasoning extends Reasoning {
 				}
 				Memory mouthMemory = mouthMemories.get(actuatorName);
 				try {
+					boolean writeCommand = false;
+					
 					double peak = AnalysisProcessing.peakFollower(44100,
 							dBuffer, nframes);
 					
-					if (peak > MIN_PEAK) {
-
+					if (peak > 0.2) {
+						
 						Command cmd = new Command(MessageConstants.CMD_RECEIVE);
 						cmd.addParameter(MessageConstants.PARAM_TYPE,
 								MessageConstants.DIRECTION_TYPE);
@@ -223,16 +230,34 @@ public class PP_IntegratedMInstrumentReasoning extends Reasoning {
 						cmd.addParameter(MessageConstants.PARAM_ACTION,
 								MessageConstants.DIRECTION_CHANGE);
 
-						if (peak < MAX_PEAK)
+						if (peak > MIN_PEAK && peak<MAX_PEAK){
+							if (checkMaxPeakCount >= MIN_PEAK_CHECK_NUMBER) {
 							cmd.addParameter(MessageConstants.PARAM_ARGS,
 									MessageConstants.DIRECTION_UP);
-						else
+							writeCommand = true;
+							checkMaxPeakCount = 0;
+							checkMinPeakCount = 0;
+							}else
+							checkMinPeakCount++;
+						
+						}
+						else if(peak>MAX_PEAK){
+							if (checkMaxPeakCount >= MAX_PEAK_CHECK_NUMBER) {
 							cmd.addParameter(MessageConstants.PARAM_ARGS,
 									MessageConstants.DIRECTION_DOWN);
-
-						System.out.println("PEAK:" + peak + " " + cmd.getParameter(MessageConstants.PARAM_ARGS));
-						messengerMemory.writeMemory(cmd);
-						messenger.act();
+							writeCommand = true;
+							checkMaxPeakCount = 0;
+							checkMinPeakCount = 0;
+						} else
+							checkMaxPeakCount++;
+						}
+						
+						if (writeCommand) {
+							System.out.println("PEAK:" + peak + " " + cmd.getParameter(MessageConstants.PARAM_ARGS));
+							
+							messengerMemory.writeMemory(cmd);
+							messenger.act();
+						}
 					}
 				
 					

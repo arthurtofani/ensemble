@@ -81,8 +81,8 @@ public class PP_OscMovementReasoning extends Reasoning {
 	// 
 	private double MAX_ACELERATION = 10.0;
 	
-	private double DEFAULT_ACELERATION = 0.2;
-	private double DEFAULT_DURATION = 2;
+	private double DEFAULT_ACELERATION = 0.02;
+	private double DEFAULT_DURATION = 0.2;
 	
 	private int ISO_MVT_TYPE = 1;
 	
@@ -307,8 +307,15 @@ public class PP_OscMovementReasoning extends Reasoning {
 
 								double valX = Double.parseDouble(val[0]);
 								double valY = Double.parseDouble(val[1]);
+								
+								//No caso de transportar diretamente
 								sendTransportCommand(getIsoOscVector(100, valX,
 										valY));
+								//Vectorial
+								//time_constrains.add(0.1);
+								//waypoints.add(Vector.parseSingle(valX, valY, 0));
+								//waypoints.add(getIsoOscVector(100, valX,
+									//	valY));
 
 							}
 						} else if (val.length == 6 && Integer.parseInt(val[3]) == ISO_MVT_TYPE) {
@@ -632,7 +639,7 @@ private void changeDirection(int direction)
 			//System.out.println(acc.toString());
 			waypoints.clear();
 			
-			sendAccCommand(acc, DEFAULT_DURATION);
+			sendAccCommand(acc, 0);
 			
 			getParameters().put("directionState", ""+direction);
 

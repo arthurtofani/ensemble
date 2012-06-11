@@ -75,6 +75,19 @@ public class Vector {
 		return vec;
 	}
 	
+	
+	
+	public static Vector parseSingle(double x, double y, double z) {
+		Vector vec = new Vector();
+		vec.values[0] = x;
+		vec.values[1] = y;
+		vec.values[2] = z;
+
+		vec.updateMagnitude();
+
+		return vec;
+	}
+	
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
 		buf.append("(");

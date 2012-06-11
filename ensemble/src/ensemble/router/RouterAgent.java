@@ -49,7 +49,7 @@ public class RouterAgent extends Agent {
 	private OSCClient 	oscClient;
 	private OSCServer 	oscServer;
 	
-	private int 		oscIsoSendPort 	= 7400;
+	//private int 		oscIsoSendPort 	= 7400;
     private int 		oscIsoListenPort 	= 7500;
 	
 	@Override
@@ -67,9 +67,9 @@ public class RouterAgent extends Agent {
 			
 			//Portas para integracao direta com ISO
 			
-			oscClient = OSCClient.newUsing(OSCChannel.UDP);
+			/*oscClient = OSCClient.newUsing(OSCChannel.UDP);
 			oscClient.setTarget(new InetSocketAddress(InetAddress.getLocalHost(), oscIsoSendPort));
-			oscClient.start();
+			oscClient.start();*/
 			
 			oscServer = OSCServer.newUsing(OSCChannel.UDP, oscIsoListenPort);
 			oscServer.addOSCListener(new Listener());
