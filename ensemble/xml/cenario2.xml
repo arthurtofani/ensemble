@@ -110,7 +110,7 @@
 	</MUSICAL_AGENT>
 
 
-<!-- 	<MUSICAL_AGENT NAME="M2" CLASS="MICP">
+	<MUSICAL_AGENT NAME="M2" CLASS="MICP">
 
 		<ARG NAME="POSITION" VALUE="(0;5;0)" />
 		<ARG_COMP COMP="MicInputReasoning" NAME="mapping"
@@ -118,15 +118,14 @@
 		<ARG_COMP COMP="MovementReasoning" NAME="waypoints" VALUE="(5;-12;0) 22.0" />
 
 	</MUSICAL_AGENT>
-	 -->
-<!-- 	
+ 	
 	<MUSICAL_AGENT NAME="M3" CLASS="MICM">
 		<ARG NAME="POSITION" VALUE="(2;-10;0)" />
 		<ARG_COMP COMP="MicInputReasoning" NAME="mapping"
 			VALUE="Mouth-system:capture_1" />
 		<ARG_COMP COMP="MovementReasoning" NAME="waypoints"
 			VALUE="(5;2;0) 22.0:(2;3;0) 12.0:(-4;3;0) 10.0" />
-	</MUSICAL_AGENT> -->
+	</MUSICAL_AGENT> 
 
 	
 

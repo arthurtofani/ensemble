@@ -639,7 +639,9 @@ private void changeDirection(int direction)
 			//System.out.println(acc.toString());
 			waypoints.clear();
 			
-			sendAccCommand(acc, 0);
+			//sendAccCommand(acc, 0);
+			
+			sendAccCommand(acc, 0.2);
 			
 			getParameters().put("directionState", ""+direction);
 
