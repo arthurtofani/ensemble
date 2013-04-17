@@ -2,6 +2,10 @@ package ensemble.audio.dsp;
 
 import java.util.Arrays;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SmbPitchProcess.
+ */
 public class SmbPitchProcess {
 
 	/****************************************************************************
@@ -44,19 +48,42 @@ public class SmbPitchProcess {
 	
 
 	        public static double M_PI_VAL = 3.14159265358979323846;
-	        public static int MAX_FRAME_LENGTH = 8192;
+	        
+        	/** The max frame length. */
+        	public static int MAX_FRAME_LENGTH = 8192;
 
-	        static float[] gInFIFO = new float[MAX_FRAME_LENGTH];
-	        static float[] gOutFIFO = new float[MAX_FRAME_LENGTH];
-	        static float[] gFFTworksp = new float[2 * MAX_FRAME_LENGTH];
-	        static float[] gLastPhase = new float[MAX_FRAME_LENGTH / 2 + 1];
-	        static float[] gSumPhase = new float[MAX_FRAME_LENGTH / 2 + 1];
-	        static float[] gOutputAccum = new float[2 * MAX_FRAME_LENGTH];
-	        static float[] gAnaFreq = new float[MAX_FRAME_LENGTH];
-	        static float[] gAnaMagn = new float[MAX_FRAME_LENGTH];
-	        static float[] gSynFreq = new float[MAX_FRAME_LENGTH];
-	        static float[] gSynMagn = new float[MAX_FRAME_LENGTH];
-	        static int gRover = 0;
+	        /** The g in fifo. */
+        	static float[] gInFIFO = new float[MAX_FRAME_LENGTH];
+	        
+        	/** The g out fifo. */
+        	static float[] gOutFIFO = new float[MAX_FRAME_LENGTH];
+	        
+        	/** The g ff tworksp. */
+        	static float[] gFFTworksp = new float[2 * MAX_FRAME_LENGTH];
+	        
+        	/** The g last phase. */
+        	static float[] gLastPhase = new float[MAX_FRAME_LENGTH / 2 + 1];
+	        
+        	/** The g sum phase. */
+        	static float[] gSumPhase = new float[MAX_FRAME_LENGTH / 2 + 1];
+	        
+        	/** The g output accum. */
+        	static float[] gOutputAccum = new float[2 * MAX_FRAME_LENGTH];
+	        
+        	/** The g ana freq. */
+        	static float[] gAnaFreq = new float[MAX_FRAME_LENGTH];
+	        
+        	/** The g ana magn. */
+        	static float[] gAnaMagn = new float[MAX_FRAME_LENGTH];
+	        
+        	/** The g syn freq. */
+        	static float[] gSynFreq = new float[MAX_FRAME_LENGTH];
+	        
+        	/** The g syn magn. */
+        	static float[] gSynMagn = new float[MAX_FRAME_LENGTH];
+	        
+        	/** The g rover. */
+        	static int gRover = 0;
 
 	        ///<summary>
 	        /// Routine smbPitchShift(). See top of file for explanation
@@ -64,7 +91,18 @@ public class SmbPitchProcess {
 	        /// Time Fourier Transform.
 	        /// Author: (c)1999-2009 Stephan M. Bernsee &lt;smb [AT] dspdimension [DOT] com&gt;
 	        ///</summary>
-	        public static void smbPitchShift(float pitchShift, int numSampsToProcess, int fftFrameSize, int osamp, float sampleRate, double[] indataDouble, double[] outdataDouble)
+	        /**
+        	 * Smb pitch shift.
+        	 *
+        	 * @param pitchShift the pitch shift
+        	 * @param numSampsToProcess the num samps to process
+        	 * @param fftFrameSize the fft frame size
+        	 * @param osamp the osamp
+        	 * @param sampleRate the sample rate
+        	 * @param indataDouble the indata double
+        	 * @param outdataDouble the outdata double
+        	 */
+        	public static void smbPitchShift(float pitchShift, int numSampsToProcess, int fftFrameSize, int osamp, float sampleRate, double[] indataDouble, double[] outdataDouble)
 	        {
 
 	        	float[] indata = new float[indataDouble.length];
@@ -243,7 +281,14 @@ public class SmbPitchProcess {
 	            passed as {in[0],0.,in[1],0.,in[2],0.,...} asf. In that case, the transform
 	            of the frequencies of interest is in fftBuffer[0...fftFrameSize].
 	        */
-	        public static void smbFft(float[] fftBuffer, int fftFrameSize, int sign)
+	        /**
+        	 * Smb fft.
+        	 *
+        	 * @param fftBuffer the fft buffer
+        	 * @param fftFrameSize the fft frame size
+        	 * @param sign the sign
+        	 */
+        	public static void smbFft(float[] fftBuffer, int fftFrameSize, int sign)
 	        {
 	            float wr, wi, arg, temp;
 	            int p1, p2; // MRH: were float*
@@ -319,7 +364,14 @@ public class SmbPitchProcess {
 	        ///    If you are experiencing domain errors and your program stops, simply replace all
 	        ///    instances of atan2() with calls to the smbAtan2() function below.
 	        /// </summary>
-	        double smbAtan2(double x, double y)
+	        /**
+        	 * Smb atan2.
+        	 *
+        	 * @param x the x
+        	 * @param y the y
+        	 * @return the double
+        	 */
+        	double smbAtan2(double x, double y)
 	        {
 	            double signx;
 	            if (x > 0.0) signx = 1.0;

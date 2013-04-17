@@ -38,6 +38,10 @@ import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.ThreadedBehaviourFactory;
 import jade.util.Logger;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VirtualClockService.
+ */
 public class VirtualClockService extends BaseService {
 
 	//----------------------------------------------------------
@@ -45,9 +49,11 @@ public class VirtualClockService extends BaseService {
 //	public static Logger logger = Logger.getMyLogger(MusicalAgent.class.getName());
 
 	// Service name
+	/** The Constant NAME. */
 	public static final String NAME = "VirtualClock";
 
 	// Indica se o clock funciona em tempo real ou em batch
+	/** The user clock mode. */
 	private boolean userClockMode = false;
 
 	//----------------------------------------------------------
@@ -55,29 +61,42 @@ public class VirtualClockService extends BaseService {
 	//----------------------------------------------------------
 
 	// Contador de tempo, no caso de processamento Batch
+	/** The user time. */
 	private static long userTime = 0;
 
 	// Lock para criar um Mutual exclusion entre os mÈtodos updateClock() e schedule()
+	/** The lock. */
 	private static Lock lock = new ReentrantLock();
 
 	// Despertadores agendados
+	/** The scheduled tasks. */
 	private static HashMap<Long,UserModeClockTask> scheduledTasks = new HashMap<Long,UserModeClockTask>();
 
 	//----------------------------------------------------------
 	// CPU MODE
 	//----------------------------------------------------------
+	/** The reference start time. */
 	private long referenceStartTime;
+	
+	/** The reference nano start time. */
 	private long referenceNanoStartTime;
 	
+	/** The scheduler. */
 	private static ScheduledThreadPoolExecutor scheduler;
 	
 	//----------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see jade.core.Service#getName()
+	 */
 	@Override
 	public String getName() {
 		return NAME;
 	}
 
+	/* (non-Javadoc)
+	 * @see jade.core.BaseService#boot(jade.core.Profile)
+	 */
 	public void boot(jade.core.Profile p) throws ServiceException {
 		super.boot(p);
 
@@ -97,15 +116,27 @@ public class VirtualClockService extends BaseService {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see jade.core.BaseService#getHelper(jade.core.Agent)
+	 */
 	public VirtualClockHelper getHelper(Agent a) {
 		return new VirtualClockHelperImp();
 	}
 	
+	/**
+	 * The Class VirtualClockHelperImp.
+	 */
 	public class VirtualClockHelperImp implements VirtualClockHelper {
 
+		/* (non-Javadoc)
+		 * @see jade.core.ServiceHelper#init(jade.core.Agent)
+		 */
 		public void init(Agent a) {
 		}
 		
+		/* (non-Javadoc)
+		 * @see ensemble.clock.VirtualClockHelper#getCurrentTime(ensemble.clock.TimeUnit)
+		 */
 		public double getCurrentTime(TimeUnit unit) {
 			double ret = 0.0;
 			switch (unit) {
@@ -122,6 +153,9 @@ public class VirtualClockService extends BaseService {
 			return ret;
 		}
 		
+		/* (non-Javadoc)
+		 * @see ensemble.clock.VirtualClockHelper#schedule(jade.core.Agent, java.lang.Runnable, long)
+		 */
 		public void schedule(Agent a, Runnable b, long wakeupTime) {
 
 			// CLOCK_USER_MODE
@@ -161,12 +195,18 @@ public class VirtualClockService extends BaseService {
 			
 		}
 
+		/* (non-Javadoc)
+		 * @see ensemble.clock.VirtualClockHelper#execute(jade.core.Agent, java.lang.Runnable)
+		 */
 		@Override
 		public void execute(Agent a, Runnable b) {
 			(new Thread(b)).start();
 //			scheduler.execute(b);
 		}
 
+		/* (non-Javadoc)
+		 * @see ensemble.clock.VirtualClockHelper#updateClock(long)
+		 */
 		@Override
 		public void updateClock(long units) {
 			if (userClockMode) {
@@ -190,6 +230,9 @@ public class VirtualClockService extends BaseService {
 			}
 		}
 
+		/* (non-Javadoc)
+		 * @see ensemble.clock.VirtualClockHelper#updateClock()
+		 */
 		@Override
 		public void updateClock() {
 			this.updateClock(1);
@@ -198,13 +241,26 @@ public class VirtualClockService extends BaseService {
 	}
 	
 	// Internal class that stores user mode clock tasks
+	/**
+	 * The Class UserModeClockTask.
+	 */
 	class UserModeClockTask {
 
+		/** The a. */
 		protected Agent a;
+		
+		/** The b. */
 		protected Runnable b;
 		
+		/** The next task. */
 		public UserModeClockTask nextTask = null;
 		
+		/**
+		 * Instantiates a new user mode clock task.
+		 *
+		 * @param a the a
+		 * @param b the b
+		 */
 		public UserModeClockTask(Agent a, Runnable b) {
 			this.a = a;
 			this.b = b;

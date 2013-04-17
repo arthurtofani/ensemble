@@ -6,8 +6,21 @@ import org.boris.jvst.VSTException;
 
 import ensemble.audio.vst.VstConstants.FilterMode;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VstProcessReasoning.
+ */
 public class VstProcessReasoning {
 
+	/**
+	 * Process audio.
+	 *
+	 * @param vstDll the vst dll
+	 * @param dBuffer the d buffer
+	 * @param dTransBuffer the d trans buffer
+	 * @param nframes the nframes
+	 * @throws VSTException the vST exception
+	 */
 	public void ProcessAudio(String vstDll, double[] dBuffer, double[] dTransBuffer, int nframes ) throws VSTException{
 		
 		//double[] dTransBuffer = new double[nframes];
@@ -130,6 +143,15 @@ public class VstProcessReasoning {
 	}
 	
 	
+/**
+ * Process filter.
+ *
+ * @param dBuffer the d buffer
+ * @param dTransBuffer the d trans buffer
+ * @param nframes the nframes
+ * @param filterMode the filter mode
+ * @throws VSTException the vST exception
+ */
 public void ProcessFilter(double[] dBuffer, double[] dTransBuffer, int nframes, FilterMode filterMode ) throws VSTException{
 		
 		//double[] dTransBuffer = new double[nframes];
@@ -249,6 +271,13 @@ public void ProcessFilter(double[] dBuffer, double[] dTransBuffer, int nframes, 
 	}
 
 	
+	/**
+	 * Waveshaper.
+	 *
+	 * @param samples the samples
+	 * @param count the count
+	 * @param amount the amount
+	 */
 	public void waveshaper(double[] samples, int count, double amount) {
 		double k;
 

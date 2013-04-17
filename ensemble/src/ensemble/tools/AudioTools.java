@@ -28,10 +28,21 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AudioTools.
+ */
 public class AudioTools {
 
+	/** The Constant N. */
 	private static final int N = 200;
 	
+	/**
+	 * Calculate energy.
+	 *
+	 * @param chunk the chunk
+	 * @return the float[]
+	 */
 	public static float[] calculateEnergy(float[] chunk) {
 		
 		float[] E0 = new float[chunk.length];
@@ -54,6 +65,13 @@ public class AudioTools {
 		
 	}
 	
+	/**
+	 * Calculate derivative.
+	 *
+	 * @param chunk the chunk
+	 * @param delta_t the delta_t
+	 * @return the float[]
+	 */
 	public static float[] calculateDerivative(float[] chunk, float delta_t) {
 		
 		float[] der = new float[chunk.length];
@@ -78,9 +96,11 @@ public class AudioTools {
 		
 	}
 	
-	/**Encontra os poss�veis onset em um sinal de �udio
-	 * @param chunk
-	 * @param threshold
+	/**
+	 * Encontra os poss�veis onset em um sinal de �udio.
+	 *
+	 * @param chunk the chunk
+	 * @param threshold the threshold
 	 * @return samples do chunk em que foram localizados onsets
 	 */
 	public static int[] onsetDetection(float[] chunk, float threshold) {
@@ -117,6 +137,14 @@ public class AudioTools {
 		
 	}
 	
+   /**
+    * Convert double byte.
+    *
+    * @param buffer the buffer
+    * @param offset the offset
+    * @param length the length
+    * @return the byte[]
+    */
    public static byte[] convertDoubleByte(double[] buffer, int offset, int length) {
     	if (offset < 0 || offset >= buffer.length) {
     		return null;
@@ -137,6 +165,14 @@ public class AudioTools {
 		return ret;
 	}
 	    
+   /**
+    * Convert byte double.
+    *
+    * @param buffer the buffer
+    * @param offset the offset
+    * @param length the length
+    * @return the double[]
+    */
    public static double[] convertByteDouble(byte[] buffer, int offset, int length) {
     	// TODO Verificar quantos bytes por frame e o tamanho do buffer e o offset
     	if (offset < 0 || offset >= buffer.length) {
@@ -154,6 +190,11 @@ public class AudioTools {
     	return ret;
    }
 	    
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		
 		// Arquivo de �udio

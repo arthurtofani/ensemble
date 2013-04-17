@@ -42,22 +42,41 @@ import jjack.jjack;
 import jjack.jjackConstants;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JACKOutputReasoning.
+ */
 public class JACKOutputReasoning extends Reasoning {
 
 	// Log
 //	public static Logger logger = Logger.getMyLogger(MusicalAgent.class.getName());
 
 	// JACK
+	/** The client_name. */
 	String 						client_name;
+	
+	/** The client. */
 	long					 	client;
+	
+	/** The callback start time. */
 	double 						callbackStartTime;
+	
+	/** The step. */
 	double 						step = 1/44100.0;
+	
+	/** The mapping. */
 	Hashtable<String,String> mapping = new Hashtable<String, String>();
+	
+	/** The ports. */
 	Hashtable<String, Long> ports = new Hashtable<String,Long>(2);
 	
 	// Sensor
+	/** The ear memories. */
 	Hashtable<String,Memory> earMemories = new Hashtable<String, Memory>(2);
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -92,6 +111,9 @@ public class JACKOutputReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#finit()
+	 */
 	@Override
 	public boolean finit() {
 
@@ -101,6 +123,9 @@ public class JACKOutputReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
@@ -138,6 +163,9 @@ public class JACKOutputReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerDeregistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerDeregistered(EventHandler evtHdl) {
 		if (evtHdl instanceof Sensor && evtHdl.getEventType().equals(AudioConstants.EVT_TYPE_AUDIO)) {
@@ -149,11 +177,20 @@ public class JACKOutputReasoning extends Reasoning {
 		}
 	}
 		
+	/**
+	 * The Class Process.
+	 */
 	class Process implements JackCallback {
 
+		/** The first call. */
 		boolean firstCall = true;
+		
+		/** The instant. */
 		double instant = 0;
 
+		/* (non-Javadoc)
+		 * @see jjack.JackCallback#process(int, double)
+		 */
 		@Override
 		public int process(int nframes, double time) {
 

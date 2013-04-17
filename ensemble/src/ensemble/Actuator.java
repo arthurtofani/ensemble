@@ -31,27 +31,45 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.ThreadedBehaviourFactory;
 import jade.core.behaviours.WakerBehaviour;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Actuator.
+ */
 public class Actuator extends EventHandler implements Acting {
 
+	/** The tbf. */
 	private ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
 
+	/** The clock. */
 	VirtualClockHelper clock;
 	
 	// Usado para referenciar dentro do WakerBehaviour
+	/** The me. */
 	Actuator me = this;
+	
+	/** The need action behaviour. */
 	WakerBehaviour needActionBehaviour;
 	
+	/** The actuator state. */
 	protected AC_STATE actuatorState;
 	
 	// Tempos configurados pelo usuário
+	/** The send lag. */
 	protected long sendLag 			= 0;
+	
+	/** The need action time. */
 	protected long needActionTime 	= 0;
 	
+	/** The next state change. */
 	protected long nextStateChange;
 	
 	// Define se o action é chamado automaticamente no momento (sendDeadline - sendLag)
+	/** The automatic action. */
 	protected boolean automaticAction 	= false;
 		
+	/* (non-Javadoc)
+	 * @see ensemble.EventHandler#start()
+	 */
 	@Override
 	public final boolean start() {
 	
@@ -93,6 +111,9 @@ public class Actuator extends EventHandler implements Acting {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventHandler#stop()
+	 */
 	@Override
 	public final boolean stop() {
 		
@@ -118,20 +139,38 @@ public class Actuator extends EventHandler implements Acting {
 	//--------------------------------------------------------------------------------
 	
 	// TODO Em que momento esses métodos seriam chamados pelo usuário?!?!
+	/**
+	 * Sets the need action time.
+	 *
+	 * @param needActionTime the new need action time
+	 */
 	protected void setNeedActionTime(long needActionTime) {
 		this.needActionTime = needActionTime;
 	}
 	
+	/**
+	 * Sets the send lag.
+	 *
+	 * @param sendLag the new send lag
+	 */
 	protected void setSendLag(long sendLag) {
 		this.sendLag = sendLag;
 	}
 	
+	/**
+	 * Sets the automatic action.
+	 *
+	 * @param automaticAction the new automatic action
+	 */
 	public void setAutomaticAction(boolean automaticAction) {
 		this.automaticAction = automaticAction;
 	}
 	
 	// TODO Se for chamado mais de uma vez, deve matar o Behaviour antigo!!!
 	// TODO Ver a opção do raciocínio ser a avisado (needEvent())
+	/**
+	 * Sets the event frequency.
+	 */
 	protected void setEventFrequency() {
 
 		actuatorState = AC_STATE.INITIALIZED;
@@ -154,8 +193,14 @@ public class Actuator extends EventHandler implements Acting {
 			
 	}
 	
+	/**
+	 * The Class ActionScheduler.
+	 */
 	private class ActionScheduler implements Runnable {
 
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
 		public void run() {
 			
 			switch (actuatorState) {
@@ -234,14 +279,26 @@ public class Actuator extends EventHandler implements Acting {
 		
 	}
 	
+	/**
+	 * The Class NeedActionBehaviour.
+	 */
 	private class NeedActionBehaviour extends OneShotBehaviour {
 
+		/** The reasoning. */
 		private Reasoning reasoning;
 		
+		/**
+		 * Instantiates a new need action behaviour.
+		 *
+		 * @param reasoning the reasoning
+		 */
 		public NeedActionBehaviour(Reasoning reasoning) {
 			this.reasoning = reasoning;
 		}
 		
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		public void action() {
 			try {
 				double instant = (double)(startTime + (workingFrame * period))/1000;
@@ -254,6 +311,9 @@ public class Actuator extends EventHandler implements Acting {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Acting#act()
+	 */
 	public void act() {
 
 		Object content = null;

@@ -23,31 +23,58 @@ import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
 import ensemble.tools.AudioTools;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AudioFileReasoning.
+ */
 public class AudioFileReasoning extends Reasoning {
 
 	// Memories
+	/** The sensor memories. */
 	private HashMap<String,Memory> sensorMemories = new HashMap<String, Memory>(2);
+	
+	/** The actuator memories. */
 	private HashMap<String,Memory> actuatorMemories = new HashMap<String, Memory>(2);
 	
 	// Active Mappings
+	/** The mappings. */
 	private HashMap<String, Mapping> mappings = new HashMap<String, Mapping>(2);
 	
+	/** The chunk_size. */
 	int chunk_size;
 	
 	//Ref datetime
+	/** The dt. */
 	long dt;
 	
 	// Reasoning state
+	/**
+	 * The Enum ReasoningState.
+	 */
 	enum ReasoningState {
+		
+		/** The not defined. */
 		NOT_DEFINED,
+		
+		/** The recording. */
 		RECORDING,
+		
+		/** The stopped. */
 		STOPPED,
+		
+		/** The playing. */
 		PLAYING,
+		
+		/** The error. */
 		ERROR
 	}
 	
+	/** The state. */
 	ReasoningState state = ReasoningState.NOT_DEFINED;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -59,6 +86,9 @@ public class AudioFileReasoning extends Reasoning {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#finit()
+	 */
 	@Override
 	public boolean finit() {
 		// Closes all open files
@@ -82,6 +112,9 @@ public class AudioFileReasoning extends Reasoning {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) throws Exception {
 		if (evtHdl instanceof Sensor && evtHdl.getEventType().equals(AudioConstants.EVT_TYPE_AUDIO)) {
@@ -99,6 +132,9 @@ public class AudioFileReasoning extends Reasoning {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) throws Exception {
 
@@ -116,6 +152,9 @@ public class AudioFileReasoning extends Reasoning {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	@Override
 	public void needAction(Actuator sourceActuator, double instant, double duration) throws Exception {
  
@@ -182,6 +221,9 @@ public class AudioFileReasoning extends Reasoning {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#processCommand(ensemble.Command)
+	 */
 	@Override
 	public void processCommand(Command cmd) {
 		
@@ -278,9 +320,18 @@ public class AudioFileReasoning extends Reasoning {
 		
 	}
 	
+	/**
+	 * The Class Mapping.
+	 */
 	class Mapping {
+		
+		/** The playing. */
 		boolean playing; 
+		
+		/** The eh memory. */
 		Memory 	ehMemory;
+		
+		/** The stream. */
 		Object 	stream;
 	}
 	

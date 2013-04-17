@@ -29,26 +29,57 @@ import ensemble.processing.ProcessorFactory;
 import ensemble.processing.ProcessorFactory.AudioOperation;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OnsetsDS.
+ */
 public class OnsetsDS extends Processor {
 
+	/** The Constant ods_log1. */
 	private final static double ods_log1 = -2.30258509;
 	
+	/** The Constant PI. */
 	private final static double PI = 3.1415926535898;
+	
+	/** The Constant MINUSPI. */
 	private final static double MINUSPI = -3.1415926535898;
+	
+	/** The Constant TWOPI. */
 	private final static double TWOPI = 6.28318530717952646;
+	
+	/** The Constant INV_TWOPI. */
 	private final static double INV_TWOPI = 0.1591549430919;
 	
+	/** The Constant ODS_LOG_LOWER_LIMIT. */
 	private final static double ODS_LOG_LOWER_LIMIT = 2e-42;
+	
+	/** The Constant ODS_LOGOF_LOG_LOWER_LIMIT. */
 	private final static double ODS_LOGOF_LOG_LOWER_LIMIT = -96.0154267;
+	
+	/** The Constant ODS_ABSINVOF_LOGOF_LOG_LOWER_LIMIT. */
 	private final static double ODS_ABSINVOF_LOGOF_LOG_LOWER_LIMIT = 0.010414993;
 
+	/** The n. */
 	private int N;
+	
+	/** The ods. */
 	private OnsetsDS_struct ods;
+	
+	/** The fftproc. */
 	private Processor fftproc;
 	
+	/**
+	 * The Enum output_type.
+	 */
 	enum output_type {
+		
+		/** The time. */
 		TIME,
+		
+		/** The sample. */
 		SAMPLE,
+		
+		/** The boolean. */
 		BOOLEAN
 	}
 	
@@ -57,57 +88,107 @@ public class OnsetsDS extends Processor {
 	* data comes from in order to interpret it correctly.
 	*/
 	enum onsetsds_fft_types {
+		
+		/** The OD s_ ff t_ s c3_ complex. */
 		ODS_FFT_SC3_COMPLEX,	  ///< SuperCollider, cartesian co-ords ("SCComplexBuf") - NB it's more efficient to provide polar data from SC
-		ODS_FFT_SC3_POLAR,	  ///< SuperCollider, polar co-ords ("SCPolarBuf")
-		ODS_FFT_FFTW3_HC, ///< FFTW <a href="http://www.fftw.org/fftw3_doc/The-Halfcomplex_002dformat-DFT.html">"halfcomplex"</a> format 
-		ODS_FFT_FFTW3_R2C,   ///< FFTW regular format, typically produced using <a href="http://www.fftw.org/fftw3_doc/One_002dDimensional-DFTs-of-Real-Data.html#One_002dDimensional-DFTs-of-Real-Data">real-to-complex</a> transform
-		ODS_FFT_SST_R2C,
+		/** The OD s_ ff t_ s c3_ polar. */
+  	ODS_FFT_SC3_POLAR,	  ///< SuperCollider, polar co-ords ("SCPolarBuf")
+		/** The OD s_ ff t_ fft w3_ hc. */
+  	ODS_FFT_FFTW3_HC, ///< FFTW <a href="http://www.fftw.org/fftw3_doc/The-Halfcomplex_002dformat-DFT.html">"halfcomplex"</a> format 
+		/** The OD s_ ff t_ fft w3_ r2 c. */
+ ODS_FFT_FFTW3_R2C,   ///< FFTW regular format, typically produced using <a href="http://www.fftw.org/fftw3_doc/One_002dDimensional-DFTs-of-Real-Data.html#One_002dDimensional-DFTs-of-Real-Data">real-to-complex</a> transform
+		/** The OD s_ ff t_ ss t_ r2 c. */
+   ODS_FFT_SST_R2C,
+		
+		/** The OD s_ ff t_ aubi o_ r2 c. */
 		ODS_FFT_AUBIO_R2C,
+		
+		/** The ods fft libxtract. */
 		ODS_FFT_LIBXTRACT
 	}
 
 	/**
-	* Types of onset detection function
-	*/
+	 * Types of onset detection function.
+	 */
 	enum onsetsds_odf_types {
+		
+		/** The ods odf power. */
 		ODS_ODF_POWER,    ///< Power
-		ODS_ODF_MAGSUM,   ///< Sum of magnitudes
-		ODS_ODF_COMPLEX,  ///< Complex-domain deviation
-		ODS_ODF_RCOMPLEX, ///< Complex-domain deviation, rectified (only increases counted)
-		ODS_ODF_PHASE,    ///< Phase deviation
-		ODS_ODF_WPHASE,   ///< Weighted phase deviation
-		ODS_ODF_MKL       ///< Modified Kullback-Liebler deviation
+		/** The ods odf magsum. */
+    ODS_ODF_MAGSUM,   ///< Sum of magnitudes
+		/** The ods odf complex. */
+   ODS_ODF_COMPLEX,  ///< Complex-domain deviation
+		/** The ods odf rcomplex. */
+  ODS_ODF_RCOMPLEX, ///< Complex-domain deviation, rectified (only increases counted)
+		/** The ods odf phase. */
+ ODS_ODF_PHASE,    ///< Phase deviation
+		/** The ods odf wphase. */
+    ODS_ODF_WPHASE,   ///< Weighted phase deviation
+		/** The ods odf mkl. */
+   ODS_ODF_MKL       ///< Modified Kullback-Liebler deviation
 	}
 
 	/**
 	* Types of whitening - may not all be implemented yet.
 	*/
 	enum onsetsds_wh_types {
+		
+		/** The ods wh none. */
 		ODS_WH_NONE, ///< No whitening - onsetsds_whiten() becomes a no-op
-		ODS_WH_ADAPT_MAX1, ///< Adaptive whitening - tracks recent-peak-magnitude in each bin, normalises that to 1
-		ODS_WH_NORMMAX, ///< Simple normalisation - each frame is normalised (independent of others) so largest magnitude becomes 1. Not implemented.
-		ODS_WH_NORMMEAN ///< Simple normalisation - each frame is normalised (independent of others) so mean magnitude becomes 1. Not implemented.
+		/** The OD s_ w h_ adap t_ ma x1. */
+ ODS_WH_ADAPT_MAX1, ///< Adaptive whitening - tracks recent-peak-magnitude in each bin, normalises that to 1
+		/** The ods wh normmax. */
+ ODS_WH_NORMMAX, ///< Simple normalisation - each frame is normalised (independent of others) so largest magnitude becomes 1. Not implemented.
+		/** The ods wh normmean. */
+ ODS_WH_NORMMEAN ///< Simple normalisation - each frame is normalised (independent of others) so mean magnitude becomes 1. Not implemented.
 	}
 	
+	/**
+	 * The Class OdsPolarBin.
+	 */
 	class OdsPolarBin { 
+		
+		/** The phase. */
 		double mag, phase; 
 	}
 
+	/**
+	 * The Class OdsPolarBuf.
+	 */
 	class OdsPolarBuf {
+		
+		/** The nyq. */
 		double dc, nyq;
+		
+		/** The bin. */
 		OdsPolarBin[] bin;
 	}
 
 	/// The main data structure for the onset detection routine
+	/**
+	 * The Class OnsetsDS_struct.
+	 */
 	class OnsetsDS_struct {
 		
+		/** The fft. */
 		double[] fft;
+		
+		/** The psp. */
 		double[] psp; ///< Peak Spectral Profile - size is numbins+2, data is stored in order dc through to nyquist
+		
+		/** The odfvals. */
 		double[] odfvals; // odfvals[0] will be the current val, odfvals[1] prev, etc
+		
+		/** The sortbuf. */
 		double[] sortbuf; // Used to calculate the median
+		
+		/** The other. */
 		double[] other; // Typically stores data about the previous frame
+		
+		/** The curr. */
 		OdsPolarBuf curr; // Current FFT frame, as polar
 		
+		/** The thresh. */
 		double 
 			srate, ///< The sampling rate of the input audio. Set by onsetsds_init()
 			// Adaptive whitening params
@@ -128,10 +209,16 @@ public class OnsetsDS extends Processor {
 			/// sometimes be appropriate too.
 			thresh;
 		
+		/** The odftype. */
 		onsetsds_odf_types 	odftype;    ///< Choose from #onsetsds_odf_types
+		
+		/** The whtype. */
 		onsetsds_wh_types	whtype;     ///< Choose from #onsetsds_wh_types
+		
+		/** The fftformat. */
 		onsetsds_fft_types  fftformat;  ///< Choose from #onsetsds_fft_types
 		
+		/** The med_odd. */
 		boolean whiten,  ///< Whether to apply whitening - onsetsds_init() decides this on your behalf
 			 detected,///< Output val - true if onset detected in curr frame
 			 /*
@@ -143,29 +230,67 @@ public class OnsetsDS extends Processor {
 			 logmags,
 			 med_odd; ///< Whether median span is odd or not (used internally)
 
+		/** The gapleft. */
 		int 
 			/// Number of frames used in median calculation
 			medspan, 
 			/// Size of enforced gap between detections, measured in FFT frames.
 			mingap, gapleft;
 		
+		/** The numbins. */
 		int fftsize, numbins; // numbins is the count not including DC/nyq
 	}
 	
+	/**
+	 * Ods_abs.
+	 *
+	 * @param a the a
+	 * @return the double
+	 */
 	private double ods_abs(double a) {
 		return ((a)<0? -(a) : (a));
 	}
+	
+	/**
+	 * Ods_max.
+	 *
+	 * @param a the a
+	 * @param b the b
+	 * @return the double
+	 */
 	private double ods_max(double a, double b) {
 		return (((a) > (b)) ? (a) : (b));
 	}
+	
+	/**
+	 * Ods_min.
+	 *
+	 * @param a the a
+	 * @param b the b
+	 * @return the double
+	 */
 	private double ods_min(double a, double b) {
 		return (((a) < (b)) ? (a) : (b));
 	}
 
+	/**
+	 * Onsetsds_phase_rewrap.
+	 *
+	 * @param phase the phase
+	 * @return the double
+	 */
 	private double onsetsds_phase_rewrap(double phase){
 		return (phase>MINUSPI && phase<PI) ? phase : phase + TWOPI * (1.f + Math.floor((MINUSPI - phase) * INV_TWOPI));
 	}
 	
+	/**
+	 * Onsetsds_memneeded.
+	 *
+	 * @param odftype the odftype
+	 * @param fftsize the fftsize
+	 * @param medspan the medspan
+	 * @return the int
+	 */
 	private int onsetsds_memneeded (onsetsds_odf_types odftype, int fftsize, int medspan){
 
 		/*
@@ -213,11 +338,28 @@ public class OnsetsDS extends Processor {
 
 	}
 
+	/**
+	 * Onsetsds_setrelax.
+	 *
+	 * @param ods the ods
+	 * @param time the time
+	 * @param hopsize the hopsize
+	 */
 	void onsetsds_setrelax(OnsetsDS_struct ods, double time, int hopsize){
 		ods.relaxtime = time;
 		ods.relaxcoef = (time == 0.0f) ? 0.0f : Math.exp((ods_log1 * hopsize)/(time * ods.srate));
 	}
 	
+	/**
+	 * Onsetsds_init.
+	 *
+	 * @param ods the ods
+	 * @param fftformat the fftformat
+	 * @param odftype the odftype
+	 * @param fftsize the fftsize
+	 * @param medspan the medspan
+	 * @param srate the srate
+	 */
 	private void onsetsds_init(OnsetsDS_struct ods, onsetsds_fft_types fftformat, onsetsds_odf_types odftype, int fftsize, int medspan, double srate){
 
 		ods.srate = srate;
@@ -310,6 +452,13 @@ public class OnsetsDS extends Processor {
 		
 	}
 
+	/**
+	 * Onsetsds_process.
+	 *
+	 * @param ods the ods
+	 * @param fftbuf the fftbuf
+	 * @return true, if successful
+	 */
 	private boolean onsetsds_process(OnsetsDS_struct ods, double[] fftbuf) {
 		onsetsds_loadframe(ods, fftbuf);
 
@@ -320,6 +469,12 @@ public class OnsetsDS extends Processor {
 		return ods.detected;
 	}	
 	
+	/**
+	 * Onsetsds_loadframe.
+	 *
+	 * @param ods the ods
+	 * @param fftbuf the fftbuf
+	 */
 	private void onsetsds_loadframe(OnsetsDS_struct ods, double[] fftbuf){
 		
 		double pos, pos2, imag, real;
@@ -392,6 +547,11 @@ public class OnsetsDS extends Processor {
 		
 	}
 
+	/**
+	 * Onsetsds_whiten.
+	 *
+	 * @param ods the ods
+	 */
 	private void onsetsds_whiten(OnsetsDS_struct ods){
 		
 		if(ods.whtype == onsetsds_wh_types.ODS_WH_NONE){
@@ -447,6 +607,11 @@ public class OnsetsDS extends Processor {
 		}
 	}
 
+	/**
+	 * Onsetsds_odf.
+	 *
+	 * @param ods the ods
+	 */
 	private void onsetsds_odf(OnsetsDS_struct ods){
 		
 		int numbins = ods.numbins;
@@ -605,6 +770,12 @@ public class OnsetsDS extends Processor {
 	}
 	// End of ODF function
 
+	/**
+	 * Selection sort.
+	 *
+	 * @param array the array
+	 * @param length the length
+	 */
 	void selectionSort(double[] array, int length)
 	{
 	  // Algo is simply based on http://en.wikibooks.org/wiki/Algorithm_implementation/Sorting/Selection_sort
@@ -623,6 +794,11 @@ public class OnsetsDS extends Processor {
 	  }
 	}
 
+	/**
+	 * Onsetsds_detect.
+	 *
+	 * @param ods the ods
+	 */
 	private void onsetsds_detect(OnsetsDS_struct ods){
 		
 		// Shift the yesterval to its rightful place
@@ -662,6 +838,14 @@ public class OnsetsDS extends Processor {
 		}
 	}
 	
+	/**
+	 * Hann_window.
+	 *
+	 * @param in the in
+	 * @param offset the offset
+	 * @param length the length
+	 * @return the double[]
+	 */
 	public double[] hann_window(double[] in, int offset, int length) {
 	    double[] out = new double[length];
 
@@ -673,11 +857,19 @@ public class OnsetsDS extends Processor {
 	    return out;
 	}
 
+	/** The sample_rate. */
 	double 		sample_rate;
+	
+	/** The frame_size. */
 	int 		frame_size;
+	
+	/** The onset_output. */
 	output_type onset_output;
 	
 	// TODO Deixar mais configurável
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#init()
+	 */
 	public boolean init() {
 
 		// Arguments
@@ -708,6 +900,9 @@ public class OnsetsDS extends Processor {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.processing.Processor#process(ensemble.Parameters, java.lang.Object)
+	 */
 	@Override
 	public Object process(Parameters arguments, Object in) {
 
@@ -761,6 +956,10 @@ public class OnsetsDS extends Processor {
 		return ret;
 
 	}
+	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#finit()
+	 */
 	@Override
 	public boolean finit() {
 		

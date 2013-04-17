@@ -41,32 +41,37 @@ import ensemble.memory.MemoryException;
 import ensemble.tools.AudioTools;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JavaInputReasoning.
+ */
 public class JavaInputReasoning extends Reasoning {
 
-	/**
-	 * Actuator used to send audio events
-	 */
+	/** Actuator used to send audio events. */
 	Actuator 	mouth;
-	/**
-	 * Actuator memory
-	 */
+	
+	/** Actuator memory. */
 	Memory 		mouthMemory;
 	
-	/**
-	 * Number of samples in a frame
-	 */
+	/** Number of samples in a frame. */
 	int chunk_size;
+	
+	/** The period. */
 	double period;
 
-	/**
-	 * Mic line
-	 */
+	/** Mic line. */
 	TargetDataLine 		targetDataLine;
+	
+	/** The queue. */
 	ArrayList<double[]> queue = new ArrayList<double[]>();
+	
+	/** The buffer. */
 	byte[] 				buffer;
 	
 	/**
-	 * Init the Mic Line
+	 * Init the Mic Line.
+	 *
+	 * @return true, if successful
 	 */
 	@Override
 	public boolean init() {
@@ -91,7 +96,9 @@ public class JavaInputReasoning extends Reasoning {
 	}
 	
 	/**
-	 * Finalizes the Mic Line
+	 * Finalizes the Mic Line.
+	 *
+	 * @return true, if successful
 	 */
 	@Override
 	public boolean finit() {
@@ -100,6 +107,9 @@ public class JavaInputReasoning extends Reasoning {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 
@@ -115,6 +125,9 @@ public class JavaInputReasoning extends Reasoning {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	@Override
 	public void needAction(Actuator sourceActuator, double instant, double duration) {
 		System.out.println("[" + (long)getAgent().getClock().getCurrentTime(TimeUnit.MILLISECONDS) + "] instant = " + instant + " queue size = " + queue.size());
@@ -131,6 +144,9 @@ public class JavaInputReasoning extends Reasoning {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#process()
+	 */
 	@Override
 	public void process() throws Exception {
 		if (getState() == EA_STATE.INITIALIZED && targetDataLine.isRunning() && buffer != null) {

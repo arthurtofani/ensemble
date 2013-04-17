@@ -45,26 +45,48 @@ import jportaudio.PaStreamParameters;
 import jportaudio.portaudio;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PAInputReasoning.
+ */
 public class PAInputReasoning extends Reasoning {
 
 	// Log
 //	public static Logger logger = Logger.getMyLogger(MusicalAgent.class.getName());
 
 	// PortAudio
+	/** The pa. */
 	portaudio 					pa;
+	
+	/** The stream infos. */
 	HashMap<Long, StreamInfo> 	streamInfos = new HashMap<Long, StreamInfo>(2);
+	
+	/** The streams_sensors. */
 	HashMap<Long, String> 		streams_sensors = new HashMap<Long, String>(2);
+	
+	/** The sensors_streams. */
 	HashMap<String, Long> 		sensors_streams = new HashMap<String, Long>(2);
+	
+	/** The period. */
 	double 						callbackStartTime, period;
+	
+	/** The step. */
 	double 						step = 1/44100.0;
 	
 	// Parameters
+	/** The devices. */
 	HashMap<String,Integer> devices = new HashMap<String, Integer>();
+	
+	/** The channels. */
 	HashMap<String,Integer> channels = new HashMap<String, Integer>();
 	
 	// Sensor
+	/** The mouth memories. */
 	HashMap<String,Memory> 	mouthMemories = new HashMap<String, Memory>(2);
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -91,6 +113,9 @@ public class PAInputReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#finit()
+	 */
 	@Override
 	public boolean finit() {
 
@@ -100,6 +125,9 @@ public class PAInputReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
@@ -157,6 +185,9 @@ public class PAInputReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerDeregistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerDeregistered(EventHandler evtHdl)
 			throws Exception {
@@ -173,6 +204,9 @@ public class PAInputReasoning extends Reasoning {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	@Override
 	public void needAction(Actuator sourceActuator, double instant,
 			double duration) throws Exception {
@@ -181,19 +215,53 @@ public class PAInputReasoning extends Reasoning {
 		sourceActuator.act();
 	}
 
+	/**
+	 * The Class StreamInfo.
+	 */
 	class StreamInfo {
+		
+		/** The stream. */
 		long 	stream;
+		
+		/** The evt hdl name. */
 		String 	evtHdlName;
+		
+		/** The device. */
 		int 	device;
+		
+		/** The channel. */
 		int 	channel;
+		
+		/** The channel count. */
 		int 	channelCount;
+		
+		/** The latency. */
 		double 	latency;
+		
+		/** The first call. */
 		boolean firstCall = true;
+		
+		/** The instant. */
 		double 	instant = 0.0;
 	}
 	
+	/**
+	 * The Class Callback.
+	 */
 	class Callback extends PaCallback {
 		
+		/**
+		 * Callback.
+		 *
+		 * @param stream the stream
+		 * @param input the input
+		 * @param output the output
+		 * @param frameCount the frame count
+		 * @param inputBufferAdcTime the input buffer adc time
+		 * @param currentTime the current time
+		 * @param outputBufferDacTime the output buffer dac time
+		 * @return the int
+		 */
 		@Override
 		public int callback(long stream, ByteBuffer input, ByteBuffer output,
 				long frameCount, double inputBufferAdcTime,
@@ -242,6 +310,11 @@ public class PAInputReasoning extends Reasoning {
 			
 		}
 		
+		/**
+		 * Hook.
+		 *
+		 * @param stream the stream
+		 */
 		@Override
 		public void hook(long stream) {
 		}

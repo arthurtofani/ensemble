@@ -5,14 +5,24 @@ import ensemble.MusicalAgent;
 import ensemble.Parameters;
 import ensemble.Sensor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LM_FoodSensor.
+ */
 public class LM_FoodSensor extends Sensor {
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#configure()
+	 */
 	@Override
 	public boolean configure() {
 		setEventType("ENERGY");
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventHandler#process(ensemble.Event)
+	 */
 	@Override
 	protected void process(Event evt) {
 

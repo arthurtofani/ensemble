@@ -22,70 +22,155 @@ import ensemble.processing.ProcessorFactory.AudioOperation;
 import ensemble.world.Vector;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CP_Reasoning.
+ */
 public class CP_Reasoning extends Reasoning {
 
 	// Audio
+	/** The mouth. */
 	Actuator 	mouth;
+	
+	/** The mouth memory. */
 	Memory 		mouthMemory;
+	
+	/** The ear. */
 	Sensor 		ear;
+	
+	/** The ear memory. */
 	Memory 		earMemory;
+	
+	/** The chunk_size. */
 	int 		chunk_size;
 
 	// Movement
+	/** The legs. */
 	Actuator	legs;
+	
+	/** The legs memory. */
 	Memory 		legsMemory;
+	
+	/** The eyes. */
 	Sensor 		eyes;
+	
+	/** The eyes memory. */
 	Memory 		eyesMemory;
 	
 	// Reasoning state
+	/**
+	 * The Enum ReasoningState.
+	 */
 	enum ReasoningState {
+		
+		/** The not defined. */
 		NOT_DEFINED,
+		
+		/** The listening. */
 		LISTENING,
+		
+		/** The analysing. */
 		ANALYSING,
+		
+		/** The playing. */
 		PLAYING,
+		
+		/** The error. */
 		ERROR
 	}
+	
+	/** The state. */
 	ReasoningState state = ReasoningState.NOT_DEFINED;
 	
 	// Audio file - wavetable
+	/** The in. */
 	private AudioInputFile 	in;
+	
+	/** The sample rate. */
 	private float 			sampleRate;
+	
+	/** The wavetable. */
 	private double[] 		wavetable;
+	
+	/** The wavetable_with_gain. */
 	private double[] 		wavetable_with_gain;
+	
+	/** The wavetable_gain. */
 	private double 			wavetable_gain = 2.0;
 	
 	// Audio Processor - Onset Detection
+	/** The onsetproc. */
 	private Processor 		onsetproc;
 	
 	// Common Variables
+	/** The number_beats. */
 	int 	number_beats;
+	
+	/** The frame_duration. */
 	double 	frame_duration;
+	
+	/** The measure_duration. */
 	double 	measure_duration;
+	
+	/** The beat_duration. */
 	double 	beat_duration;
+	
+	/** The master. */
 	boolean master = false;
 	
 	// Play variables
+	/** The start_time. */
 	double 		start_time;
+	
+	/** The start_playing_time. */
 	double 		start_playing_time;
+	
+	/** The pattern. */
 	boolean[] 	pattern;
+	
+	/** The beats. */
 	ArrayList<Double> beats = new ArrayList<Double>();
+	
+	/** The next_sample_play. */
 	int 		next_sample_play = 0;
+	
+	/** The measure_counter. */
 	int 		measure_counter = 0;
+	
+	/** The phase. */
 	int 		phase = 0;
+	
+	/** The slide. */
 	int 		slide = 0;
+	
+	/** The last_phase. */
 	int 		last_phase = 0;
+	
+	/** The actual_phase. */
 	int 		actual_phase = 0;
 
+	/** The master_position. */
 	Vector 		master_position = new Vector(0,0,0);
+	
+	/** The start_position. */
 	Vector 		start_position = null;
+	
+	/** The radius. */
 	double 		radius;
 	
 	// Listening Variables;
+	/** The detected_beats_time. */
 	ArrayList<Double> detected_beats_time = new ArrayList<Double>();
+	
+	/** The detected_beats_energy. */
 	ArrayList<Double> detected_beats_energy = new ArrayList<Double>();
 	
+	/** The error. */
 	double error = 0.05; // porcentagem permitida na diferença entre o onset e o suposto lugar da batida
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -212,6 +297,9 @@ public class CP_Reasoning extends Reasoning {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
 		// Checar se é um atuador de som e adicionar na lista
@@ -250,6 +338,9 @@ public class CP_Reasoning extends Reasoning {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	public void needAction(Actuator sourceActuator, double instant, double duration) {
 
 		switch (state) {
@@ -350,6 +441,9 @@ public class CP_Reasoning extends Reasoning {
 //		System.out.println("REAS time = " + (System.currentTimeMillis() - start));
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 
@@ -434,6 +528,9 @@ public class CP_Reasoning extends Reasoning {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#process()
+	 */
 	public void process() throws Exception {
 
 		switch (state) {

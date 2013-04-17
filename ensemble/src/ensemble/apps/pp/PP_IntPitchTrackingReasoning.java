@@ -21,36 +21,70 @@ import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
 import ensemble.router.MessageConstants;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PP_IntPitchTrackingReasoning.
+ */
 public class PP_IntPitchTrackingReasoning extends Reasoning {
 
 	
+	/** The min peak. */
 	private double MIN_PEAK = 0.4;
+	
+	/** The max peak. */
 	private double MAX_PEAK = 0.7;
 	
 	//Messages
+	/** The antenna. */
 	private Sensor 		antenna;
+	
+	/** The antenna memory. */
 	private Memory 		antennaMemory;
+	
+	/** The messenger. */
 	private Actuator 	messenger;
+	
+	/** The messenger memory. */
 	private Memory 		messengerMemory;
 
+	/** The check peak. */
 	private boolean checkPeak = false;
 
 	// Log
 //	public static Logger logger = Logger.getMyLogger(MusicalAgent.class.getName());
 
 	// JACK
+	/** The client_name. */
 	String 						client_name;
+	
+	/** The client. */
 	long					 	client;
+	
+	/** The callback start time. */
 	double 						callbackStartTime;
+	
+	/** The period. */
 	double 						period;
+	
+	/** The step. */
 	double 						step = 1/44100.0;
+	
+	/** The mapping. */
 	Hashtable<String,String> mapping = new Hashtable<String, String>();
+	
+	/** The ports. */
 	Hashtable<String, Long> ports = new Hashtable<String,Long>(2);
 	
 	// Actuator
+	/** The mouths. */
 	Hashtable<String,Actuator> mouths = new Hashtable<String, Actuator>(2);
+	
+	/** The mouth memories. */
 	Hashtable<String,Memory> mouthMemories = new Hashtable<String, Memory>(2);
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -80,6 +114,9 @@ public class PP_IntPitchTrackingReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#finit()
+	 */
 	@Override
 	public boolean finit() {
 		
@@ -89,6 +126,9 @@ public class PP_IntPitchTrackingReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
@@ -144,6 +184,9 @@ public class PP_IntPitchTrackingReasoning extends Reasoning {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerDeregistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerDeregistered(EventHandler evtHdl) {
 		if (evtHdl instanceof Actuator && evtHdl.getEventType().equals(AudioConstants.EVT_TYPE_AUDIO)) {
@@ -166,6 +209,9 @@ public class PP_IntPitchTrackingReasoning extends Reasoning {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	@Override
 	public void needAction(Actuator sourceActuator, double instant,
 			double duration) throws Exception {
@@ -177,12 +223,23 @@ public class PP_IntPitchTrackingReasoning extends Reasoning {
 		
 	}
 	
+	/**
+	 * The Class Process.
+	 */
 	class Process implements JackCallback {
 
+		/** The d buffer. */
 		double[] dBuffer;
+		
+		/** The first call. */
 		boolean firstCall = true;
+		
+		/** The instant. */
 		double instant = 0;
 
+		/* (non-Javadoc)
+		 * @see jjack.JackCallback#process(int, double)
+		 */
 		@Override
 		public int process(int nframes, double time) {
 

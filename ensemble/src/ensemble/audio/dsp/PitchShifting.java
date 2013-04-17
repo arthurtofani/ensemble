@@ -1,35 +1,73 @@
 package ensemble.audio.dsp;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PitchShifting.
+ */
 public class PitchShifting {
 
+	/** The block size. */
 	private int blockSize;
+	
+	/** The sample rate. */
 	private int sampleRate;
+	
+	/** The parameter1. */
 	private double parameter1 = 1;
 	
 	
+	/**
+	 * Instantiates a new pitch shifting.
+	 *
+	 * @param sRate the s rate
+	 * @param bSize the b size
+	 */
 	public PitchShifting(int sRate, int bSize) {
 		sampleRate = sRate;
 		blockSize = bSize;
 	}
 	
 	
+	/**
+	 * Gets the block size.
+	 *
+	 * @return the block size
+	 */
 	public int getBlockSize() {
 		return blockSize;
 	}
 	
+	/**
+	 * Gets the sample rate.
+	 *
+	 * @return the sample rate
+	 */
 	public int getSampleRate() {
 		return sampleRate;
 	}
+	
+	/**
+	 * Sets the params.
+	 *
+	 * @param param1 the new params
+	 */
 	public void setParams(double param1) {
 		parameter1 = param1;
 	}
 	
+	/**
+	 * Gets the parameter1.
+	 *
+	 * @return the parameter1
+	 */
 	public double getParameter1() {
 		return parameter1;
 	}
 
 	/**
 	 * Shifts the pitch of the incoming signal.
+	 *
+	 * @param buffer the buffer
 	 */
 	public void perform(double[] buffer) {
 		// Pitch Shifting parameters
@@ -84,9 +122,10 @@ public class PitchShifting {
 	
 	/**
 	 * Calculates the correlation between two vectors.
-	 * @param x1
-	 * @param x2
-	 * @return
+	 *
+	 * @param x1 the x1
+	 * @param x2 the x2
+	 * @return the double[]
 	 */
 	private double[] xcorr(double[] x1, double[] x2)
 	{
@@ -106,8 +145,9 @@ public class PitchShifting {
 	
 	/**
 	 * Returns the (first) index of the maximum value of an array.
-	 * @param a
-	 * @return
+	 *
+	 * @param a the a
+	 * @return the index of max
 	 */
 	private int getIndexOfMax(double[] a) {
 		int k = 0;
@@ -119,9 +159,10 @@ public class PitchShifting {
 	
 	/**
 	 * Dot-Multiply: each position of the resulting array is the multiplication of the corresponding position of the input arrays.
-	 * @param x1
-	 * @param x2
-	 * @return
+	 *
+	 * @param x1 the x1
+	 * @param x2 the x2
+	 * @return the double[]
 	 */
 	private double[] dotMultiply(double[] x1, double[] x2) {
 		double[] r = new double[x1.length];

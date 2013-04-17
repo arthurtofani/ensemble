@@ -18,26 +18,6 @@ You should have received a copy of the GNU General Public License
 along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 
 ******************************************************************************/
-*****************************************************************************
-
-Copyright 2011 Leandro Ferrari Thomaz
-
-This file is part of Ensemble.
-
-Ensemble is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Ensemble is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
-
-******************************************************************************/
 
 package ensemble.processing.audio;
 
@@ -49,23 +29,49 @@ import aubio.aubio_pitchdetection_mode;
 import aubio.aubio_pitchdetection_type;
 import aubio.aubiowrapper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Aubio_PitchDetection.
+ */
 public class Aubio_PitchDetection extends Processor {
 
+	/** The Constant ARG_BUFSIZE. */
 	private static final String ARG_BUFSIZE = "bufsize";
+	
+	/** The Constant ARG_HOPSIZE. */
 	private static final String ARG_HOPSIZE = "hopsize";
+	
+	/** The Constant ARG_SAMPLE_RATE. */
 	private static final String ARG_SAMPLE_RATE = "sample_rate";
+	
+	/** The Constant ARG_TYPE. */
 	private static final String ARG_TYPE = "type";
+	
+	/** The Constant ARG_MODE. */
 	private static final String ARG_MODE = "mode";
 	
+	/** The p_t. */
 	private SWIGTYPE_p_aubio_pitchdetection_t p_t;
 	
+	/** The default_bufsize. */
 	private int default_bufsize = 512;
+	
+	/** The default_hopsize. */
 	private int default_hopsize = 256;
+	
+	/** The default_sample_rate. */
 	private int default_sample_rate = 44100;
+	
+	/** The default_type. */
 	private aubio_pitchdetection_type default_type = aubio_pitchdetection_type.aubio_pitch_schmitt;
+	
+	/** The default_mode. */
 	private aubio_pitchdetection_mode default_mode = aubio_pitchdetection_mode.aubio_pitchm_midi;
 	
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#init()
+	 */
 	public boolean init() {
 		
 		long start = System.currentTimeMillis();
@@ -77,6 +83,9 @@ public class Aubio_PitchDetection extends Processor {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.processing.Processor#process(ensemble.Parameters, java.lang.Object)
+	 */
 	@Override
 	public Object process(Parameters arguments, Object in) {
 
@@ -105,6 +114,9 @@ public class Aubio_PitchDetection extends Processor {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#finit()
+	 */
 	@Override
 	public boolean finit() {
 

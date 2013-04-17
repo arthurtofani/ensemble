@@ -10,23 +10,41 @@ import ensemble.Parameters;
 import ensemble.apps.lm.LM_World.Position;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LM_MovementEventServer.
+ */
 public class LM_MovementEventServer extends EventServer {
 
 	// Mundo virtual
+	/** The world. */
 	LM_World world;
 	
 	// Campos para o evento
+	/** The dest agent name. */
 	private String 		destAgentName;
+	
+	/** The dest agent comp name. */
 	private String 		destAgentCompName;
+	
+	/** The dest agent note. */
 	private String  	destAgentNote;
+	
+	/** The prox position. */
 	private Position 	proxPosition;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
 	@Override
 	public boolean configure() {
 		setEventType("MOVEMENT");
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -35,11 +53,21 @@ public class LM_MovementEventServer extends EventServer {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#finit()
+	 */
 	@Override
 	public boolean finit() {
 		return true;
 	}
 	
+	/**
+	 * Check agent presence.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @return the position
+	 */
 	private Position checkAgentPresence(int x, int y) {
 
 		Position agent = null;
@@ -50,6 +78,9 @@ public class LM_MovementEventServer extends EventServer {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#process()
+	 */
 	@Override
 	public void process() {
 
@@ -160,6 +191,9 @@ public class LM_MovementEventServer extends EventServer {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#processSense(ensemble.Event)
+	 */
 	@Override
 	public void processSense(Event evt) {
 
@@ -276,6 +310,9 @@ public class LM_MovementEventServer extends EventServer {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#actuatorRegistered(java.lang.String, java.lang.String, ensemble.Parameters)
+	 */
 	@Override
 	protected Parameters actuatorRegistered(String agentName, String eventHandlerName, Parameters userParam) {
 
@@ -313,6 +350,9 @@ public class LM_MovementEventServer extends EventServer {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#actuatorDeregistered(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public void actuatorDeregistered(String agentName, String eventHandlerName) {
 		
@@ -322,6 +362,9 @@ public class LM_MovementEventServer extends EventServer {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#processAction(ensemble.Event)
+	 */
 	@Override
 	protected Event processAction(Event evt) {
 		Event event 			= new Event();

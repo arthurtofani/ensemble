@@ -4,8 +4,15 @@ import ensemble.Constants;
 import ensemble.MusicalAgent;
 import ensemble.Parameters;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PlayerAgent.
+ */
 public class PlayerAgent extends MusicalAgent {
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EnsembleAgent#configure()
+	 */
 	@Override
 	public boolean configure() {
 
@@ -37,6 +44,9 @@ public class PlayerAgent extends MusicalAgent {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EnsembleAgent#init()
+	 */
 	@Override
 	public boolean init() {
 		getKB().registerFact("filename", getParameter("filename"), false);

@@ -33,32 +33,54 @@ import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
 import ensemble.movement.MovementConstants;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AudioFileInputToMemoryReasoning.
+ */
 public class AudioFileInputToMemoryReasoning  extends Reasoning {
 
+	/** The mouth. */
 	Actuator 	mouth;
+	
+	/** The mouth memory. */
 	Memory 		mouthMemory;
 //	Sensor 		ear;
 //	Memory 		earMemory;
 			
 	// número de samples (frame) em um chunk
-	int chunk_size;
+	/** The chunk_size. */
+int chunk_size;
 	
+	/** The current chunk. */
 	private long currentChunk 	= 0;
+	
+	/** The initial time. */
 	private long initialTime 	= System.currentTimeMillis();
 
 	// Buffer do Agente
+	/** The buffer. */
 	private byte[] 	buffer;
+	
+	/** The chunk. */
 	private double[] chunk;
+	
+	/** The backup. */
 	private int		backup = 5;
 
+	/** The gain. */
 	private double 	gain = 1.0;
 	
 	// Desempenho
+	/** The sent chunks. */
 	private long 	sentChunks	= 0;
 		
 	// Arquivo de áudio
+	/** The in. */
 	AudioInputFile in;
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -81,6 +103,9 @@ public class AudioFileInputToMemoryReasoning  extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
@@ -102,6 +127,9 @@ public class AudioFileInputToMemoryReasoning  extends Reasoning {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	@Override
 	public void needAction(Actuator sourceActuator, double instant, double duration) {
 
@@ -136,6 +164,9 @@ public class AudioFileInputToMemoryReasoning  extends Reasoning {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 
@@ -147,11 +178,17 @@ public class AudioFileInputToMemoryReasoning  extends Reasoning {
 		// notes = ...
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#process()
+	 */
 	@Override
 	public void process() {
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#processCommand(ensemble.Command)
+	 */
 	@Override
 	public void processCommand(Command cmd) {
 		//System.out.println("FILE = " +cmd.getCommand());

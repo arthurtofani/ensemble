@@ -24,8 +24,15 @@ package ensemble.tools;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AgentFormatter.
+ */
 public class AgentFormatter extends Formatter {
 
+	/* (non-Javadoc)
+	 * @see java.util.logging.Formatter#format(java.util.logging.LogRecord)
+	 */
 	@Override
 	public String format(LogRecord record) {
 		return record.getMillis() + " " +

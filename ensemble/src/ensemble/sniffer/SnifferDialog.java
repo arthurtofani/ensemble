@@ -43,23 +43,49 @@ import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import javax.swing.SwingConstants;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SnifferDialog.
+ */
 public class SnifferDialog extends JDialog implements TableModelListener {
 	
+	/** The mode. */
 	private int mode;
+	
+	/** The result. */
 	public boolean result = false;
 	
+	/** The content panel. */
 	private final JPanel contentPanel = new JPanel();
+	
+	/** The lbl name. */
 	private JLabel lblName;
+	
+	/** The lbl class. */
 	private JLabel lblClass;
+	
+	/** The lbl event type. */
 	private JLabel lblEventType;
+	
+	/** The txt name. */
 	public JTextField txtName;
+	
+	/** The txt class. */
 	public JTextField txtClass;
+	
+	/** The txt evt type. */
 	public JTextField txtEvtType;
+	
+	/** The table. */
 	private JTable table;
+	
+	/** The table model. */
 	public DefaultTableModel tableModel;
 
-	/** 
+	/**
 	 * Create the dialog.
+	 *
+	 * @param mode the mode
 	 */
 	public SnifferDialog(final int mode) {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -191,6 +217,9 @@ public class SnifferDialog extends JDialog implements TableModelListener {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
+	 */
 	public void tableChanged(TableModelEvent e) {
 //		int row = e.getFirstRow();
 //		int column = e.getColumn();

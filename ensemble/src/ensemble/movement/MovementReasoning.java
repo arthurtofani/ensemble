@@ -35,42 +35,76 @@ import ensemble.memory.MemoryException;
 import ensemble.world.Vector;
 
 
+// TODO: Auto-generated Javadoc
 /**
- * Given a set of waypoints and a time constraint to get there, this reasoning tries to walk
- * @author lfthomaz
+ * Given a set of waypoints and a time constraint to get there, this reasoning tries to walk.
  *
+ * @author lfthomaz
  */
 public class MovementReasoning extends Reasoning {
 
+	/** The Constant EPSILON. */
 	public static final double EPSILON = 1e-14;
 
 	//	private KnowledgeBase kb;
 	
+	/** The legs. */
 	private Actuator	legs;
+	
+	/** The eyes. */
 	private Sensor 		eyes;
 	
+	/** The legs memory. */
 	private Memory 		legsMemory;
+	
+	/** The eyes memory. */
 	private Memory 		eyesMemory;
 	
 	// Waypoints
+	/** The waypoints. */
 	private ArrayList<Vector> 	waypoints = new ArrayList<Vector>();
+	
+	/** The time_constrains. */
 	private ArrayList<Double> 	time_constrains = new ArrayList<Double>();
+	
+	/** The loop. */
 	private boolean 			loop = false;
+	
+	/** The active_waypoint. */
 	private int					active_waypoint = 0;;
+	
+	/** The precision. */
 	private double 				precision = 0.01;
+	
+	/** The last_distance. */
 	private double 				last_distance = Double.MAX_VALUE;
+	
+	/** The total_distance. */
 	private double 				total_distance = 0.0;
+	
+	/** The last_acc. */
 	private Vector 				last_acc;
+	
+	/** The inverted. */
 	private boolean 			inverted;
 	
 	// 
+	/** The actual_pos. */
 	private Vector 				actual_pos = null;
+	
+	/** The actual_vel. */
 	private Vector 				actual_vel = null;
+	
+	/** The actual_ori. */
 	private Vector 				actual_ori = null;
 	
 	// 
+	/** The max aceleration. */
 	private double MAX_ACELERATION = 10.0;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	public boolean init() {
 		
 //		kb = getAgent().getKB();
@@ -92,6 +126,9 @@ public class MovementReasoning extends Reasoning {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		if (evtHdl instanceof Actuator && evtHdl.getEventType().equals(MovementConstants.EVT_TYPE_MOVEMENT)) {
@@ -106,6 +143,9 @@ public class MovementReasoning extends Reasoning {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 		
@@ -120,6 +160,9 @@ public class MovementReasoning extends Reasoning {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#processCommand(ensemble.Command)
+	 */
 	@Override
 	public void processCommand(Command cmd) {
 		
@@ -150,6 +193,9 @@ public class MovementReasoning extends Reasoning {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#process()
+	 */
 	@Override
 	public void process() {
 
@@ -248,6 +294,9 @@ public class MovementReasoning extends Reasoning {
 		
 	}
 	
+	/**
+	 * Send stop command.
+	 */
 	private void sendStopCommand() {
 		String cmd = MovementConstants.CMD_STOP;
 //		System.out.println(cmd);
@@ -259,6 +308,12 @@ public class MovementReasoning extends Reasoning {
 		}
 	}
 	
+	/**
+	 * Send acc command.
+	 *
+	 * @param acc the acc
+	 * @param dur the dur
+	 */
 	private void sendAccCommand(Vector acc, double dur) {
 		String cmd = MovementConstants.CMD_WALK + 
 			" :" + MovementConstants.PARAM_ACC + " " + acc.toString();

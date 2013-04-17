@@ -22,44 +22,89 @@ import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
 import ensemble.router.MessageConstants;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PP_IntegratedMInstReasoning.
+ */
 public class PP_IntegratedMInstReasoning extends Reasoning {
 
 	
+	/** The min pitch. */
 	private int MIN_PITCH = 500;
+	
+	/** The max pitch. */
 	private int MAX_PITCH = 1400;
+	
+	/** The check pitch. */
 	private boolean checkPitch = false;
+	
+	/** The max pitch check number. */
 	private int MAX_PITCH_CHECK_NUMBER = 20;
+	
+	/** The min pitch check number. */
 	private int MIN_PITCH_CHECK_NUMBER = 20;
+	
+	/** The check min pitch count. */
 	private int checkMinPitchCount = 0; 
+	
+	/** The check max pitch count. */
 	private int checkMaxPitchCount = 0; 
 	
+	/** The tarsos. */
 	private TarsosProcessing tarsos = new TarsosProcessing();
 
 	
 	//Messages
+	/** The antenna. */
 	private Sensor 		antenna;
+	
+	/** The antenna memory. */
 	private Memory 		antennaMemory;
+	
+	/** The messenger. */
 	private Actuator 	messenger;
+	
+	/** The messenger memory. */
 	private Memory 		messengerMemory;
 
+	/** The check peak. */
 	private boolean checkPeak = false;
 
 	// Log
 //	public static Logger logger = Logger.getMyLogger(MusicalAgent.class.getName());
 
 	// JACK
+	/** The client_name. */
 	String 						client_name;
+	
+	/** The client. */
 	long					 	client;
+	
+	/** The callback start time. */
 	double 						callbackStartTime;
+	
+	/** The period. */
 	double 						period;
+	
+	/** The step. */
 	double 						step = 1/44100.0;
+	
+	/** The mapping. */
 	Hashtable<String,String> mapping = new Hashtable<String, String>();
+	
+	/** The ports. */
 	Hashtable<String, Long> ports = new Hashtable<String,Long>(2);
 	
 	// Actuator
+	/** The mouths. */
 	Hashtable<String,Actuator> mouths = new Hashtable<String, Actuator>(2);
+	
+	/** The mouth memories. */
 	Hashtable<String,Memory> mouthMemories = new Hashtable<String, Memory>(2);
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -89,6 +134,9 @@ public class PP_IntegratedMInstReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#finit()
+	 */
 	@Override
 	public boolean finit() {
 		
@@ -98,6 +146,9 @@ public class PP_IntegratedMInstReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
@@ -153,6 +204,9 @@ public class PP_IntegratedMInstReasoning extends Reasoning {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerDeregistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerDeregistered(EventHandler evtHdl) {
 		if (evtHdl instanceof Actuator && evtHdl.getEventType().equals(AudioConstants.EVT_TYPE_AUDIO)) {
@@ -175,6 +229,9 @@ public class PP_IntegratedMInstReasoning extends Reasoning {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	@Override
 	public void needAction(Actuator sourceActuator, double instant,
 			double duration) throws Exception {
@@ -186,12 +243,23 @@ public class PP_IntegratedMInstReasoning extends Reasoning {
 		
 	}
 	
+	/**
+	 * The Class Process.
+	 */
 	class Process implements JackCallback {
 
+		/** The d buffer. */
 		double[] dBuffer;
+		
+		/** The first call. */
 		boolean firstCall = true;
+		
+		/** The instant. */
 		double instant = 0;
 
+		/* (non-Javadoc)
+		 * @see jjack.JackCallback#process(int, double)
+		 */
 		@Override
 		public int process(int nframes, double time) {
 

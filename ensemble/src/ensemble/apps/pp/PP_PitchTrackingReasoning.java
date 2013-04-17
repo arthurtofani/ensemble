@@ -17,30 +17,58 @@ import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.router.MessageConstants;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PP_PitchTrackingReasoning.
+ */
 public class PP_PitchTrackingReasoning extends Reasoning{
 	
 	
 	// Audio
+	/** The mouth. */
 	Actuator 	mouth;
+	
+	/** The mouth memory. */
 	Memory 		mouthMemory;
+	
+	/** The chunk_size. */
 	int 		chunk_size;
+	
+	/** The sample rate. */
 	float 		sampleRate;
+	
+	/** The frame_duration. */
 	double 		frame_duration;
 	
 	//Messages
+	/** The antenna. */
 	private Sensor 		antenna;
+	
+	/** The antenna memory. */
 	private Memory 		antennaMemory;
 	
+	/** The messenger. */
 	private Actuator 	messenger;
+	
+	/** The messenger memory. */
 	private Memory 		messengerMemory;
 
 
+	/** The min pitch. */
 	private int MIN_PITCH = 150;
+	
+	/** The max pitch. */
 	private int MAX_PITCH = 3500;
+	
+	/** The check pitch. */
 	private boolean checkPitch = false; 
 
+	/** The tarsos. */
 	private TarsosProcessing tarsos = new TarsosProcessing();
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 
@@ -48,6 +76,9 @@ public class PP_PitchTrackingReasoning extends Reasoning{
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
 		
@@ -76,6 +107,9 @@ public class PP_PitchTrackingReasoning extends Reasoning{
 	
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 		
@@ -90,6 +124,11 @@ public class PP_PitchTrackingReasoning extends Reasoning{
 		}
 	}
 	
+	/**
+	 * Now.
+	 *
+	 * @return the string
+	 */
 	public static String now() {
 	    Calendar cal = Calendar.getInstance();
 	    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
@@ -97,6 +136,9 @@ public class PP_PitchTrackingReasoning extends Reasoning{
 
 	  }
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	public void needAction(Actuator sourceActuator, double instant, double duration) {
 
 		try {
@@ -145,6 +187,9 @@ public class PP_PitchTrackingReasoning extends Reasoning{
 }
 	
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#process()
+	 */
 	@Override
 	public void process() {
 		

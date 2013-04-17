@@ -41,26 +41,42 @@ import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.tools.AudioTools;
 
+// TODO: Auto-generated Javadoc
 //import jade.util.Logger;
 
 
+/**
+ * The Class AudioFileOutputReasoning.
+ */
 public class AudioFileOutputReasoning extends Reasoning {
 
 	// Log
 //	public static Logger logger = Logger.getMyLogger(MusicalAgent.class.getName());
 
 	// Memories
+	/** The ear memories. */
 	private HashMap<String, Memory> earMemories = new HashMap<String, Memory>();
+	
+	/** The num channels. */
 	private HashMap<String, Integer> numChannels = new HashMap<String, Integer>();
 
 	// Files
+	/** The out files. */
 	private HashMap<String, FileOutputStream> outFiles = new HashMap<String, FileOutputStream>();
 
 	// Parameters
+	/** The device. */
 	int 	device;
+	
+	/** The channel. */
 	int 	channel;
+	
+	/** The max channels. */
 	int 	maxChannels;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -68,6 +84,9 @@ public class AudioFileOutputReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#finit()
+	 */
 	public boolean finit() {
 
 		Collection<FileOutputStream> files = outFiles.values();
@@ -82,6 +101,9 @@ public class AudioFileOutputReasoning extends Reasoning {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 	
@@ -119,6 +141,9 @@ public class AudioFileOutputReasoning extends Reasoning {
 			
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 
@@ -153,6 +178,9 @@ public class AudioFileOutputReasoning extends Reasoning {
 			
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#processCommand(ensemble.Command)
+	 */
 	@Override
 	public void processCommand(Command cmd) {
 	}

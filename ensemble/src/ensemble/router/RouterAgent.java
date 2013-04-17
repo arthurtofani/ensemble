@@ -40,18 +40,33 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RouterAgent.
+ */
 public class RouterAgent extends Agent {
 	
     //----------------------------------------------------------
 	// OSC
+    /** The osc send port. */
     private int 		oscSendPort 	= 57110;
+    
+    /** The osc listen port. */
     private int 		oscListenPort 	= 57111;
+	
+	/** The osc client. */
 	private OSCClient 	oscClient;
+	
+	/** The osc server. */
 	private OSCServer 	oscServer;
 	
 	//private int 		oscIsoSendPort 	= 7400;
-    private int 		oscIsoListenPort 	= 7500;
+    /** The osc iso listen port. */
+	private int 		oscIsoListenPort 	= 7500;
 	
+	/* (non-Javadoc)
+	 * @see jade.core.Agent#setup()
+	 */
 	@Override
 	protected void setup() {
 		
@@ -91,6 +106,9 @@ public class RouterAgent extends Agent {
         
 	}
 	
+	/* (non-Javadoc)
+	 * @see jade.core.Agent#takeDown()
+	 */
 	@Override
 	protected void takeDown() {
 		
@@ -106,6 +124,11 @@ public class RouterAgent extends Agent {
 		
 	}
 
+	/**
+	 * Process command.
+	 *
+	 * @param cmd the cmd
+	 */
 	public void processCommand(Command cmd) {
 
 		if (cmd.getRecipient() == null || cmd.getSender() == null || cmd.getCommand() == null) {
@@ -152,15 +175,27 @@ public class RouterAgent extends Agent {
 	// JADE Message Control 
 	//--------------------------------------------------------------------------------
 
+	/**
+	 * The Class ReceiveMessages.
+	 */
 	private final class ReceiveMessages extends CyclicBehaviour {
 
+		/** The mt. */
 		MessageTemplate mt;
 		
+		/**
+		 * Instantiates a new receive messages.
+		 *
+		 * @param a the a
+		 */
 		public ReceiveMessages(Agent a) {
 			super(a);
 			mt = MessageTemplate.MatchConversationId("CommandRouter");
 		}
 		
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		public void action() {
 			ACLMessage msg = myAgent.receive(mt);
 			if (msg != null) {
@@ -183,6 +218,11 @@ public class RouterAgent extends Agent {
 	// OSC Control 
 	//--------------------------------------------------------------------------------
 	
+	/**
+	 * Send osc message.
+	 *
+	 * @param cmd the cmd
+	 */
 	private void sendOSCMessage(Command cmd) {
 		if (cmd.getCommand().equals("OSC")) {
 			String[] str = cmd.getParameter("CONTENT").split(" ");
@@ -204,11 +244,15 @@ public class RouterAgent extends Agent {
 	}
 	
 	/**
-	 * @author Santiago
+	 * The Class Listener.
 	 *
+	 * @author Santiago
 	 */
 	public class Listener implements OSCListener {
 
+		/* (non-Javadoc)
+		 * @see de.sciss.net.OSCListener#messageReceived(de.sciss.net.OSCMessage, java.net.SocketAddress, long)
+		 */
 		@Override
 		public void messageReceived(OSCMessage m, SocketAddress addr, long time) {
 			
@@ -286,9 +330,10 @@ public class RouterAgent extends Agent {
 
 		
 		/**
-		 * 
-		 * @param message
-		 * @return
+		 * Process and osc.
+		 *
+		 * @param message the message
+		 * @return the command
 		 */
 		private Command processAndOsc(OSCMessage message) {
 			//System.out.println( message.getName());
@@ -355,6 +400,12 @@ public class RouterAgent extends Agent {
 
 		}
 		
+		/**
+		 * Process control osc.
+		 *
+		 * @param message the message
+		 * @return the command
+		 */
 		private Command processControlOsc(OSCMessage message) {
 			
 			//Tratamento de grade
@@ -427,6 +478,12 @@ public class RouterAgent extends Agent {
 		}
 
 		
+/**
+ * Process pp osc.
+ *
+ * @param message the message
+ * @return the command
+ */
 private Command processPpOsc(OSCMessage message) {
 			
 	
@@ -490,6 +547,12 @@ private Command processPpOsc(OSCMessage message) {
 		}
 
 		
+		/**
+		 * Process iso swarm osc.
+		 *
+		 * @param message the message
+		 * @return the command
+		 */
 		private Command processIsoSwarmOsc(OSCMessage message) {
 			if (message.getName().indexOf(MessageConstants.ISO_SWARM)>=0 && message.getArgCount() == 3){
 				Command swarmOscCmd = new Command(MessageConstants.CMD_RECEIVE);
@@ -569,6 +632,12 @@ private Command processPpOsc(OSCMessage message) {
 			return null;
 		}
 
+		/**
+		 * Process spin osc.
+		 *
+		 * @param message the message
+		 * @return the command
+		 */
 		private Command processSpinOsc(OSCMessage message) {
 			
 			

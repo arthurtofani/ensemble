@@ -18,26 +18,7 @@ You should have received a copy of the GNU General Public License
 along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 
 ******************************************************************************/
-*****************************************************************************
 
-Copyright 2011 Leandro Ferrari Thomaz
-
-This file is part of Ensemble.
-
-Ensemble is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Ensemble is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
-
-******************************************************************************/
 
 package ensemble.processing.audio;
 
@@ -51,27 +32,56 @@ import xtract.core.xtract;
 import xtract.core.xtract_features_;
 import xtract.core.xtract_spectrum_;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LibXtract_FFT.
+ */
 public class LibXtract_FFT extends Processor {
 
 	// Mutex needed for safe threaded FFTW initialization
+	/** The Constant mutex. */
 	private static final Semaphore mutex = new Semaphore(1);
 	
+	/** The param size. */
 	private final String PARAM_SIZE 		= "size";
+	
+	/** The param sample rate. */
 	private final String PARAM_SAMPLE_RATE	= "sample_rate";
+	
+	/** The param output type. */
 	private final String PARAM_OUTPUT_TYPE 	= "output_type";
+	
+	/** The param inverse. */
 	private final String PARAM_INVERSE		= "inverse";
 
 	// FFT
+	/** The default_fft_size. */
 	private static int default_fft_size = 512;
+	
+	/** The fft_size. */
 	private int fft_size;
+	
+	/** The Fs. */
 	private double Fs;
+	
+	/** The fft_output. */
 	private String fft_output;
+	
+	/** The inverse. */
 	private boolean inverse;
 
+	/** The vector. */
 	private floatArray vector;
+	
+	/** The argf. */
 	private	floatArray argf = new floatArray(3);
+	
+	/** The spectrum. */
 	private floatArray spectrum;
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -97,6 +107,9 @@ public class LibXtract_FFT extends Processor {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#finit()
+	 */
 	@Override
 	public boolean finit() {
 		
@@ -113,6 +126,9 @@ public class LibXtract_FFT extends Processor {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.processing.Processor#process(ensemble.Parameters, java.lang.Object)
+	 */
 	@Override
 	public Object process(Parameters arguments, Object in) {
 

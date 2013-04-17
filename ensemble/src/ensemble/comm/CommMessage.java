@@ -42,17 +42,29 @@ import jade.core.behaviours.ThreadedBehaviourFactory;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommMessage.
+ */
 public class CommMessage extends Comm {
 
+	/** The tbf. */
 	ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
 	
+	/** The b. */
 	Behaviour b = null;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
 	@Override
 	public final boolean configure() {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#init()
+	 */
 	@Override
 	public final boolean init() {
 		
@@ -64,6 +76,9 @@ public class CommMessage extends Comm {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#finit()
+	 */
 	@Override
 	public final boolean finit() {
 		
@@ -74,16 +89,30 @@ public class CommMessage extends Comm {
 	}
 	
 	// Recebe eventos
+	/**
+	 * The Class ReceiveMessages.
+	 */
 	private class ReceiveMessages extends CyclicBehaviour {
 
+		/** The finished. */
 		protected boolean finished = false;
+		
+		/** The mt. */
 		MessageTemplate mt;
 		
+		/**
+		 * Instantiates a new receive messages.
+		 *
+		 * @param a the a
+		 */
 		public ReceiveMessages(Agent a) {
 			super(a);
 			mt = MessageTemplate.MatchConversationId(myAccessPoint);
 		}
 		
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		public void action() {
 			// Deve obter apenas mensagens destinadas ao seu Owner!!!
 			ACLMessage msg = myAgent.receive(mt);
@@ -109,6 +138,9 @@ public class CommMessage extends Comm {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.comm.Comm#send(ensemble.Event)
+	 */
 	@Override
 	public void send(Event evt) {
 		
@@ -137,6 +169,9 @@ public class CommMessage extends Comm {
 			
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.comm.Comm#receive(ensemble.Event)
+	 */
 	@Override
 	public void receive(Event evt) {
 		

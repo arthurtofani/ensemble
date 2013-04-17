@@ -23,24 +23,33 @@ import ensemble.world.Law;
 import ensemble.world.Vector;
 import ensemble.world.World;
 
+// TODO: Auto-generated Javadoc
 /**
  * O MessageEventServer representa mensagens e comandos no mundo virtual.
  */
 public class MessageEventServer extends EventServer {
 		
+	/** The lock. */
 	private static Lock lock = new ReentrantLock();
 
+	/** The osc. */
 	private boolean osc = true;
 	
+	/** The world. */
 	private World 	world;
+	
+	/** The msg law. */
 	private Law 	msgLaw;
 
-	/**
-	 * List of agents with commands enabled
-	 */
+	/** List of agents with commands enabled. */
 	HashMap<String,Vector> acc_command = new HashMap<String, Vector>();
+	
+	/** The stop_command. */
 	HashMap<String,Double> stop_command = new HashMap<String,Double>();
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
 	@Override
 	public boolean configure() {
 		setCommType("ensemble.comm.direct.CommDirect");
@@ -50,6 +59,9 @@ public class MessageEventServer extends EventServer {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -60,6 +72,9 @@ public class MessageEventServer extends EventServer {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#finit()
+	 */
 	@Override
 	public boolean finit() {
 		
@@ -67,6 +82,12 @@ public class MessageEventServer extends EventServer {
 		
 	}
 	
+	/**
+	 * Creates the entity memory.
+	 *
+	 * @param entityName the entity name
+	 * @return the memory
+	 */
 	private Memory createEntityMemory(String entityName) {
 		
 		// Gets the Movement Memory
@@ -97,6 +118,9 @@ public class MessageEventServer extends EventServer {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#actuatorRegistered(java.lang.String, java.lang.String, ensemble.Parameters)
+	 */
 	@Override
 	protected Parameters actuatorRegistered(String agentName, String eventHandlerName, Parameters userParam) throws Exception {
 		
@@ -134,6 +158,9 @@ public class MessageEventServer extends EventServer {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#sensorRegistered(java.lang.String, java.lang.String, ensemble.Parameters)
+	 */
 	@Override
 	protected Parameters sensorRegistered(String agentName, String eventHandlerName, Parameters userParam) throws Exception {
 		
@@ -168,6 +195,13 @@ public class MessageEventServer extends EventServer {
 		return userParam;
 	}
 	
+	/**
+	 * Inform agent.
+	 *
+	 * @param agentName the agent name
+	 * @param sensorName the sensor name
+	 * @param state the state
+	 */
 	private void informAgent(String agentName, String sensorName, MessageState state) {
 		Event evt = new Event();
 		Command cmd2 = new Command(MessageConstants.CMD_INFO);
@@ -181,6 +215,13 @@ public class MessageEventServer extends EventServer {
 		act();
 	}
 	
+	/**
+	 * Execute message instruction.
+	 *
+	 * @param entityName the entity name
+	 * @param instruction the instruction
+	 * @param parameters the parameters
+	 */
 	private void executeMessageInstruction(String entityName, String instruction, Parameters parameters) {
 
 		//System.out.println("ENTROU execute() - " + entityName + ", " + instruction + ", " + parameters);
@@ -264,6 +305,9 @@ public class MessageEventServer extends EventServer {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#processSense(ensemble.Event)
+	 */
 	@Override
 	// TODO Só pode mudar o estado no próximo frame
 	public void processSense(Event evt) {
@@ -280,6 +324,9 @@ public class MessageEventServer extends EventServer {
 			
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#process()
+	 */
 	@Override
 	public void process() {
 
@@ -340,8 +387,10 @@ public class MessageEventServer extends EventServer {
 	}
 
 	/**
-	 * Sends entity's position via OSC protocol
-	 * @param state
+	 * Sends entity's position via OSC protocol.
+	 *
+	 * @param entityName the entity name
+	 * @param position the position
 	 */
 	private void sendOSCPosition(String entityName, Vector position) {
 
@@ -361,6 +410,9 @@ public class MessageEventServer extends EventServer {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#processCommand(ensemble.Command)
+	 */
 	@Override
 	public void processCommand(Command cmd) {
 

@@ -30,34 +30,52 @@ import ensemble.Parameters;
 import ensemble.Sensing;
 import jade.core.Agent;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Comm.
+ */
 public abstract class Comm implements LifeCycle {
 	
+	/** The my agent. */
 	protected EnsembleAgent 		myAgent;
+	
+	/** The my sensor. */
 	protected Sensing 		mySensor;
+	
+	/** The my actuator. */
 	protected Acting		myActuator;
+	
+	/** The my access point. */
 	protected String 		myAccessPoint;
 	
+	/** The parameters. */
 	protected Parameters 	parameters;
 	
-	/**
-	 *  Controlam se um Comm está apto a receber eventos
-	 */
+	/** Controlam se um Comm está apto a receber eventos. */
 	public boolean sensing 	= true;					
-	/**
-	 *  Controlam se o Comm está apto a enviar eventos
-	 */
+	
+	/** Controlam se o Comm está apto a enviar eventos. */
 	public boolean actuating 	= true;					
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#setParameters(ensemble.Parameters)
+	 */
 	@Override
 	public void setParameters(Parameters parameters) {
 		this.parameters = parameters;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#getParameters()
+	 */
 	@Override
 	public Parameters getParameters() {
 		return this.parameters;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#start()
+	 */
 	@Override
 	public final boolean start() {
 		
@@ -106,6 +124,9 @@ public abstract class Comm implements LifeCycle {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#stop()
+	 */
 	@Override
 	public final boolean stop() {
 		return true;
@@ -116,15 +137,22 @@ public abstract class Comm implements LifeCycle {
 	//--------------------------------------------------------------------------------
 	
 	/**
-	 * Event listener
+	 * Event listener.
+	 *
+	 * @param evt the evt
 	 */
 	public abstract void receive(Event evt);
 
 	/**
-	 * Event source
+	 * Event source.
+	 *
+	 * @param evt the evt
 	 */
 	public abstract void send(Event evt);
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#parameterUpdate(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public boolean parameterUpdate(String name, String newValue) {
 		return false;

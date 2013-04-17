@@ -23,50 +23,114 @@ package ensemble;
 
 import java.util.Set;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Command.
+ */
 public class Command {
 
+	/** The command. */
 	private String 		command;
+	
+	/** The parameters. */
 	private Parameters	parameters = new Parameters();
+	
+	/** The user parameters. */
 	private Parameters	userParameters = new Parameters();
 	
+	/**
+	 * Instantiates a new command.
+	 *
+	 * @param command the command
+	 */
 	public Command(String command) {
 		this.command = command;
 	}
 	
+	/**
+	 * Instantiates a new command.
+	 *
+	 * @param sender the sender
+	 * @param recipient the recipient
+	 * @param command the command
+	 */
 	public Command(String sender, String recipient, String command) {
 		this.command = command;
 		addParameter("sender", sender);
 		addParameter("recipient", recipient);
 	}
 	
+	/**
+	 * Gets the recipient.
+	 *
+	 * @return the recipient
+	 */
 	public String getRecipient() {
 		return getParameter("recipient");
 	}
 	
+	/**
+	 * Sets the recipient.
+	 *
+	 * @param recipient the new recipient
+	 */
 	public void setRecipient(String recipient) {
 		addParameter("recipient", recipient);
 	}
 	
+	/**
+	 * Gets the sender.
+	 *
+	 * @return the sender
+	 */
 	public String getSender() {
 		return getParameter("sender");
 	}
 	
+	/**
+	 * Sets the sender.
+	 *
+	 * @param sender the new sender
+	 */
 	public void setSender(String sender) {
 		addParameter("sender", sender);
 	}
 	
+	/**
+	 * Gets the command.
+	 *
+	 * @return the command
+	 */
 	public String getCommand() {
 		return command;
 	}
 	
+	/**
+	 * Contains parameter.
+	 *
+	 * @param parameter the parameter
+	 * @return true, if successful
+	 */
 	public boolean containsParameter(String parameter) {	
 		return parameters.containsKey(parameter);
 	}
 	
+	/**
+	 * Contains user parameter.
+	 *
+	 * @param parameter the parameter
+	 * @return true, if successful
+	 */
 	public boolean containsUserParameter(String parameter) {	
 		return userParameters.containsKey(parameter);
 	}
 	
+	/**
+	 * Adds the parameter.
+	 *
+	 * @param key the key
+	 * @param value the value
+	 */
 	public void addParameter(String key, String value) {
 		if (parameters == null) {
 			parameters = new Parameters();	
@@ -74,6 +138,11 @@ public class Command {
 		parameters.put(key, value);
 	}
 	
+	/**
+	 * Adds the parameters.
+	 *
+	 * @param hash the hash
+	 */
 	public void addParameters(Parameters hash) {
 		if (hash != null) {
 			Set<String> set = hash.keySet();
@@ -83,6 +152,12 @@ public class Command {
 		}
 	}
 
+	/**
+	 * Gets the parameter.
+	 *
+	 * @param key the key
+	 * @return the parameter
+	 */
 	public String getParameter(String key) {
 		if (parameters != null) {
 			String ret = parameters.get(key);
@@ -95,14 +170,30 @@ public class Command {
 		}
 	}
 	
+	/**
+	 * Gets the parameters.
+	 *
+	 * @return the parameters
+	 */
 	public Parameters getParameters() {
 		return parameters;
 	}
 	
+	/**
+	 * Adds the user parameter.
+	 *
+	 * @param key the key
+	 * @param value the value
+	 */
 	public void addUserParameter(String key, String value) {
 		userParameters.put(key, value);				
 	}
 	
+	/**
+	 * Adds the user parameters.
+	 *
+	 * @param hash the hash
+	 */
 	public void addUserParameters(Parameters hash) {
 		if (hash != null) {
 			Set<String> set = hash.keySet();
@@ -112,14 +203,31 @@ public class Command {
 		}
 	}
 	
+	/**
+	 * Gets the user parameter.
+	 *
+	 * @param key the key
+	 * @return the user parameter
+	 */
 	public String getUserParameter(String key) {
 		return userParameters.get(key);
 	}
 	
+	/**
+	 * Gets the user parameters.
+	 *
+	 * @return the user parameters
+	 */
 	public Parameters getUserParameters() {
 		return userParameters;
 	}
 	
+	/**
+	 * Parses the.
+	 *
+	 * @param str the str
+	 * @return the command
+	 */
 	public static Command parse(String str) {
 		
 		String[] strSplited = str.split(" :");
@@ -158,6 +266,9 @@ public class Command {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		
 		if (command == null || command.trim().equals("")) {
@@ -182,6 +293,11 @@ public class Command {
 		return ret;
 	}
 	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		
 //		String str = "EVENT-REGISTER :compSendr Foot :compType ACTUATOR :compEvtType MOVEMENT :pos_x 2 :pos_y 4";

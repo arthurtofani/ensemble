@@ -25,18 +25,49 @@ import jade.core.Agent;
 import jade.core.ServiceHelper;
 import jade.core.behaviours.Behaviour;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface VirtualClockHelper.
+ */
 public interface VirtualClockHelper extends ServiceHelper {
 
+	/**
+	 * Update clock.
+	 *
+	 * @param units the units
+	 */
 	public void updateClock(long units);
 
+	/**
+	 * Update clock.
+	 */
 	public void updateClock();
 	
+	/**
+	 * Gets the current time.
+	 *
+	 * @param unit the unit
+	 * @return the current time
+	 */
 	public double getCurrentTime(TimeUnit unit);
 
 	// TODO Deve ser tipo o TimerTask do Java
 //	public void schedule(Agent a, Behaviour b, long wakeupTime);
+	/**
+	 * Schedule.
+	 *
+	 * @param a the a
+	 * @param b the b
+	 * @param wakeupTime the wakeup time
+	 */
 	public void schedule(Agent a, Runnable b, long wakeupTime);
 	
+	/**
+	 * Execute.
+	 *
+	 * @param a the a
+	 * @param b the b
+	 */
 	public void execute(Agent a, Runnable b);
 	
 }

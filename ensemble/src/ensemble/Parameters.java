@@ -24,10 +24,11 @@ package ensemble;
 import java.util.HashMap;
 import java.util.Set;
 
+// TODO: Auto-generated Javadoc
 /**
- * 
- * @author Leandro
+ * The Class Parameters.
  *
+ * @author Leandro
  */
 public class Parameters extends HashMap<String, Object> {
 
@@ -82,6 +83,12 @@ public class Parameters extends HashMap<String, Object> {
 		return super.get(key);
 	}
 	
+	/**
+	 * Parses the.
+	 *
+	 * @param str the str
+	 * @return the parameters
+	 */
 	public static Parameters parse(String str) {
 		Parameters param = new Parameters();
 		
@@ -99,6 +106,9 @@ public class Parameters extends HashMap<String, Object> {
 		return param;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.util.HashMap#put(java.lang.Object, java.lang.Object)
+	 */
 	@Override
 	public Object put(String key, Object value) {
 		if (value != null) {
@@ -110,6 +120,9 @@ public class Parameters extends HashMap<String, Object> {
 	}
 	
 	// Format: {NAME=VALUE; NAME2=VALUE2; ..... }
+	/* (non-Javadoc)
+	 * @see java.util.AbstractMap#toString()
+	 */
 	public String toString() {
 		
 		String str = "";

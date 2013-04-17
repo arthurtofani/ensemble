@@ -23,40 +23,85 @@ import ensemble.router.MessageConstants;
 import ensemble.world.Vector;
 import ensemble.world.World;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PP_MovementReasoning.
+ */
 public class PP_MovementReasoning extends Reasoning {
 
+	/** The legs. */
 	private Actuator	legs;
+	
+	/** The eyes. */
 	private Sensor 		eyes;
+	
+	/** The antenna. */
 	private Sensor 		antenna;
 	
+	/** The legs memory. */
 	private Memory 		legsMemory;
+	
+	/** The eyes memory. */
 	private Memory 		eyesMemory;
+	
+	/** The antenna memory. */
 	private Memory 		antennaMemory;
 	
 	// Waypoints
+	/** The waypoints. */
 	private ArrayList<Vector> waypoints = new ArrayList<Vector>();
+	
+	/** The time_constrains. */
 	private ArrayList<Double> 	time_constrains = new ArrayList<Double>();
+	
+	/** The loop. */
 	private boolean 			loop = false;
+	
+	/** The active_waypoint. */
 	private int					active_waypoint = 0;;
+	
+	/** The precision. */
 	private double 				precision = 3.0;
+	
+	/** The last_distance. */
 	private double 				last_distance = 0.0; 
 	
 	// 
+	/** The state. */
 	private int 				state = 0;
+	
+	/** The actual_pos. */
 	private Vector 			actual_pos = null;
+	
+	/** The actual_vel. */
 	private Vector 			actual_vel = null;
+	
+	/** The actual_ori. */
 	private Vector 			actual_ori = null;
 	
 	// 
+	/** The max aceleration. */
 	private double MAX_ACELERATION = 10.0;
 	
+	/** The Constant INST_TYPE_SEQUENCE. */
 	private static final String INST_TYPE_SEQUENCE = "SEQUENCE";
+	
+	/** The Constant INST_TYPE_REACH. */
 	private static final String INST_TYPE_REACH = "REACH";
+	
+	/** The Constant CONF_MUSICAL_AGENT_CLASS. */
 	private static final String CONF_MUSICAL_AGENT_CLASS = "MUSICAL_AGENT_CLASS";
+	
+	/** The Constant CONF_MUSICAL_AGENT. */
 	private static final String CONF_MUSICAL_AGENT = "MUSICAL_AGENT";
+	
+	/** The Constant CONF_ACCELERATION. */
 	private static final String CONF_ACCELERATION = "ACCELERATION";
 	
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	public boolean init() {
 		
 		
@@ -128,6 +173,9 @@ public class PP_MovementReasoning extends Reasoning {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		if (evtHdl instanceof Actuator && evtHdl.getEventType().equals(MovementConstants.EVT_TYPE_MOVEMENT)) {
@@ -147,6 +195,9 @@ public class PP_MovementReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 		
@@ -182,6 +233,9 @@ public class PP_MovementReasoning extends Reasoning {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#process()
+	 */
 	@Override
 	public void process() {
 
@@ -268,6 +322,9 @@ public class PP_MovementReasoning extends Reasoning {
 		
 	}
 	
+	/**
+	 * Send stop command.
+	 */
 	private void sendStopCommand() {
 		String cmd = "STOP";
 //		System.out.println(cmd);
@@ -279,6 +336,12 @@ public class PP_MovementReasoning extends Reasoning {
 		}
 	}
 	
+	/**
+	 * Send acc command.
+	 *
+	 * @param acc the acc
+	 * @param dur the dur
+	 */
 	private void sendAccCommand(Vector acc, double dur) {
 		String cmd = "WALK :acc " + acc.toString() + " :dur " + Double.toString(dur);
 //		System.out.println(cmd);
@@ -290,6 +353,11 @@ public class PP_MovementReasoning extends Reasoning {
 		}
 	}
 	
+	/**
+	 * Send transport command.
+	 *
+	 * @param pos the pos
+	 */
 	@SuppressWarnings("unused")
 	private void sendTransportCommand(Vector pos) {
 		String cmd = MovementConstants.CMD_TRANSPORT+ 
@@ -305,7 +373,13 @@ public class PP_MovementReasoning extends Reasoning {
 	}
 	
 	//Metodos auxiliares
-		private static Document loadXMLFile(String xmlFile) {
+		/**
+	 * Load xml file.
+	 *
+	 * @param xmlFile the xml file
+	 * @return the document
+	 */
+	private static Document loadXMLFile(String xmlFile) {
 		
 		Document doc = null;
 		
@@ -328,6 +402,14 @@ public class PP_MovementReasoning extends Reasoning {
 		
 	}
 		
+		/**
+		 * Read attribute.
+		 *
+		 * @param elem the elem
+		 * @param attributeName the attribute name
+		 * @param defaultValue the default value
+		 * @return the string
+		 */
 		private static String readAttribute(Node elem, String attributeName, String defaultValue) {
 
 			String ret;

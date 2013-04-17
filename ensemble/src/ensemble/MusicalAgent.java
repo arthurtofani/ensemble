@@ -43,57 +43,63 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MusicalAgent.
+ */
 public class MusicalAgent extends EnsembleAgent {
 
 	//--------------------------------------------------------------------------------
 	// Agent attributes
 	//--------------------------------------------------------------------------------
 	
+	/** The tbf. */
 	ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
 
+	/** The lock. */
 	private Lock lock = new ReentrantLock();
 
+	/** The environment agent. */
 	protected String environmentAgent;
 	
+	/** The components. */
 	private ConcurrentHashMap<String, MusicalAgentComponent> components = new ConcurrentHashMap<String, MusicalAgentComponent>();
 	
+	/** The state. */
 	public MA_STATE state = MA_STATE.CREATED;
 	
+	/** The kb. */
 	protected KnowledgeBase kb = null;
 	
 	// ---------------------------------------------- 
 	// Batch processing control variables 
 	// ---------------------------------------------- 
 
-	/**
-	 * Contador de raciocínios do agente
-	 */
+	/** Contador de raciocínios do agente. */
 	private int numberReasoning = 0;
-	/**
-	 * Contador de raciocínios prontos
-	 */
+	
+	/** Contador de raciocínios prontos. */
 	private int numberReasoningReady = 0;
-	/**
-	 * Contador de eventos enviados
-	 */
+	
+	/** Contador de eventos enviados. */
 	private int numberEventsSent = 0;
-	/**
-	 * Contador de pedidos de registro de EventHandlers no momento da inicializção
-	 */
+	
+	/** Contador de pedidos de registro de EventHandlers no momento da inicializção. */
 	private int numberEventHandlersRequest = 0;
-	/**
-	 * Contador de EventHandlers já registrados
-	 */
+	
+	/** Contador de EventHandlers já registrados. */
 	private int numberEventHandlersRegistered = 0;
-	/**
-	 * Controle se o agente deve morrer no próximo turno
-	 */
+	
+	/** Controle se o agente deve morrer no próximo turno. */
 	private boolean dieNextTurn = false;
 	
 	//--------------------------------------------------------------------------------
 	// Agent initialization and termination
 	//--------------------------------------------------------------------------------
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#start()
+	 */
 	@Override
 	public final boolean start() {
 
@@ -197,6 +203,9 @@ public class MusicalAgent extends EnsembleAgent {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#stop()
+	 */
 	@Override
 	public final boolean stop() {
 		
@@ -217,6 +226,12 @@ public class MusicalAgent extends EnsembleAgent {
 		
 	}
 
+	/**
+	 * Adds the kb.
+	 *
+	 * @param className the class name
+	 * @param parameters the parameters
+	 */
 	public final void addKB(String className, Parameters parameters) {
 		if (state == MA_STATE.CREATED) {
 			try {
@@ -237,9 +252,10 @@ public class MusicalAgent extends EnsembleAgent {
 	
 	/**
 	 * Adiciona um componente ao agente, seja um raciocínio, sensor, atuador etc. Deve configurar o componente e iniciar sua execução.
-	 * @param compName
-	 * @param className
-	 * @param arguments
+	 *
+	 * @param compName the comp name
+	 * @param className the class name
+	 * @param arguments the arguments
 	 */
 	public final void addComponent(String compName, String className, Parameters arguments) {
 
@@ -334,8 +350,9 @@ public class MusicalAgent extends EnsembleAgent {
 	}
 	
 	/**
-	 * Remove um componente do Agente
-	 * @param name nome do componente a ser removido
+	 * Remove um componente do Agente.
+	 *
+	 * @param compName the comp name
 	 */
 	public final void removeComponent(String compName) {
 
@@ -372,10 +389,20 @@ public class MusicalAgent extends EnsembleAgent {
 	// Agent Getters
 	//--------------------------------------------------------------------------------
 	
+	/**
+	 * Gets the mA state.
+	 *
+	 * @return the mA state
+	 */
 	public final MA_STATE getMAState() {
 		return state;
 	}
 	
+	/**
+	 * Gets the kb.
+	 *
+	 * @return the kb
+	 */
 	public final KnowledgeBase getKB() {
 		if (kb == null) {
 			System.err.println("[" + getAddress() +"] No knowledge base present!");
@@ -383,6 +410,11 @@ public class MusicalAgent extends EnsembleAgent {
 		return kb;
 	}
 	
+	/**
+	 * Gets the environment agent.
+	 *
+	 * @return the environment agent
+	 */
 	public final String getEnvironmentAgent() {
 		return environmentAgent;
 	}
@@ -391,6 +423,9 @@ public class MusicalAgent extends EnsembleAgent {
 	// Command Interface 
 	//--------------------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#receiveCommand(ensemble.Command)
+	 */
 	@Override
 	public final void receiveCommand(Command cmd) {
       
@@ -416,8 +451,8 @@ public class MusicalAgent extends EnsembleAgent {
 
 	/**
 	 * Responsible for validating the commands and their obligatory arguments and executing it.
-	 * @param sender
-	 * @param cmd
+	 *
+	 * @param cmd the cmd
 	 */
 	protected final void processControlCommand(Command cmd) {
 
@@ -560,15 +595,23 @@ public class MusicalAgent extends EnsembleAgent {
 	//--------------------------------------------------------------------------------
 
 	/**
-	 * Classe interna que verifica se todos os componentes estão inicializados e registrados
+	 * Classe interna que verifica se todos os componentes estão inicializados e registrados.
 	 */
 	// TODO NÃO existe um timeout para o registro dos componentes, no caso de não existir um ES compatível
 	private final class CheckRegister extends CyclicBehaviour {
 
+		/**
+		 * Instantiates a new check register.
+		 *
+		 * @param a the a
+		 */
 		public CheckRegister(Agent a) {
 			super(a);
 		}
 		
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		public void action() {
 			if (numberEventHandlersRegistered == numberEventHandlersRequest) {
 				// Envia um OK para Ambiente
@@ -582,15 +625,27 @@ public class MusicalAgent extends EnsembleAgent {
 		
 	}
 
+	/**
+	 * The Class CheckEndTurn.
+	 */
 	private final class CheckEndTurn extends OneShotBehaviour {
 		
+		/** The a. */
 		Agent a;
 		
+		/**
+		 * Instantiates a new check end turn.
+		 *
+		 * @param a the a
+		 */
 		public CheckEndTurn(Agent a) {
 			super(a);
 			this.a = a;
 		}
 		
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		public void action() {
 			
 			// Caso todos tenham terminado o processamento, envia a mensagem para o Ambiente
@@ -631,15 +686,23 @@ public class MusicalAgent extends EnsembleAgent {
 	}
 
 	/**
-	 * Classe interna que verifica se todos os componentes estão inicializados e registrados
+	 * Classe interna que verifica se todos os componentes estão inicializados e registrados.
 	 */
 	// TODO NÃO existe um timeout para o registro dos componentes, no caso de não existir um ES compatível
 	private final class CheckDeregister extends CyclicBehaviour {
 
+		/**
+		 * Instantiates a new check deregister.
+		 *
+		 * @param a the a
+		 */
 		public CheckDeregister(Agent a) {
 			super(a);
 		}
 		
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		public void action() {
 			if (numberEventHandlersRegistered == 0) {
 				// Informs the EA that the agent is being deregistered
@@ -655,10 +718,13 @@ public class MusicalAgent extends EnsembleAgent {
 	}
 
 	/**
-	 * Verifica se todos os componentes estão finalizados e registrados
+	 * Verifica se todos os componentes estão finalizados e registrados.
 	 */
 	private final class Deregister implements Runnable {
 
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
 		public void run() {
 			// Deregisters EventHandlers
 			for (MusicalAgentComponent existingComp : components.values()) {
@@ -675,10 +741,13 @@ public class MusicalAgent extends EnsembleAgent {
 	}
 	
 	/**
-	 * Kills this agent
+	 * Kills this agent.
 	 */
 	private final class KillAgent extends OneShotBehaviour {
 
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		@Override
 		public void action() {
 			
@@ -693,6 +762,11 @@ public class MusicalAgent extends EnsembleAgent {
 	//--------------------------------------------------------------------------------
 	// Agent 
 	//--------------------------------------------------------------------------------
+	/**
+	 * Event handler registered.
+	 *
+	 * @param compName the comp name
+	 */
 	protected final synchronized void eventHandlerRegistered(String compName) {
 		
 		numberEventHandlersRegistered++;
@@ -701,6 +775,11 @@ public class MusicalAgent extends EnsembleAgent {
 
 	}
 	
+	/**
+	 * Event handler deregistered.
+	 *
+	 * @param compName the comp name
+	 */
 	protected final synchronized void eventHandlerDeregistered(String compName) {
 		
 		// Removes the event handler and terminates it
@@ -713,6 +792,9 @@ public class MusicalAgent extends EnsembleAgent {
 
 	}
 
+	/**
+	 * Event sent.
+	 */
 	protected final synchronized void eventSent() {
 		
 		numberEventsSent++;
@@ -720,6 +802,11 @@ public class MusicalAgent extends EnsembleAgent {
 	}
 	
 	// TODO Se não tiver reasoning nenhum, ele deveria mandar um fim de turno imediatamente (CyclicBehaviour igual ao de eventso?)
+	/**
+	 * Reasoning process done.
+	 *
+	 * @param reasoningName the reasoning name
+	 */
 	protected final synchronized void reasoningProcessDone(String reasoningName) {
 		
 		numberReasoningReady++;

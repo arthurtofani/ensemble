@@ -23,6 +23,9 @@ package ensemble.movement;
 
 import ensemble.Event;
 
+/**
+ * The Class MovementEvent.
+ */
 public class MovementEvent extends Event {
 	
 	

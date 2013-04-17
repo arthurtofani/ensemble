@@ -12,32 +12,58 @@ import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PP_Reasoning.
+ */
 public class PP_Reasoning extends Reasoning {
 
+	/** The mouth. */
 	Actuator 	mouth;
+	
+	/** The mouth memory. */
 	Memory 		mouthMemory;
+	
+	/** The ear. */
 	Sensor 		ear;
+	
+	/** The ear memory. */
 	Memory 		earMemory;
 			
 	// número de samples (frame) em um chunk
+	/** The chunk_size. */
 	int chunk_size;
 	
+	/** The current chunk. */
 	private long currentChunk 	= 0;
+	
+	/** The initial time. */
 	private long initialTime 	= System.currentTimeMillis();
 
 	// Buffer do Agente
+	/** The buffer. */
 	private byte[] 	buffer;
+	
+	/** The chunk. */
 	private double[] chunk;
+	
+	/** The backup. */
 	private int		backup = 5;
 
+	/** The gain. */
 	private double 	gain = 1.0;
 	
 	// Desempenho
+	/** The sent chunks. */
 	private long 	sentChunks	= 0;
 		
 	// Arquivo de áudio
+	/** The in. */
 	AudioInputFile in;
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -59,6 +85,9 @@ public class PP_Reasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
@@ -79,6 +108,9 @@ public class PP_Reasoning extends Reasoning {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	@Override
 	public void needAction(Actuator sourceActuator, double instant, double duration) {
 
@@ -109,6 +141,9 @@ public class PP_Reasoning extends Reasoning {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 
@@ -120,6 +155,9 @@ public class PP_Reasoning extends Reasoning {
 		// notes = ...
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#process()
+	 */
 	@Override
 	public void process() {
 	}

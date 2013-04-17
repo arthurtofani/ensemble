@@ -68,42 +68,97 @@ import ensemble.tools.Loader;
 import java.awt.Color;
 import java.awt.Component;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Sniffer.
+ */
 public class Sniffer extends Agent implements RouterClient {
 
+	/** The agents. */
 	HashMap<String, AgentInfo> 	agents;
 	
+	/** The frame. */
 	JFrame frame = new JFrame();
 	
+	/** The selected node. */
 	DefaultMutableTreeNode 	selectedNode;
 
+	/** The root node. */
 	DefaultMutableTreeNode 	rootNode;
+	
+	/** The env node. */
 	DefaultMutableTreeNode 	envNode;
+	
+	/** The tree model. */
 	DefaultTreeModel 		treeModel;
+	
+	/** The txt command. */
 	private JTextField txtCommand;
+	
+	/** The txt name. */
 	private JTextField txtName;
+	
+	/** The txt class. */
 	private JTextField txtClass;
+	
+	/** The txt state. */
 	private JTextField txtState;
+	
+	/** The tree. */
 	private JTree 		tree;
+	
+	/** The txt type. */
 	private JTextField txtType;
 	
+	/** The lbl name. */
 	private JLabel lblName;
+	
+	/** The lbl state. */
 	private JLabel lblState;
+	
+	/** The lbl class. */
 	private JLabel lblClass;
+	
+	/** The lbl type. */
 	private JLabel lblType;
 	
+	/** The pnl parameters. */
 	private JPanel pnlParameters;
 	
+	/** The btn add component. */
 	private JButton btnAddComponent;
+	
+	/** The btn destroy agent. */
 	private JButton btnDestroyAgent;
+	
+	/** The btn start simulation. */
 	private JButton btnStartSimulation;
+	
+	/** The btn stop simulation. */
 	private JButton btnStopSimulation;
+	
+	/** The btn send command. */
 	private JButton btnSendCommand;
+	
+	/** The btn remove component. */
 	private JButton btnRemoveComponent;
+	
+	/** The btn create agent. */
 	private JButton btnCreateAgent;
+	
+	/** The btn facts. */
 	private JButton btnFacts;
+	
+	/** The tbl parameters model. */
 	private DefaultTableModel tblParametersModel;
+	
+	/** The tbl parameters. */
 	private JTable tblParameters;
+	
+	/** The scroll pane_1. */
 	private JScrollPane scrollPane_1;
+	
+	/** The txt xml file. */
 	private JTextField txtXMLFile;
 
 	/**
@@ -427,18 +482,39 @@ public class Sniffer extends Agent implements RouterClient {
 		txtXMLFile.setColumns(10);
 	}
 	
+	/**
+	 * The Class MyTreeCellRenderer.
+	 */
 	class MyTreeCellRenderer extends DefaultTreeCellRenderer {
 	    
+		/** The ensemble icon. */
 		ImageIcon ensembleIcon;
+		
+		/** The ma icon. */
 		ImageIcon maIcon;
-	    ImageIcon eaIcon;
-	    ImageIcon compIcon;
-	    ImageIcon kbIcon;
-	    ImageIcon sensorIcon;
-	    ImageIcon actuatorIcon;
-	    ImageIcon reasoningIcon;
+	    
+    	/** The ea icon. */
+    	ImageIcon eaIcon;
+	    
+    	/** The comp icon. */
+    	ImageIcon compIcon;
+	    
+    	/** The kb icon. */
+    	ImageIcon kbIcon;
+	    
+    	/** The sensor icon. */
+    	ImageIcon sensorIcon;
+	    
+    	/** The actuator icon. */
+    	ImageIcon actuatorIcon;
+	    
+    	/** The reasoning icon. */
+    	ImageIcon reasoningIcon;
 	 
-	    public MyTreeCellRenderer() {
+	    /**
+    	 * Instantiates a new my tree cell renderer.
+    	 */
+    	public MyTreeCellRenderer() {
 	    	ensembleIcon = new ImageIcon("media/ensemble.png");
 	        eaIcon = new ImageIcon("media/world.png");
 	        maIcon = new ImageIcon("media/agent.png");
@@ -449,7 +525,10 @@ public class Sniffer extends Agent implements RouterClient {
 	        reasoningIcon = new ImageIcon("media/reasoning.png");
 	    }
 	 
-	    public Component getTreeCellRendererComponent(JTree tree,
+	    /* (non-Javadoc)
+    	 * @see javax.swing.tree.DefaultTreeCellRenderer#getTreeCellRendererComponent(javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int, boolean)
+    	 */
+    	public Component getTreeCellRendererComponent(JTree tree,
 	      Object value,boolean sel,boolean expanded,boolean leaf,
 	      int row,boolean hasFocus) {
 	 
@@ -485,7 +564,22 @@ public class Sniffer extends Agent implements RouterClient {
 	    }
 	}
 	
+	/**
+	 * The listener interface for receiving myTreeSelection events.
+	 * The class that is interested in processing a myTreeSelection
+	 * event implements this interface, and the object created
+	 * with that class is registered with a component using the
+	 * component's <code>addMyTreeSelectionListener<code> method. When
+	 * the myTreeSelection event occurs, that object's appropriate
+	 * method is invoked.
+	 *
+	 * @see MyTreeSelectionEvent
+	 */
 	class MyTreeSelectionListener implements TreeSelectionListener {
+		
+		/* (non-Javadoc)
+		 * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
+		 */
 		@Override
 		public void valueChanged(TreeSelectionEvent e) {
 			selectedNode = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
@@ -617,12 +711,21 @@ public class Sniffer extends Agent implements RouterClient {
 		}
 	}
 	
+	/**
+	 * The Class MyTableCellEditor.
+	 */
 	class MyTableCellEditor extends AbstractCellEditor 
 						implements TableCellEditor {
 
+		/** The component. */
 		JTextField component = new JTextField();
+		
+		/** The column. */
 		int row, column;
 		
+		/* (non-Javadoc)
+		 * @see javax.swing.CellEditor#getCellEditorValue()
+		 */
 		@Override
 		public Object getCellEditorValue() {
 			String recipient;
@@ -640,6 +743,9 @@ public class Sniffer extends Agent implements RouterClient {
 			return ((JTextField)component).getText();
 		}
 
+		/* (non-Javadoc)
+		 * @see javax.swing.table.TableCellEditor#getTableCellEditorComponent(javax.swing.JTable, java.lang.Object, boolean, int, int)
+		 */
 		@Override
 		public Component getTableCellEditorComponent(JTable table,
 				Object value, boolean isSelected, int row, int column) {
@@ -658,15 +764,27 @@ public class Sniffer extends Agent implements RouterClient {
 	// JADE Message Control 
 	//--------------------------------------------------------------------------------
 
+	/**
+	 * The Class ReceiveMessages.
+	 */
 	private final class ReceiveMessages extends CyclicBehaviour {
 
+		/** The mt. */
 		MessageTemplate mt;
 		
+		/**
+		 * Instantiates a new receive messages.
+		 *
+		 * @param a the a
+		 */
 		public ReceiveMessages(Agent a) {
 			super(a);
 			mt = MessageTemplate.MatchConversationId("CommandRouter");
 		}
 		
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		public void action() {
 			ACLMessage msg = myAgent.receive(mt);
 			if (msg != null) {
@@ -685,15 +803,24 @@ public class Sniffer extends Agent implements RouterClient {
 	
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#getAddress()
+	 */
 	@Override
 	public String getAddress() {
 		return "/console/Sniffer";
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#processCommand(ensemble.Command)
+	 */
 	@Override
 	public void processCommand(Command cmd) {
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#receiveCommand(ensemble.Command)
+	 */
 	@Override
 	public void receiveCommand(Command cmd) {
 //		System.out.println("SNIFFER: Recebi mensagem - " + cmd.toString());
@@ -906,6 +1033,9 @@ public class Sniffer extends Agent implements RouterClient {
 	}
 	
 
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#sendCommand(ensemble.Command)
+	 */
 	@Override
 	public void sendCommand(Command cmd) {
 		System.out.println("[Sniffer] sendCommand(): " + cmd);

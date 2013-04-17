@@ -36,18 +36,34 @@ import ensemble.Sensor;
 import ensemble.audio.AudioEvent;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AudioPlayer.
+ */
 public class AudioPlayer {
 	
+	/** The line. */
 	SourceDataLine	line 			= null;
+	
+	/** The current chunk. */
 	long 			currentChunk	= 1;
+	
+	/** The played chunk. */
 	long 			playedChunk		= 1;
 	
 	// TODO Utilizar uma estrutura de armazenar chunks de forma mais eficiente
+	/** The queue. */
 	Queue<byte[]> queue = new LinkedList<byte[]>();
 
+	/**
+	 * Instantiates a new audio player.
+	 */
 	public AudioPlayer() {
 	}
 	
+	/**
+	 * Inits the audio device.
+	 */
 	public void initAudioDevice() {
 		AudioFormat format = new AudioFormat(44100f, 16, 1, true, false);
 		DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
@@ -64,10 +80,18 @@ public class AudioPlayer {
 		}
 	}
 	
+	/**
+	 * Stop audio device.
+	 */
 	public void stopAudioDevice() {
 		line.stop();
 	}
 	
+	/**
+	 * Play chunk.
+	 *
+	 * @param chunk the chunk
+	 */
 	public void playChunk(double[] chunk) {
 		byte[] buffer = AudioTools.convertDoubleByte(chunk, 0, chunk.length);
 		line.write(buffer, 0, buffer.length);

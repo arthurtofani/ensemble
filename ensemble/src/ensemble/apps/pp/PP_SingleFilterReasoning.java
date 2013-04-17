@@ -19,30 +19,60 @@ import ensemble.movement.MovementConstants;
 import ensemble.router.MessageConstants;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PP_SingleFilterReasoning.
+ */
 public class PP_SingleFilterReasoning extends Reasoning{
 
 	// Audio
+	/** The mouth. */
 	Actuator 	mouth;
+	
+	/** The mouth memory. */
 	Memory 		mouthMemory;
+	
+	/** The ear. */
 	Sensor 		ear;
+	
+	/** The ear memory. */
 	Memory 		earMemory;
+	
+	/** The chunk_size. */
 	int 		chunk_size;
+	
+	/** The sample rate. */
 	float 		sampleRate;
+	
+	/** The frame_duration. */
 	double 		frame_duration;
+	
+	/** The antenna. */
 	private Sensor 		antenna;
+	
+	/** The antenna memory. */
 	private Memory 		antennaMemory;
 	
 	//Time Related
+	/** The start_time. */
 	double 		start_time;
 	
 	//Auxiliar Memory
+	/** The internal memory. */
 	Memory internalMemory;
 
 	
 	// Movement
+	/** The legs. */
 	Actuator	legs;
+	
+	/** The legs memory. */
 	Memory 		legsMemory;
+	
+	/** The eyes. */
 	Sensor 		eyes;
+	
+	/** The eyes memory. */
 	Memory 		eyesMemory;
 
 	
@@ -51,28 +81,52 @@ public class PP_SingleFilterReasoning extends Reasoning{
 	
 	
 	
+	/**
+	 * The Enum ZoneMode.
+	 */
 	enum ZoneMode {
+		
+		/** The not defined. */
 		NOT_DEFINED,
+		
+		/** The fixed. */
 		FIXED			
 	}
 
+	/** The zone mode. */
 	ZoneMode zoneMode = ZoneMode.FIXED;
 
 
+	/** The current freq. */
 	static int currentFreq = 300;
+	
+	/** The rez. */
 	static double rez = 1;
 
 	// Reasoning state
+	/**
+	 * The Enum FilterType.
+	 */
 	enum FilterType {
+		
+		/** The lowpass. */
 		LOWPASS,
+		
+		/** The highpass. */
 		HIGHPASS,
+		
+		/** The bypass. */
 		BYPASS
 		}
 	
+	/** The filter type. */
 	static FilterType filterType= FilterType.BYPASS;
 	
 
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 
@@ -80,6 +134,9 @@ public class PP_SingleFilterReasoning extends Reasoning{
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
 				
@@ -116,6 +173,9 @@ public class PP_SingleFilterReasoning extends Reasoning{
 	
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 		
@@ -159,6 +219,12 @@ public class PP_SingleFilterReasoning extends Reasoning{
 		}
 	}
 
+	/**
+	 * Ge rez.
+	 *
+	 * @param valY the val y
+	 * @return the double
+	 */
 	private double geRez(double valY) {
 		//O valor vira entre -180 e 180
 		double aux =  (valY + 180);
@@ -167,6 +233,12 @@ public class PP_SingleFilterReasoning extends Reasoning{
 		return val;
 	}
 
+	/**
+	 * Gets the freq.
+	 *
+	 * @param valX the val x
+	 * @return the freq
+	 */
 	private int getFreq(double valX) {
 		//Consideramos a frequencia de 100 a 1000 Hz
 		//O valor vira entre 0 e 360
@@ -174,6 +246,9 @@ public class PP_SingleFilterReasoning extends Reasoning{
 		return val;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	public void needAction(Actuator sourceActuator, double instant, double duration) {
 		
 			try {
@@ -228,6 +303,9 @@ public class PP_SingleFilterReasoning extends Reasoning{
 //		System.out.println("REAS time = " + (System.currentTimeMillis() - start));
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#processCommand(ensemble.Command)
+	 */
 	@Override
 	public void processCommand(Command cmd) {
 		if (cmd.getCommand().equals(AudioConstants.CMD_ZONE_OFF)) {
@@ -238,6 +316,9 @@ public class PP_SingleFilterReasoning extends Reasoning{
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#process()
+	 */
 	public void process() throws Exception {
 
 		

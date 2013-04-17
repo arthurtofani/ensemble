@@ -23,41 +23,84 @@ import ensemble.memory.MemoryException;
 import ensemble.router.MessageConstants;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JackInputDelayReasoning.
+ */
 public class JackInputDelayReasoning extends Reasoning {
 
 	// Log
 //	public static Logger logger = Logger.getMyLogger(MusicalAgent.class.getName());
 
 	// JACK
+	/** The client_name. */
 	String 						client_name;
+	
+	/** The client. */
 	long					 	client;
+	
+	/** The callback start time. */
 	double 						callbackStartTime;
+	
+	/** The period. */
 	double 						period;
+	
+	/** The step. */
 	double 						step = 1/44100.0;
+	
+	/** The mapping. */
 	Hashtable<String,String> mapping = new Hashtable<String, String>();
+	
+	/** The ports. */
 	Hashtable<String, Long> ports = new Hashtable<String,Long>(2);
 	
 	// Actuator
+	/** The mouths. */
 	Hashtable<String,Actuator> mouths = new Hashtable<String, Actuator>(2);
+	
+	/** The mouth memories. */
 	Hashtable<String,Memory> mouthMemories = new Hashtable<String, Memory>(2);
 	
+	/** The antenna. */
 	private Sensor 		antenna;
+	
+	/** The antenna memory. */
 	private Memory 		antennaMemory;
 	
 	
+	/** The delay. */
 	private double				delay = 0;
+	
+	/** The delay changed. */
 	private boolean				delayChanged = false;
+	
+	/** The delay ready. */
 	private boolean				delayReady = false;
+	
+	/** The delay last. */
 	private double				delayLast = 0;
+	
+	/** The delay diff. */
 	private double				delayDiff = 0; 
 	
+	/** The active. */
 	private boolean				active = true;
+	
+	/** The allow change. */
 	private boolean 			allowChange;
+	
+	/** The time diff. */
 	private long				timeDiff;
+	
+	/** The last change. */
 	private Date				lastChange;
 
+	/** The gain. */
 	private double gain = 1.0;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -91,6 +134,9 @@ public class JackInputDelayReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#finit()
+	 */
 	@Override
 	public boolean finit() {
 		
@@ -100,6 +146,9 @@ public class JackInputDelayReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
@@ -148,6 +197,9 @@ public class JackInputDelayReasoning extends Reasoning {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerDeregistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerDeregistered(EventHandler evtHdl) {
 		if (evtHdl instanceof Actuator && evtHdl.getEventType().equals(AudioConstants.EVT_TYPE_AUDIO)) {
@@ -160,6 +212,9 @@ public class JackInputDelayReasoning extends Reasoning {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	@Override
 	public void needAction(Actuator sourceActuator, double instant,
 			double duration) throws Exception {
@@ -172,6 +227,9 @@ public class JackInputDelayReasoning extends Reasoning {
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 
@@ -276,12 +334,23 @@ public class JackInputDelayReasoning extends Reasoning {
 		}
 	}
 
+	/**
+	 * The Class Process.
+	 */
 	class Process implements JackCallback {
 
+		/** The d buffer. */
 		double[] dBuffer;
+		
+		/** The first call. */
 		boolean firstCall = true;
+		
+		/** The instant. */
 		double instant = 0;
 
+		/* (non-Javadoc)
+		 * @see jjack.JackCallback#process(int, double)
+		 */
 		@Override
 		public int process(int nframes, double time) {
 

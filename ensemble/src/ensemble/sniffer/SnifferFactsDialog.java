@@ -43,12 +43,22 @@ import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import javax.swing.SwingConstants;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SnifferFactsDialog.
+ */
 public class SnifferFactsDialog extends JDialog implements TableModelListener {
 	
+	/** The result. */
 	public boolean result = false;
 	
+	/** The content panel. */
 	private final JPanel contentPanel = new JPanel();
+	
+	/** The table. */
 	private JTable table;
+	
+	/** The table model. */
 	public DefaultTableModel tableModel;
 
 	/*** Create the dialog.
@@ -138,6 +148,9 @@ public class SnifferFactsDialog extends JDialog implements TableModelListener {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
+	 */
 	public void tableChanged(TableModelEvent e) {
 //		int row = e.getFirstRow();
 //		int column = e.getColumn();

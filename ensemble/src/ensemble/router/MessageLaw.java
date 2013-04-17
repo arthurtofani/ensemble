@@ -11,16 +11,27 @@ import ensemble.world.Law;
 import ensemble.world.LawState;
 import ensemble.world.Vector;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MessageLaw.
+ */
 public class MessageLaw extends Law {
 
 	// Physical constants of the World
 	// TODO Pode estar no mundo também
+	/** The gravity. */
 	private double gravity = 10.0;
+	
+	/** The friction_coefficient. */
 	private double friction_coefficient = 0.0;
 	
 	// temporary variable
+	/** The friction acceleration. */
 	private Vector frictionAcceleration;
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
 	@Override
 	public boolean configure() {
 		setType(MessageConstants.EVT_TYPE_MESSAGE);
@@ -31,6 +42,9 @@ public class MessageLaw extends Law {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#init()
+	 */
 	@Override
 	public boolean init() {
 		frictionAcceleration = new Vector(world.dimensions);
@@ -38,11 +52,17 @@ public class MessageLaw extends Law {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#finit()
+	 */
 	@Override
 	public boolean finit() {
 		return true;
 	}
 	
+	/**
+	 * Warmup.
+	 */
 	public void warmup() {
 		
 		MessageState prevState = new MessageState();
@@ -75,6 +95,9 @@ public class MessageLaw extends Law {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.world.Law#changeState(ensemble.world.LawState, double, ensemble.world.LawState)
+	 */
 	@Override
 	public void changeState(final LawState prevState, double instant, LawState newState) {
 		

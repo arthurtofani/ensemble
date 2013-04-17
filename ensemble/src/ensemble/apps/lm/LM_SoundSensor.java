@@ -4,14 +4,24 @@ import ensemble.Event;
 import ensemble.Parameters;
 import ensemble.Sensor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LM_SoundSensor.
+ */
 public class LM_SoundSensor extends Sensor {
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#configure()
+	 */
 	@Override
 	public boolean configure() {
 		setEventType("SOUND");
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventHandler#process(ensemble.Event)
+	 */
 	@Override
 	protected void process(Event evt) {
 
@@ -45,6 +55,9 @@ public class LM_SoundSensor extends Sensor {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		

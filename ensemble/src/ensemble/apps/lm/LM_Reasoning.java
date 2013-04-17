@@ -7,32 +7,60 @@ import ensemble.Reasoning;
 import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LM_Reasoning.
+ */
 public class LM_Reasoning extends Reasoning {
 
+	/** The foot. */
 	private Actuator foot;
+	
+	/** The foot memory. */
 	private Memory footMemory;
 	
+	/** The mouth. */
 	private Actuator mouth;
+	
+	/** The mouth memory. */
 	private Memory mouthMemory;
 
+	/** The evacuator. */
 	private Actuator evacuator;	
+	
+	/** The evacuator memory. */
 	private Memory evacuatorMemory;
 
+	/** The procedural genoma. */
 	private String[]	proceduralGenoma;
+	
+	/** The instr pointer. */
 	private int 		instrPointer = 0;
 
+	/** The loop steps. */
 	private int 		loopSteps 			= 0;
+	
+	/** The loop steps counter. */
 	private int 		loopStepsCounter 	= 0;
+	
+	/** The loop lenght. */
 	private int 		loopLenght 			= 0;
 	
+	/** The walked. */
 	private int 		walked 				= 0;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		proceduralGenoma = getAgent().getKB().readFact("ProceduralGenoma").split(":");
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		if (evtHdl instanceof LM_MovementActuator) {
@@ -49,6 +77,9 @@ public class LM_Reasoning extends Reasoning {
 //		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#process()
+	 */
 	@Override
 	public void process() {
 

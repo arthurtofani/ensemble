@@ -8,21 +8,37 @@ import ensemble.Parameters;
 import ensemble.apps.lm.LM_World.Position;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LM_EnergyEventServer.
+ */
 public class LM_EnergyEventServer extends EventServer {
 
+	/** The world. */
 	LM_World world;
 	
 	// Dados para o evento
+	/** The agent name. */
 	String 	agentName;
+	
+	/** The agent component name. */
 	String 	agentComponentName;
+	
+	/** The food. */
 	float 	food;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
 	@Override
 	public boolean configure() {
 		setEventType("ENERGY");
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -43,11 +59,17 @@ public class LM_EnergyEventServer extends EventServer {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#finit()
+	 */
 	@Override
 	public boolean finit() {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#process()
+	 */
 	@Override
 	public void process() {
 		
@@ -74,6 +96,9 @@ public class LM_EnergyEventServer extends EventServer {
 			
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#processAction(ensemble.Event)
+	 */
 	@Override
 	protected Event processAction(Event evt) {
 		

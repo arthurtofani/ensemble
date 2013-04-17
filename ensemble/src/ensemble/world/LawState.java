@@ -21,8 +21,13 @@ along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 
 package ensemble.world;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LawState.
+ */
 public class LawState {
 
+	/** The instant. */
 	public double instant;
 	
 }

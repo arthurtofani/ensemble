@@ -24,14 +24,32 @@ package ensemble.movement;
 import ensemble.world.LawState;
 import ensemble.world.Vector;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MovementState.
+ */
 public class MovementState extends LawState {
 	
+	/** The position. */
 	public Vector position;
+	
+	/** The velocity. */
 	public Vector velocity;
+	
+	/** The acceleration. */
 	public Vector acceleration;
+	
+	/** The orientation. */
 	public Vector orientation;
+	
+	/** The angular velocity. */
 	public Vector angularVelocity;
 	
+	/**
+	 * Instantiates a new movement state.
+	 *
+	 * @param dimensions the dimensions
+	 */
 	public MovementState(int dimensions) {
 		this.position = new Vector(dimensions);
 		this.velocity = new Vector(dimensions);
@@ -40,6 +58,11 @@ public class MovementState extends LawState {
 		this.angularVelocity = new Vector(dimensions);
 	}
 	
+	/**
+	 * Copy.
+	 *
+	 * @param newState the new state
+	 */
 	public void copy(MovementState newState) {
 		
 		position.copy(newState.position);

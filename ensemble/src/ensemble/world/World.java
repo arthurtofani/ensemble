@@ -36,51 +36,89 @@ import ensemble.clock.VirtualClockHelper;
 import ensemble.router.RouterClient;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * Represents the actual state of the world, with all its entities.
  */
 //TODO Criar métodos genéricos para obter o estado do agente no mundo, posição etc...
 public class World implements LifeCycle, RouterClient {
 	
+	/** The lock. */
 	protected Lock lock = new ReentrantLock();
 
+	/** The parameters. */
 	Parameters parameters = null;
 
+	/** The env agent. */
 	protected EnvironmentAgent envAgent;
 	
+	/** The dimensions. */
 	public int 		dimensions;
+	
+	/** The structure. */
 	public String 	structure;
+	
+	/** The form_type. */
 	public String 	form_type;
+	
+	/** The form_size. */
 	public double 	form_size;
+	
+	/** The form_size_half. */
 	public double 	form_size_half;
+	
+	/** The form_loop. */
 	public boolean 	form_loop;
 	
+	/** The laws. */
 	private HashMap<String,Law> laws = new HashMap<String,Law>();
 	
 	// TODO Na hora da criação, fine tune no tamanho e no load factor
-    protected HashMap<String, EntityState> entities = new HashMap<String, EntityState>();
+    /** The entities. */
+	protected HashMap<String, EntityState> entities = new HashMap<String, EntityState>();
 
+    /** The gui. */
     protected WorldGUI gui;
     
+    /** The clock. */
     protected VirtualClockHelper clock;
     
     // Performance
-	public int calls = 0;
+	/** The calls. */
+    public int calls = 0;
+	
+	/** The time_1. */
 	public long time_1 = 0;
+	
+	/** The time_2. */
 	public long time_2 = 0;
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#setParameters(ensemble.Parameters)
+	 */
 	public final void setParameters(Parameters parameters) {
 		this.parameters = parameters;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#getParameters()
+	 */
 	public final Parameters getParameters() {
 		return this.parameters;
 	}
 
+	/**
+	 * Sets the env agent.
+	 *
+	 * @param envAgent the new env agent
+	 */
 	public final void setEnvAgent(EnvironmentAgent envAgent) {
 		this.envAgent = envAgent;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#start()
+	 */
 	@Override
     public final boolean start() {
 
@@ -135,6 +173,9 @@ public class World implements LifeCycle, RouterClient {
 	
     }
     
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#stop()
+	 */
 	@Override
 	public final boolean stop() {
 
@@ -154,8 +195,10 @@ public class World implements LifeCycle, RouterClient {
 	
     /**
      * Add an entity to the virtual World (agent, obstacle etc.)
-     * @param entityName
-     * @param state
+     *
+     * @param entityName the entity name
+     * @param parameters the parameters
+     * @return true, if successful
      */
     public final boolean addEntity(String entityName, Parameters parameters) {
 
@@ -204,8 +247,9 @@ public class World implements LifeCycle, RouterClient {
     }
     
     /**
-     * Remove an entity from the Virtual World
-     * @param entityName
+     * Remove an entity from the Virtual World.
+     *
+     * @param entityName the entity name
      */
     public final void removeEntity(String entityName) {
     	
@@ -217,6 +261,11 @@ public class World implements LifeCycle, RouterClient {
     	
     }
     
+    /**
+     * Gets the entity list.
+     *
+     * @return the entity list
+     */
     public final Set<String> getEntityList() {
     	
     	return entities.keySet();
@@ -227,6 +276,12 @@ public class World implements LifeCycle, RouterClient {
 	// Laws
 	//--------------------------------------------------------------------------------
 
+    /**
+     * Adds the law.
+     *
+     * @param className the class name
+     * @param parameters the parameters
+     */
     public final void addLaw(String className, Parameters parameters) {
 		try {
 			// Creates a Law instance
@@ -258,6 +313,11 @@ public class World implements LifeCycle, RouterClient {
 		}
 	}
 		
+    /**
+     * Removes the law.
+     *
+     * @param type the type
+     */
     public final void removeLaw(String type) {
     	if (laws.containsKey(type)) {
 			Law law = laws.remove(type);
@@ -268,11 +328,10 @@ public class World implements LifeCycle, RouterClient {
     }
     
     /**
-     * Changes a state based in a law 
-     * @param type
-     * @param parameters
-     * @param oldState
-     * @return
+     * Changes a state based in a law.
+     *
+     * @param type the type
+     * @return the law
      */
     public final Law getLaw(String type) {
     	
@@ -284,12 +343,22 @@ public class World implements LifeCycle, RouterClient {
 	// GUI
 	//--------------------------------------------------------------------------------
 
+    /**
+     * Gets the world gui.
+     *
+     * @return the world gui
+     */
     public final WorldGUI getWorldGUI() {
     	
     	return gui;
     	
     }
     
+    /**
+     * Sets the world gui.
+     *
+     * @param gui the new world gui
+     */
     public final void setWorldGUI(WorldGUI gui) {
     	
     	this.gui = gui;
@@ -301,7 +370,10 @@ public class World implements LifeCycle, RouterClient {
 	//--------------------------------------------------------------------------------
 
     /**
-     * Retorna o estado atual de uma entidade
+     * Retorna o estado atual de uma entidade.
+     *
+     * @param entityName the entity name
+     * @param attribute the attribute
      * @return variável do estado de uma entidade
      */
     public final Object getEntityStateAttribute(String entityName, String attribute) {
@@ -314,6 +386,13 @@ public class World implements LifeCycle, RouterClient {
     	
     }
 
+    /**
+     * Adds the entity state attribute.
+     *
+     * @param entityName the entity name
+     * @param attribute the attribute
+     * @param value the value
+     */
     public final void addEntityStateAttribute(String entityName, String attribute, Object value) {
 
     	EntityState entity = entities.get(entityName);
@@ -325,6 +404,13 @@ public class World implements LifeCycle, RouterClient {
     
     }
     
+    /**
+     * Removes the entity state attribute.
+     *
+     * @param entityName the entity name
+     * @param attribute the attribute
+     * @return the object
+     */
     public final Object removeEntityStateAttribute(String entityName, String attribute) {
 
     	return entities.get(entityName).attributes.remove(attribute);
@@ -335,11 +421,17 @@ public class World implements LifeCycle, RouterClient {
 	// Command Interface
 	//--------------------------------------------------------------------------------
 	
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#getAddress()
+	 */
 	@Override
 	public final String getAddress() {
 		return "/" + Constants.FRAMEWORK_NAME + "/" + envAgent.getAgentName() + "/" + Constants.WORLD;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#receiveCommand(ensemble.Command)
+	 */
 	@Override
 	public final void receiveCommand(Command cmd) {
 //        System.out.println("[" + getAddress() +"] Command received: " + cmd);
@@ -366,6 +458,9 @@ public class World implements LifeCycle, RouterClient {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#sendCommand(ensemble.Command)
+	 */
 	@Override
 	public final void sendCommand(Command cmd) {
 		envAgent.sendCommand(cmd);
@@ -375,22 +470,34 @@ public class World implements LifeCycle, RouterClient {
 	// User implemented methods
 	//--------------------------------------------------------------------------------
     
-    @Override
+    /* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
+	@Override
 	public boolean configure() {
     	return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#init()
+	 */
 	@Override
 	public boolean init() {
 //		MusicalAgent.logger.info("[" + envAgent.getAgentName() + ":" + getEventType() + "] " + "init()");
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#parameterUpdate(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public boolean parameterUpdate(String name, String newValue) {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#finit()
+	 */
 	@Override
 	public boolean finit() {
 		return true;
@@ -398,7 +505,8 @@ public class World implements LifeCycle, RouterClient {
 
 	/**
 	 * Called when an entity is added from the World. Must be overrided by the user.
-	 * @param entityName
+	 *
+	 * @param entityName the entity name
 	 */
 	protected void entityAdded(String entityName) {
 //		MusicalAgent.logger.info("[" + envAgent.getAgentName() + ":" + getEventType() + "] " + "entityAdded()");
@@ -406,12 +514,16 @@ public class World implements LifeCycle, RouterClient {
 
 	/**
 	 * Called when an entity is removed from the World. Must be overrided by the user.
-	 * @param entityName
+	 *
+	 * @param entityName the entity name
 	 */
 	protected void entityRemoved(String entityName) {
 //		MusicalAgent.logger.info("[" + envAgent.getAgentName() + ":" + getEventType() + "] " + "entityRemoved()");
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#processCommand(ensemble.Command)
+	 */
 	@Override
 	public void processCommand(Command cmd) {
 		

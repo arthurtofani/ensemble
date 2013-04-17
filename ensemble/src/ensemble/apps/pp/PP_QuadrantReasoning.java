@@ -22,70 +22,135 @@ import ensemble.router.MessageConstants;
 import ensemble.world.Vector;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PP_QuadrantReasoning.
+ */
 public class PP_QuadrantReasoning extends Reasoning{
 
 	// Audio
+	/** The mouth. */
 	Actuator 	mouth;
+	
+	/** The mouth memory. */
 	Memory 		mouthMemory;
+	
+	/** The ear. */
 	Sensor 		ear;
+	
+	/** The ear memory. */
 	Memory 		earMemory;
+	
+	/** The chunk_size. */
 	int 		chunk_size;
+	
+	/** The sample rate. */
 	float 		sampleRate;
+	
+	/** The frame_duration. */
 	double 		frame_duration;
 	
 	
 	//Time Related
+	/** The start_time. */
 	double 		start_time;
 	
 	//Auxiliar Memory
+	/** The internal memory. */
 	Memory internalMemory;
 
 	
 	// Movement
+	/** The legs. */
 	Actuator	legs;
+	
+	/** The legs memory. */
 	Memory 		legsMemory;
+	
+	/** The eyes. */
 	Sensor 		eyes;
+	
+	/** The eyes memory. */
 	Memory 		eyesMemory;
 
 	//Messages
+	/** The antenna. */
 	private Sensor 		antenna;
+	
+	/** The antenna memory. */
 	private Memory 		antennaMemory;
 	
+	/** The LO w_ pas s1. */
 	private double LOW_PASS1 = 300;
+	
+	/** The LO w_ pas s2. */
 	private double LOW_PASS2 = 500;
 	
+	/** The HIG h_ pas s1. */
 	private double HIGH_PASS1 = 400;
+	
+	/** The HIG h_ pas s2. */
 	private double HIGH_PASS2 = 800;
 	
 	//private World 	world;
+	/** The actual_pos. */
 	private Vector 	actual_pos = null;
 	
 	// Zones
+	/**
+	 * The Enum WorldZone.
+	 */
 	enum WorldZone {
+		
+		/** The not defined. */
 		NOT_DEFINED,
+		
+		/** The upper left. */
 		UPPER_LEFT,
+		
+		/** The upper right. */
 		UPPER_RIGHT,
+		
+		/** The lower left. */
 		LOWER_LEFT,
+		
+		/** The lower right. */
 		LOWER_RIGHT,
+		
+		/** The bypass cross. */
 		BYPASS_CROSS
 	}
 
+	/** The cross_width. */
 	private int cross_width = 2;
 	
+	/** The zone. */
 	WorldZone zone = WorldZone.NOT_DEFINED;
 	
 	//VST definitions
 	
+	/**
+	 * The Enum ZoneMode.
+	 */
 	enum ZoneMode {
+		
+		/** The not defined. */
 		NOT_DEFINED,
+		
+		/** The fixed. */
 		FIXED			
 	}
 
+	/** The zone mode. */
 	ZoneMode zoneMode = ZoneMode.FIXED;
 
+	/** The audio file list. */
 	public String[] audioFileList;
 
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 
@@ -93,6 +158,9 @@ public class PP_QuadrantReasoning extends Reasoning{
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
 		// Checks if it is a sound Actuator
@@ -126,6 +194,9 @@ public class PP_QuadrantReasoning extends Reasoning{
 	
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 		
@@ -167,6 +238,9 @@ public class PP_QuadrantReasoning extends Reasoning{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	public void needAction(Actuator sourceActuator, double instant, double duration) {
 
 		
@@ -260,6 +334,9 @@ public class PP_QuadrantReasoning extends Reasoning{
 //		System.out.println("REAS time = " + (System.currentTimeMillis() - start));
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#processCommand(ensemble.Command)
+	 */
 	@Override
 	public void processCommand(Command cmd) {
 		if (cmd.getCommand().equals(AudioConstants.CMD_ZONE_OFF)) {
@@ -269,6 +346,12 @@ public class PP_QuadrantReasoning extends Reasoning{
 		} 
 	}
 	
+	/**
+	 * Gets the zone.
+	 *
+	 * @param size the size
+	 * @return the zone
+	 */
 	public WorldZone getZone(int size){
 		
 				
@@ -310,6 +393,9 @@ public class PP_QuadrantReasoning extends Reasoning{
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#process()
+	 */
 	public void process() throws Exception {
 
 		

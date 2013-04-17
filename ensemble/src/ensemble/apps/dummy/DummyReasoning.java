@@ -29,19 +29,35 @@ import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DummyReasoning.
+ */
 public class DummyReasoning extends Reasoning {
 
+	/** The actuator. */
 	Actuator actuator;
+	
+	/** The actuator memory. */
 	Memory actuatorMemory;
 	
+	/** The sensor. */
 	Sensor sensor;
+	
+	/** The sensor memory. */
 	Memory sensorMemory;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) throws Exception {
 		if (evtHdl instanceof Actuator && evtHdl.getEventType().equals("DUMMY")) {
@@ -56,12 +72,18 @@ public class DummyReasoning extends Reasoning {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) throws Exception {
 //		System.out.println("newSense()");
 		double[] buf = (double[])sensorMemory.readMemory(instant, duration, TimeUnit.SECONDS);
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	@Override
 	public void needAction(Actuator sourceActuator, double instant, double duration) throws Exception {
 		double[] buf = new double[1024];

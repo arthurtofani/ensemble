@@ -3,8 +3,15 @@ package ensemble.apps.lm;
 import ensemble.EnvironmentAgent;
 import ensemble.Parameters;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LM_Environment.
+ */
 public class LM_Environment extends EnvironmentAgent {
 
+	/* (non-Javadoc)
+	 * @see ensemble.EnsembleAgent#configure()
+	 */
 	@Override
 	public boolean configure() {
 
@@ -17,6 +24,9 @@ public class LM_Environment extends EnvironmentAgent {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EnvironmentAgent#preUpdateClock()
+	 */
 	@Override
 	protected void preUpdateClock() {
 		

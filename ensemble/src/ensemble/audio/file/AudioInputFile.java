@@ -30,24 +30,52 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.AudioFormat.Encoding;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AudioInputFile.
+ */
 public class AudioInputFile {
 
+	/** The file. */
 	File file = null;
+	
+	/** The audio input stream. */
 	AudioInputStream audioInputStream;
 	
+	/** The on loop. */
 	boolean 	onLoop = false;
+	
+	/** The has ended. */
 	boolean 	hasEnded = false;
 
+	/** The bytes per frame. */
 	int 		bytesPerFrame;
+	
+	/** The sample rate. */
 	float 		sampleRate;
+	
+	/** The sample size in bits. */
 	int 		sampleSizeInBits;
+	
+	/** The is big endian. */
 	boolean 	isBigEndian;
+	
+	/** The enc. */
 	Encoding 	enc;
 
+	/** The buffer. */
 	private byte[]	buffer;
 	
+	/** The chunk_counter. */
 	private int chunk_counter = 0;
 	
+	/**
+	 * Instantiates a new audio input file.
+	 *
+	 * @param filename the filename
+	 * @param onLoop the on loop
+	 * @throws FileNotFoundException the file not found exception
+	 */
 	public AudioInputFile(String filename,  boolean onLoop) throws FileNotFoundException {
 	
 		this.onLoop = onLoop;
@@ -55,6 +83,12 @@ public class AudioInputFile {
 		
 	}
 	
+	/**
+	 * Open file.
+	 *
+	 * @param filename the filename
+	 * @throws FileNotFoundException the file not found exception
+	 */
 	private void openFile(String filename) throws FileNotFoundException {
 		
 		// Abre o arquivo de áudio para leitura
@@ -77,19 +111,26 @@ public class AudioInputFile {
 	}
 	
 	/**
-	 * Returns the total number of samples in this file
-	 * @return
+	 * Returns the total number of samples in this file.
+	 *
+	 * @return the number samples
 	 */
 	public long getNumberSamples() {
 		return (audioInputStream.getFrameLength());
 	}
 	
+	/**
+	 * Gets the sample rate.
+	 *
+	 * @return the sample rate
+	 */
 	public float getSampleRate() {
 		return sampleRate;
 	}
 	
 	/**
-	 * Reads a random segment of data from the audio file
+	 * Reads a random segment of data from the audio file.
+	 *
 	 * @param offset start sample of the segment
 	 * @param chunkSize size of the segment
 	 * @return an audio segment
@@ -104,7 +145,8 @@ public class AudioInputFile {
 	}
 	
 	/**
-	 * Reads the next segment of the audio file
+	 * Reads the next segment of the audio file.
+	 *
 	 * @param chunkSize the size of the segment
 	 * @return an audio segment
 	 */

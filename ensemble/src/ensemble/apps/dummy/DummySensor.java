@@ -29,10 +29,18 @@ import ensemble.Event;
 import ensemble.Sensor;
 import ensemble.clock.TimeUnit;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DummySensor.
+ */
 public class DummySensor extends Sensor {
 
+	/** The file_perf. */
 	PrintWriter file_perf;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		try {
@@ -44,6 +52,9 @@ public class DummySensor extends Sensor {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventHandler#process(ensemble.Event)
+	 */
 	@Override
 	protected void process(Event evt) throws Exception {
 //		System.out.println("[Sensor] process()");

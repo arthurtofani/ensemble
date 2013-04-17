@@ -2,10 +2,23 @@ package ensemble.audio.dsp;
 
 import java.util.Random;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AnalysisProcessing.
+ */
 public class AnalysisProcessing {
 
+	/** The Constant VERY_SMALL_FLOAT. */
 	private static final double VERY_SMALL_FLOAT = (float) 0.00001;
 
+	/**
+	 * Peak follower.
+	 *
+	 * @param samplerate the samplerate
+	 * @param input the input
+	 * @param count the count
+	 * @return the double
+	 */
 	public static double peakFollower(int samplerate, double[] input, int count) {
 
 		// halfLife = time in seconds for output to decay to half value after an
@@ -39,6 +52,14 @@ public class AnalysisProcessing {
 	}
 	
 	
+	/**
+	 * Pitch follower.
+	 *
+	 * @param samplerate the samplerate
+	 * @param input the input
+	 * @param count the count
+	 * @return the int
+	 */
 	public static int pitchFollower(int samplerate, double[] input, int count) {
 		
 		Random rand = new Random();

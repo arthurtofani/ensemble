@@ -24,41 +24,82 @@ package ensemble.world;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Vector.
+ */
 public class Vector {
 
+	/** The dimensions. */
 	public int dimensions;
+	
+	/** The values. */
 	private double[] values;
+	
+	/** The magnitude. */
 	public double magnitude = 0.0;
 
+	/** The nf. */
 	static NumberFormat nf = new DecimalFormat("#0.0000");
 	
 //	public static final Vector MAXIMUM_VECTOR = new Vector3D(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
 //	public static final Vector ZERO_VECTOR = new Vector3D();
 	
-	public Vector() {
+	/**
+ * Instantiates a new vector.
+ */
+public Vector() {
 		dimensions = 3;
 		values = new double[dimensions];
 	}
 	
+	/**
+	 * Instantiates a new vector.
+	 *
+	 * @param dimensions the dimensions
+	 */
 	public Vector(int dimensions) {
 		this.dimensions = dimensions;
 		values = new double[dimensions];
 	}
 	
+	/**
+	 * Instantiates a new vector.
+	 *
+	 * @param ds the ds
+	 */
 	public Vector(double ... ds) {
 		dimensions = ds.length;
 		values = new double[dimensions];
 		update(ds);
 	}
 	
+	/**
+	 * Sets the value.
+	 *
+	 * @param n the n
+	 * @param value the value
+	 */
 	public void setValue(int n, double value) {
 		this.values[n] = value;
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @param n the n
+	 * @return the value
+	 */
 	public double getValue(int n) {
 		return values[n];
 	}
 
+	/**
+	 * Parses the.
+	 *
+	 * @param str the str
+	 * @return the vector
+	 */
 	public static Vector parse(String str) {
 		Vector vec = new Vector();
 		if (str.startsWith("(") && str.endsWith(")")) {
@@ -77,6 +118,14 @@ public class Vector {
 	
 	
 	
+	/**
+	 * Parses the single.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @param z the z
+	 * @return the vector
+	 */
 	public static Vector parseSingle(double x, double y, double z) {
 		Vector vec = new Vector();
 		vec.values[0] = x;
@@ -88,6 +137,9 @@ public class Vector {
 		return vec;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
 		buf.append("(");
@@ -101,6 +153,11 @@ public class Vector {
 		return (buf.toString());
 	}
 	
+	/**
+	 * To string space.
+	 *
+	 * @return the string
+	 */
 	public String toStringSpace() {
 		StringBuffer buf = new StringBuffer();
 		for (int i = 0; i < values.length; i++) {
@@ -112,6 +169,11 @@ public class Vector {
 		return (buf.toString());
 	}
 	
+	/**
+	 * Copy.
+	 *
+	 * @param copy the copy
+	 */
 	public void copy(Vector copy) {
 		if (this.dimensions == copy.dimensions) {
 			for (int i = 0; i < values.length; i++) {
@@ -121,6 +183,11 @@ public class Vector {
 		}
 	}
 	
+	/**
+	 * Copy.
+	 *
+	 * @return the vector
+	 */
 	public Vector copy() {
 		Vector ret = new Vector();
 		if (this.dimensions == ret.dimensions) {
@@ -132,6 +199,11 @@ public class Vector {
 		return ret;
 	}
 
+	/**
+	 * Update.
+	 *
+	 * @param ds the ds
+	 */
 	public void update(double ... ds) {
 		for (int i = 0; i < ds.length; i++) {
 			values[i] = ds[i];
@@ -139,6 +211,9 @@ public class Vector {
 		updateMagnitude();
 	}
 	
+	/**
+	 * Update magnitude.
+	 */
 	public void updateMagnitude() {
 		double sum = 0.0;
 		for (int i = 0; i < values.length; i++) {
@@ -147,6 +222,11 @@ public class Vector {
 		this.magnitude = Math.sqrt(sum);
 	}
 	
+	/**
+	 * Adds the.
+	 *
+	 * @param v the v
+	 */
 	public void add(Vector v) {
 		if (this.dimensions == v.dimensions) {
 			for (int i = 0; i < values.length; i++) {
@@ -156,6 +236,12 @@ public class Vector {
 		updateMagnitude();
 	}
 	
+	/**
+	 * Adds the.
+	 *
+	 * @param v the v
+	 * @param scale the scale
+	 */
 	public void add(Vector v, double scale) {
 		if (this.dimensions == v.dimensions) {
 			for (int i = 0; i < values.length; i++) {
@@ -165,6 +251,11 @@ public class Vector {
 		updateMagnitude();
 	}
 	
+	/**
+	 * Subtract.
+	 *
+	 * @param v the v
+	 */
 	public void subtract(Vector v) {
 		if (this.dimensions == v.dimensions) {
 			for (int i = 0; i < values.length; i++) {
@@ -174,6 +265,12 @@ public class Vector {
 		updateMagnitude();
 	}
 	
+	/**
+	 * Subtract.
+	 *
+	 * @param v the v
+	 * @param scale the scale
+	 */
 	public void subtract(Vector v, double scale) {
 		if (this.dimensions == v.dimensions) {
 			for (int i = 0; i < values.length; i++) {
@@ -183,10 +280,21 @@ public class Vector {
 		updateMagnitude();
 	}
 	
+	/**
+	 * Gets the magnitude.
+	 *
+	 * @return the magnitude
+	 */
 	public double getMagnitude() {
 		return magnitude;
 	}
 	
+	/**
+	 * Dot product.
+	 *
+	 * @param v the v
+	 * @return the double
+	 */
 	public double dotProduct(Vector v) {
 		double res = 0.0;
 		if (this.dimensions == v.dimensions) {
@@ -197,6 +305,11 @@ public class Vector {
 		return res;
 	}
 	
+	/**
+	 * Product.
+	 *
+	 * @param value the value
+	 */
 	public void product(double value) {
 		for (int i = 0; i < values.length; i++) {
 			values[i] *= value;
@@ -204,6 +317,11 @@ public class Vector {
 		updateMagnitude();
 	}
 	
+	/**
+	 * Division.
+	 *
+	 * @param value the value
+	 */
 	public void division(double value) {
 		for (int i = 0; i < values.length; i++) {
 			values[i] /= value;
@@ -211,6 +329,9 @@ public class Vector {
 		updateMagnitude();
 	}
 	
+	/**
+	 * Normalize vector.
+	 */
 	public void normalizeVector() {
 		
 		if (getMagnitude() != 0.0) {
@@ -222,12 +343,18 @@ public class Vector {
 		
 	}
 	
+	/**
+	 * Inverse.
+	 */
 	public void inverse() {
 		for (int i = 0; i < values.length; i++) {
 			values[i] = -values[i];
 		}
 	}
 	
+	/**
+	 * Normalize vector inverse.
+	 */
 	public void normalizeVectorInverse() {
 		
 		normalizeVector();
@@ -237,6 +364,12 @@ public class Vector {
 		
 	}
 	
+    /**
+     * Gets the distance.
+     *
+     * @param otherVector the other vector
+     * @return the distance
+     */
     public double getDistance(Vector otherVector) {
     	
     	double distance = 0.0;
@@ -248,6 +381,9 @@ public class Vector {
     	
     }
     
+    /**
+     * Zero.
+     */
     public void zero() {
 
     	for (int i = 0; i < values.length; i++) {

@@ -35,19 +35,39 @@ import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.MessageTemplate;
 import jade.wrapper.AgentState;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Reasoning.
+ */
 public class Reasoning extends MusicalAgentComponent {
 
-	enum ReasoningMode {REACTIVE, PERIODIC, CYCLIC};
+	/**
+	 * The Enum ReasoningMode.
+	 */
+	enum ReasoningMode {/** The reactive. */
+REACTIVE, /** The periodic. */
+ PERIODIC, /** The cyclic. */
+ CYCLIC};
 	
+	/** The reasoning mode. */
 	private ReasoningMode reasoningMode;
+	
+	/** The reasoning period. */
 	private long reasoningPeriod = 0;
 	
+	/** The tbf. */
 	ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
+	
+	/** The cyclic behaviour. */
 	Behaviour cyclicBehaviour = null;
 	
+	/** The clock. */
 	VirtualClockHelper clock;
 
 	// TODO No caso de batch, que o process é chamado por uma thread, o que acontece com os métodos newSense e needActuatuion nesse caso?!?!
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#start()
+	 */
 	@Override
 	public final boolean start() {
 		
@@ -133,6 +153,9 @@ public class Reasoning extends MusicalAgentComponent {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#stop()
+	 */
 	@Override
 	public final boolean stop() {
 
@@ -163,6 +186,11 @@ public class Reasoning extends MusicalAgentComponent {
 		return true;
 	}
 	
+	/**
+	 * Sets the wake up.
+	 *
+	 * @param time the new wake up
+	 */
 	public void setWakeUp(long time) {
 		
 		// No caso de processamento Batch, coloca o Agente para dormir até o primeiro turno
@@ -170,8 +198,14 @@ public class Reasoning extends MusicalAgentComponent {
 		
 	}
 	
+	/**
+	 * The Class ReasonBatch.
+	 */
 	class ReasonBatch implements Runnable {
 
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
 		public void run() {
 		
 			// Apenas processa o raciocínio se o agente estiver ativo
@@ -201,18 +235,27 @@ public class Reasoning extends MusicalAgentComponent {
 	}
 	
 	/**
-	 * Processamento cíclico do raciocínio
-	 * @author lfthomaz
+	 * Processamento cíclico do raciocínio.
 	 *
+	 * @author lfthomaz
 	 */
 	private class ReasonCyclic extends SimpleBehaviour {
 
+		/** The terminated. */
 		private boolean terminated = false;
 		
+		/**
+		 * Instantiates a new reason cyclic.
+		 *
+		 * @param a the a
+		 */
 		public ReasonCyclic(Agent a) {
 			super(a);
 		}
 		
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		public void action() {
 			try {
 				process();
@@ -221,11 +264,17 @@ public class Reasoning extends MusicalAgentComponent {
 			}
 		}
 		
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#done()
+		 */
 		@Override
 		public boolean done() {
 			return terminated;
 		}
 
+		/**
+		 * Stop.
+		 */
 		public void stop() {
 			terminated = true;
 		}
@@ -237,44 +286,54 @@ public class Reasoning extends MusicalAgentComponent {
 	//--------------------------------------------------------------------------------
 
 	/**
-	 * Chamado no momento em que um novo EventHandler é registrado no Agente Musical
+	 * Chamado no momento em que um novo EventHandler é registrado no Agente Musical.
+	 *
+	 * @param evtHdl the evt hdl
+	 * @throws Exception the exception
 	 */
 	protected void eventHandlerRegistered(EventHandler evtHdl) throws Exception {};
 	
 	/**
-	 * Chamado no momento em que um novo EventHandler é registrado no Agente Musical
+	 * Chamado no momento em que um novo EventHandler é registrado no Agente Musical.
+	 *
+	 * @param evtHdl the evt hdl
+	 * @throws Exception the exception
 	 */
 	protected void eventHandlerDeregistered(EventHandler evtHdl) throws Exception {};
 
 	/**
-	 * Chamado no momento que o Agente Musical recebe um novo evento (e o raciocínio está registrado no Sensor)
-	 * @param eventType
-	 * @param instant
-	 * @param duration
-	 * @throws Exception
+	 * Chamado no momento que o Agente Musical recebe um novo evento (e o raciocínio está registrado no Sensor).
+	 *
+	 * @param sourceSensor the source sensor
+	 * @param instant the instant
+	 * @param duration the duration
+	 * @throws Exception the exception
 	 */
 	public void newSense(Sensor sourceSensor, double instant, double duration) throws Exception {};
 
 	/**
-	 * Chamado no caso de eventos frequentes, quando existe a necessidade de uma ação
-	 * @param sourceActuator
-	 * @param workingFrame
-	 * @throws Exception
+	 * Chamado no caso de eventos frequentes, quando existe a necessidade de uma ação.
+	 *
+	 * @param sourceActuator the source actuator
+	 * @param workingFrame the working frame
+	 * @throws Exception the exception
 	 */
 	public void needAction(Actuator sourceActuator, long workingFrame) throws Exception {};
 	
 	/**
-	 * Chamado no caso de eventos frequentes, quando existe a necessidade de uma ação
-	 * @param sourceActuator
-	 * @param instant
-	 * @param duration
-	 * @throws Exception
+	 * Chamado no caso de eventos frequentes, quando existe a necessidade de uma ação.
+	 *
+	 * @param sourceActuator the source actuator
+	 * @param instant the instant
+	 * @param duration the duration
+	 * @throws Exception the exception
 	 */
 	public void needAction(Actuator sourceActuator, double instant, double duration) throws Exception {};
 
 	/**
-	 * Método de processamento do raciocínio
-	 * @throws Exception
+	 * Método de processamento do raciocínio.
+	 *
+	 * @throws Exception the exception
 	 */
 	public void process() throws Exception {}
 

@@ -34,38 +34,59 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class EventHandler.
+ */
 public abstract class EventHandler extends MusicalAgentComponent {
 
-	/**
-	 * Event Handler's state
-	 * 0: not registered, 1: registered
-	 */
+	/** Event Handler's state 0: not registered, 1: registered. */
 	protected EH_STATUS	status 			= EH_STATUS.NOT_REGISTERED;
 
-	/**
-	 * Event Handler's parameters
-	 */
+	/** Event Handler's parameters. */
 	protected String 		eventType 			= null;
+	
+	/** The event exchange. */
 	protected String		eventExchange 		= Constants.EVT_EXC_NOT_DEFINED;
+	
+	/** The comm type. */
 	protected String 		commType 			= "ensemble.comm.direct.CommDirect";
+	
+	/** The relative_position. */
 	protected Vector		relative_position 	= new Vector();
 	
+	/** The my comm. */
 	protected Comm myComm;
 	
+	/** The my memory. */
 	protected Memory myMemory;
 	
 	// Eventos periódicos - Tempos configurados pelo EventServer
+	/** The start time. */
 	protected long startTime;
+	
+	/** The frame time. */
 	protected long frameTime;
+	
+	/** The period. */
 	protected long period;
+	
+	/** The send deadline. */
 	protected long sendDeadline;
 	
+	/** The working frame. */
 	protected long workingFrame;
+	
+	/** The happening frame. */
 	protected long happeningFrame;
 		
 	// Lista de componentes interessados no evento
+	/** The listeners. */
 	ArrayList<Reasoning> listeners = new ArrayList<Reasoning>();
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#start()
+	 */
 	@Override
 	public boolean start() {
 		
@@ -103,6 +124,9 @@ public abstract class EventHandler extends MusicalAgentComponent {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#stop()
+	 */
 	@Override
 	public boolean stop() {
 		
@@ -113,6 +137,11 @@ public abstract class EventHandler extends MusicalAgentComponent {
 		
 	}
 	
+	/**
+	 * Sets the event type.
+	 *
+	 * @param eventType the new event type
+	 */
 	public void setEventType(String eventType) {
 		if (getState() == EA_STATE.CREATED) {
 			this.eventType = eventType;
@@ -121,25 +150,45 @@ public abstract class EventHandler extends MusicalAgentComponent {
 		}
 	}
 
+	/**
+	 * Gets the event type.
+	 *
+	 * @return the event type
+	 */
 	public String getEventType() {
 		return eventType;
 	}
 	
+	/**
+	 * Gets the status.
+	 *
+	 * @return the status
+	 */
 	public EH_STATUS getStatus() {
 		return status;
 	}
 	
+	/**
+	 * Sets the relative position.
+	 *
+	 * @param relative_position the new relative position
+	 */
 	public void setRelativePosition(Vector relative_position) {
 		relative_position.copy(this.relative_position);
 	}
 	
 	// TODO Precisa ser algo mais genérico que Vector3D!!!!
+	/**
+	 * Gets the relative position.
+	 *
+	 * @return the relative position
+	 */
 	public Vector getRelativePosition() {
 		return relative_position;
 	}
 	
 	/**
-	 * Registra o EventHandler no EventServer correspondente 
+	 * Registra o EventHandler no EventServer correspondente.
 	 */
 	public void register() {
 
@@ -185,6 +234,13 @@ public abstract class EventHandler extends MusicalAgentComponent {
 
 	}
 	
+	/**
+	 * Confirm registration.
+	 *
+	 * @param eventExecution the event execution
+	 * @param serverParameters the server parameters
+	 * @param extraParameters the extra parameters
+	 */
 	public void confirmRegistration(String eventExecution, Parameters serverParameters, Parameters extraParameters) {
 
 		this.eventExchange = eventExecution;
@@ -255,12 +311,17 @@ public abstract class EventHandler extends MusicalAgentComponent {
 	}
 	
 	// Chamado por um raciocínio para registrá-lo como listener dos eventos
+	/**
+	 * Register listener.
+	 *
+	 * @param reasoning the reasoning
+	 */
 	public void registerListener(Reasoning reasoning) {
 		listeners.add(reasoning);
 	}
 	
 	/**
-	 * Remove o registro do EventHandler do EventServer correspondente
+	 * Remove o registro do EventHandler do EventServer correspondente.
 	 */
 	public void deregister() {
 		
@@ -273,6 +334,9 @@ public abstract class EventHandler extends MusicalAgentComponent {
 		
 	}
 	
+	/**
+	 * Confirm deregistration.
+	 */
 	public void confirmDeregistration() {
 		
 		this.status = EH_STATUS.NOT_REGISTERED;
@@ -297,19 +361,22 @@ public abstract class EventHandler extends MusicalAgentComponent {
 	//--------------------------------------------------------------------------------
 
 	/**
-	 * Process an event before acting or after sensing
+	 * Process an event before acting or after sensing.
+	 *
+	 * @param evt the evt
+	 * @throws Exception the exception
 	 */
 	protected void process(Event evt) throws Exception  {
 	}
 	
 	/**
-	 * Called after the Event Handler has been registered within the Event Server
+	 * Called after the Event Handler has been registered within the Event Server.
 	 */
 	protected void eventHandlerRegistered() {
 	}
 
 	/**
-	 * Called after the Event Handler has been deregistered within the Event Server
+	 * Called after the Event Handler has been deregistered within the Event Server.
 	 */
 	protected void eventHandlerDeregistered() {
 	}

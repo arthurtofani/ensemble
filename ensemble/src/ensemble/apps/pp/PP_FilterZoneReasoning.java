@@ -25,82 +25,158 @@ import ensemble.movement.MovementConstants;
 import ensemble.world.Vector;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PP_FilterZoneReasoning.
+ */
 public class PP_FilterZoneReasoning extends Reasoning{
 
 	// Audio
+	/** The mouth. */
 	Actuator 	mouth;
+	
+	/** The mouth memory. */
 	Memory 		mouthMemory;
+	
+	/** The ear. */
 	Sensor 		ear;
+	
+	/** The ear memory. */
 	Memory 		earMemory;
+	
+	/** The chunk_size. */
 	int 		chunk_size;
+	
+	/** The sample rate. */
 	float 		sampleRate;
+	
+	/** The frame_duration. */
 	double 		frame_duration;
 	
 	
 	//Time Related
+	/** The start_time. */
 	double 		start_time;
 	
 	//Auxiliar Memory
+	/** The internal memory. */
 	Memory internalMemory;
 
 	
 	// Movement
+	/** The legs. */
 	Actuator	legs;
+	
+	/** The legs memory. */
 	Memory 		legsMemory;
+	
+	/** The eyes. */
 	Sensor 		eyes;
+	
+	/** The eyes memory. */
 	Memory 		eyesMemory;
 
 	
 	//private World 	world;
+	/** The actual_pos. */
 	private Vector 	actual_pos = null;
 	
 	// Zones
+	/**
+	 * The Enum WorldZone.
+	 */
 	enum WorldZone {
+		
+		/** The not defined. */
 		NOT_DEFINED,
+		
+		/** The bright. */
 		BRIGHT,
+		
+		/** The gray. */
 		GRAY,
+		
+		/** The dark. */
 		DARK
 	}
 
 	
+	/** The zone. */
 	WorldZone zone = WorldZone.NOT_DEFINED;
 	
 	//VST definitions
 	
+	/**
+	 * The Enum ZoneMode.
+	 */
 	enum ZoneMode {
+		
+		/** The not defined. */
 		NOT_DEFINED,
+		
+		/** The fixed. */
 		FIXED			
 	}
 
+	/** The zone mode. */
 	ZoneMode zoneMode = ZoneMode.FIXED;
 
 
 	//Repertoire
 	
+	/** The audio file reference. */
 	public Hashtable<String, String> audioFileReference =  new Hashtable<String, String>();
+	
+	/** The audio file reference1. */
 	public Hashtable<String, String> audioFileReference1 =  new Hashtable<String, String>();
+	
+	/** The audio file reference2. */
 	public Hashtable<String, String> audioFileReference2 =  new Hashtable<String, String>();
+	
+	/** The audio file reference3. */
 	public Hashtable<String, String> audioFileReference3 =  new Hashtable<String, String>();
+	
+	/** The audio file reference4. */
 	public Hashtable<String, String> audioFileReference4 =  new Hashtable<String, String>();
 	
+	/** The audio file list. */
 	public String[] audioFileList;
 
 	
 	// Reasoning state
+	/**
+	 * The Enum ReasoningState.
+	 */
 	enum ReasoningState {
+		
+		/** The not defined. */
 		NOT_DEFINED,
+		
+		/** The listening. */
 		LISTENING,
+		
+		/** The recording. */
 		RECORDING,
+		
+		/** The processing. */
 		PROCESSING,
+		
+		/** The playing. */
 		PLAYING,
+		
+		/** The error. */
 		ERROR
 	}
 	
+	/** The state. */
 	ReasoningState state = ReasoningState.NOT_DEFINED;
 	
 	
 	
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 
@@ -108,6 +184,9 @@ public class PP_FilterZoneReasoning extends Reasoning{
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
 		// Checks if it is a sound Actuator
@@ -137,6 +216,9 @@ public class PP_FilterZoneReasoning extends Reasoning{
 	
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 		
@@ -148,6 +230,9 @@ public class PP_FilterZoneReasoning extends Reasoning{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	public void needAction(Actuator sourceActuator, double instant, double duration) {
 
 /*		switch (state) {
@@ -267,6 +352,9 @@ public class PP_FilterZoneReasoning extends Reasoning{
 //		System.out.println("REAS time = " + (System.currentTimeMillis() - start));
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#processCommand(ensemble.Command)
+	 */
 	@Override
 	public void processCommand(Command cmd) {
 		if (cmd.getCommand().equals(AudioConstants.CMD_ZONE_OFF)) {
@@ -276,6 +364,12 @@ public class PP_FilterZoneReasoning extends Reasoning{
 		} 
 	}
 	
+	/**
+	 * Gets the zone.
+	 *
+	 * @param size the size
+	 * @return the zone
+	 */
 	public WorldZone getZone(int size){
 		
 		
@@ -314,6 +408,9 @@ public class PP_FilterZoneReasoning extends Reasoning{
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#process()
+	 */
 	public void process() throws Exception {
 
 		switch (state) {

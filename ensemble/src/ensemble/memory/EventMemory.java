@@ -28,17 +28,30 @@ import ensemble.Parameters;
 import ensemble.clock.TimeUnit;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class EventMemory.
+ */
 public class EventMemory extends Memory {
 
+	/** The lock. */
 	private Lock lock = new ReentrantLock();
 	
+	/** The head. */
 	EventSlot head = null;
+	
+	/** The tail. */
 	EventSlot tail = null;
 
+	/** The size. */
 	public int size = 0;
 	
+	/** The ptr_last_instant_read. */
 	EventSlot ptr_last_instant_read = null;
 
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#getFirstInstant()
+	 */
 	@Override
 	public double getFirstInstant() {
 		if (head != null) {
@@ -48,6 +61,9 @@ public class EventMemory extends Memory {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#getLastInstant()
+	 */
 	@Override
 	public double getLastInstant() {
 		if (tail != null) {
@@ -81,6 +97,9 @@ public class EventMemory extends Memory {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#readMemory(double, ensemble.clock.TimeUnit)
+	 */
 	@Override
 	public Object readMemory(double instant, TimeUnit unit) {
 		
@@ -129,6 +148,9 @@ public class EventMemory extends Memory {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#readMemory(double, double, ensemble.clock.TimeUnit)
+	 */
 	@Override
 	public Object readMemory(double instant, double duration, TimeUnit unit) {
 		
@@ -136,12 +158,18 @@ public class EventMemory extends Memory {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#resetMemory()
+	 */
 	@Override
 	public void resetMemory() {
 		head = null;
 		size = 0;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#writeMemory(java.lang.Object, double, double, ensemble.clock.TimeUnit)
+	 */
 	@Override
 	public void writeMemory(Object object, double instant, double duration,
 			TimeUnit unit) throws MemoryException {
@@ -194,6 +222,9 @@ public class EventMemory extends Memory {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#writeMemory(java.lang.Object, double, ensemble.clock.TimeUnit)
+	 */
 	@Override
 	public void writeMemory(Object object, double instant, TimeUnit unit) throws MemoryException {
 
@@ -201,6 +232,9 @@ public class EventMemory extends Memory {
 	
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#writeMemory(java.lang.Object)
+	 */
 	@Override
 	public void writeMemory(Object object) throws MemoryException {
 		
@@ -209,10 +243,21 @@ public class EventMemory extends Memory {
 		
 	}
 
+	/**
+	 * The Class EventSlot.
+	 */
 	class EventSlot {
+		
+		/** The instant. */
 		public double 		instant;
+		
+		/** The object. */
 		public Object 		object;
+		
+		/** The prev. */
 		public EventSlot 	prev;
+		
+		/** The next. */
 		public EventSlot 	next;
 	}
 	

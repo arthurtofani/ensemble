@@ -48,6 +48,7 @@ import ensemble.MusicalAgent;
 import ensemble.Parameters;
 
 
+// TODO: Auto-generated Javadoc
 /*** Runs the system.
  * @author Leandro
  *
@@ -56,40 +57,94 @@ import ensemble.Parameters;
 public class Loader {
 
 	// Configuration File's Constants
+	/** The Constant CONF_GLOBAL_PARAMETERS. */
 	private static final String CONF_GLOBAL_PARAMETERS = "GLOBAL_PARAMETERS";
+	
+	/** The Constant CONF_ENVIRONMENT_AGENT_CLASS. */
 	private static final String CONF_ENVIRONMENT_AGENT_CLASS = "ENVIRONMENT_AGENT_CLASS";
+	
+	/** The Constant CONF_MUSICAL_AGENT_CLASS. */
 	private static final String CONF_MUSICAL_AGENT_CLASS = "MUSICAL_AGENT_CLASS";
+	
+	/** The Constant CONF_MUSICAL_AGENT. */
 	private static final String CONF_MUSICAL_AGENT = "MUSICAL_AGENT";
+	
+	/** The Constant CONF_EVENT_SERVER. */
 	private static final String CONF_EVENT_SERVER = "EVENT_SERVER";
+	
+	/** The Constant CONF_COMPONENTS. */
 	private static final String CONF_COMPONENTS= "COMPONENTS";
+	
+	/** The Constant CONF_COMP_REASONING. */
 	private static final String CONF_COMP_REASONING = "REASONING";
+	
+	/** The Constant CONF_COMP_SENSOR. */
 	private static final String CONF_COMP_SENSOR = "SENSOR";
+	
+	/** The Constant CONF_COMP_ACTUATOR. */
 	private static final String CONF_COMP_ACTUATOR = "ACTUATOR";
+	
+	/** The Constant CONF_COMP_EVENT_TYPE. */
 	private static final String CONF_COMP_EVENT_TYPE = "EVENT_TYPE";
+	
+	/** The Constant CONF_COMP. */
 	private static final String CONF_COMP = "COMP";
+	
+	/** The Constant CONF_NAME. */
 	private static final String CONF_NAME = "NAME";
+	
+	/** The Constant CONF_CLASS. */
 	private static final String CONF_CLASS = "CLASS";
+	
+	/** The Constant CONF_COMM. */
 	private static final String CONF_COMM = "COMM";
+	
+	/** The Constant CONF_PERIOD. */
 	private static final String CONF_PERIOD = "PERIOD";
+	
+	/** The Constant CONF_ARG. */
 	private static final String CONF_ARG = "ARG";
+	
+	/** The Constant CONF_ARG_COMP. */
 	private static final String CONF_ARG_COMP = "ARG_COMP";
+	
+	/** The Constant CONF_VALUE. */
 	private static final String CONF_VALUE = "VALUE";
+	
+	/** The Constant CONF_KB. */
 	private static final String CONF_KB = "KB";
+	
+	/** The Constant CONF_FACT. */
 	private static final String CONF_FACT = "FACT";
+	
+	/** The Constant CONF_PUBLIC. */
 	private static final String CONF_PUBLIC = "PUBLIC";
+	
+	/** The Constant CONF_QUANTITY. */
 	private static final String CONF_QUANTITY = "QUANTITY";
 	
 //	private Logger logger = Logger.getLogger("");
 
 	// JADE Variables
-	private static Runtime rt = null;
+	/** The rt. */
+private static Runtime rt = null;
+	
+	/** The p. */
 	private static Profile p = null;
+	
+	/** The cc. */
 	private static ContainerController cc = null;
 	
 	//--------------------------------------------------------------------------------
 	// System initialization / termination
 	//--------------------------------------------------------------------------------
 	
+	/**
+	 * Start jade.
+	 *
+	 * @param elem_ensemble the elem_ensemble
+	 * @param nogui the nogui
+	 */
 	private static void startJADE(Element elem_ensemble, boolean nogui) {
 
 		// Cria o Container JADE
@@ -128,12 +183,23 @@ public class Loader {
 		}
 	}
 	
+	/**
+	 * Stop jade.
+	 */
 	private static void stopJADE() {
 		
 		rt.shutDown();
 		
 	}
 
+	/**
+	 * Read attribute.
+	 *
+	 * @param elem the elem
+	 * @param attributeName the attribute name
+	 * @param defaultValue the default value
+	 * @return the string
+	 */
 	private static String readAttribute(Element elem, String attributeName, String defaultValue) {
 
 		String ret;
@@ -150,6 +216,12 @@ public class Loader {
 
 	}
 	
+	/**
+	 * Read arguments.
+	 *
+	 * @param elem the elem
+	 * @return the parameters
+	 */
 	private static Parameters readArguments(Element elem) {
 
 		Parameters parameters = new Parameters();
@@ -166,6 +238,13 @@ public class Loader {
 	
 	}
 	
+	/**
+	 * Read component arguments.
+	 *
+	 * @param elem the elem
+	 * @param component the component
+	 * @return the parameters
+	 */
 	private static Parameters readComponentArguments(Element elem, String component) {
 
 		Parameters parameters = new Parameters();
@@ -183,6 +262,12 @@ public class Loader {
 	
 	}
 	
+	/**
+	 * Read facts.
+	 *
+	 * @param elem the elem
+	 * @return the parameters
+	 */
 	private static Parameters readFacts(Element elem) {
 
 		Parameters parameters = new Parameters();
@@ -197,6 +282,12 @@ public class Loader {
 	
 	}
 	
+	/**
+	 * Load xml file.
+	 *
+	 * @param xmlFile the xml file
+	 * @return the document
+	 */
 	private static Document loadXMLFile(String xmlFile) {
 		
 		Document doc = null;
@@ -218,6 +309,11 @@ public class Loader {
 		
 	}
 	
+	/**
+	 * Load system.
+	 *
+	 * @param elem_ensemble the elem_ensemble
+	 */
 	private static void loadSystem(Element elem_ensemble) {
 		
 		NodeList nl;
@@ -469,7 +565,7 @@ public class Loader {
 	}
 	
 	/**
-	 * Gracefully exit the Ensemble and Jade system
+	 * Gracefully exit the Ensemble and Jade system.
 	 */
 	private void terminate() {
 		stopJADE();
@@ -481,6 +577,11 @@ public class Loader {
 	// Main method
 	//--------------------------------------------------------------------------------
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 
 //		// check the program arguments

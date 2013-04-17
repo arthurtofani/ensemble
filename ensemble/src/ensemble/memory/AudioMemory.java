@@ -34,6 +34,7 @@ import ensemble.clock.VirtualClockHelper;
 import jade.util.Logger;
 
 
+// TODO: Auto-generated Javadoc
 // TODO Problemas de concorrências ao ler e ao escrever no HashMap
 // TODO O que acontece se for tentar escrever próximo da mudança de ciclo?
 // TODO O que fazer com os chunks zerados que recebemos? Talvez seja melhor nem enviar caso não exista 
@@ -45,27 +46,58 @@ public class AudioMemory extends Memory {
 
 //	public BufferedWriter os;
 
-	private final double EPSILON = 1E-9; 
+	/** The epsilon. */
+private final double EPSILON = 1E-9; 
+	
+	/** The memory type. */
 	private final String MEMORY_TYPE = AudioConstants.EVT_TYPE_AUDIO;
 	
+	/** The param overwrite. */
 	private final String PARAM_OVERWRITE = "OVERWRITE";
 	
 	// TODO Musical Agent ou qualquer tipo de Agent?
+	/** The step. */
 	private double		step;
+	
+	/** The start time. */
 	private double		startTime;
+	
+	/** The period. */
 	private double		period;
+	
+	/** The overwrite. */
 	private boolean 	overwrite;
 
+	/** The samples. */
 	private int samples;
+	
+	/** The half samples. */
 	private int halfSamples;
+	
+	/** The ptr begin. */
 	private int ptrBegin;
+	
+	/** The ptr absolut zero. */
 	private long ptrAbsolutZero;
+	
+	/** The ptr now. */
 	private int ptrNow;
+	
+	/** The ptr end. */
 	private int ptrEnd;
+	
+	/** The instant begin. */
 	private double instantBegin;
+	
+	/** The instant end. */
 	private double instantEnd;
+	
+	/** The buffer. */
 	private double[] buffer;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -95,25 +127,41 @@ public class AudioMemory extends Memory {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#getFirstInstant()
+	 */
 	@Override
 	public double getFirstInstant() {
 		// TODO Auto-generated method stub
 		return instantBegin;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#getLastInstant()
+	 */
 	@Override
 	public double getLastInstant() {
 		// TODO Auto-generated method stub
 		return instantEnd;
 	}
 
+	/**
+	 * Round.
+	 *
+	 * @param number the number
+	 * @param decimalPlaces the decimal places
+	 * @return the double
+	 */
 	private static double round(double number, int decimalPlaces) {
 		double modifier = Math.pow(10.0, decimalPlaces);
 		return Math.round(number * modifier)/modifier;
 	}
 
 	/**
-	 * Retorna o instante atual, para ser utilizado na leitura/escrita relativa 
+	 * Retorna o instante atual, para ser utilizado na leitura/escrita relativa.
+	 *
+	 * @param unit the unit
+	 * @return the now
 	 */
 	// TODO Por enquanto retorna em segundos, mas deve seguir a prática do TimeUnit
 	private Object getNow(TimeUnit unit) {
@@ -150,6 +198,9 @@ public class AudioMemory extends Memory {
 		
 	}
 
+	/**
+	 * Update memory.
+	 */
 	private void updateMemory() {
 		
 //		System.out.println("updateMemory()");
@@ -212,6 +263,9 @@ public class AudioMemory extends Memory {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#readMemory(double, ensemble.clock.TimeUnit)
+	 */
 	@Override
 	public Object readMemory(double instant, TimeUnit unit) {
 		
@@ -255,6 +309,9 @@ public class AudioMemory extends Memory {
 	// TODO Não devolver valores que já expiraram
 	// TODO Interpolar valores caso o instante inicial não coincida com a amostra
 	// TODO Considerar o caso de initialInstant < startTime
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#readMemory(double, double, ensemble.clock.TimeUnit)
+	 */
 	@Override
 	public Object readMemory(double instant, double duration, TimeUnit unit) {
 
@@ -335,7 +392,10 @@ public class AudioMemory extends Memory {
 //		return value;
 //	}
 
-	@Override
+	/* (non-Javadoc)
+ * @see ensemble.memory.Memory#resetMemory()
+ */
+@Override
 	public void resetMemory() {
 		
 		for (int i = 0; i < buffer.length; i++) {
@@ -344,6 +404,9 @@ public class AudioMemory extends Memory {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#writeMemory(java.lang.Object, double, double, ensemble.clock.TimeUnit)
+	 */
 	@Override
 	// TODO Deixar ele sobrescrever a memória recebida? De qualquer maneira necessitamos de um método para que o sensor possa escrever
 	// TODO Ainda não estou considerando a duração (duration)
@@ -413,6 +476,9 @@ public class AudioMemory extends Memory {
 //		System.out.println(" - " + ptrBegin + " - " + ptrChunk + " - " + ptrBuffer);
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#writeMemory(java.lang.Object, double, ensemble.clock.TimeUnit)
+	 */
 	@Override
 		public void writeMemory(Object object, double instant, TimeUnit unit) throws MemoryException {
 			if (object instanceof double[]) {
@@ -422,6 +488,9 @@ public class AudioMemory extends Memory {
 			}
 		}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.memory.Memory#writeMemory(java.lang.Object)
+	 */
 	@Override
 	public void writeMemory(Object object) throws MemoryException {
 

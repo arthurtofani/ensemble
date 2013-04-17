@@ -1,5 +1,6 @@
 package ensemble.audio.dsp;
 
+// TODO: Auto-generated Javadoc
 //WTest.java
 /*
     Copyright (C) 2003 Loreno Heer, (helohe at bluewin dot ch)
@@ -19,8 +20,18 @@ package ensemble.audio.dsp;
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+/**
+ * The Class FftProcessing.
+ */
 public class FftProcessing {
 
+    /**
+     * Sin.
+     *
+     * @param step the step
+     * @param size the size
+     * @return the double[]
+     */
     private static double[] sin(double step, int size){
         double f = 0;
         double[] ret = new double[size];
@@ -31,6 +42,13 @@ public class FftProcessing {
         return ret;
     }
 
+    /**
+     * Adds the.
+     *
+     * @param a the a
+     * @param b the b
+     * @return the double[]
+     */
     private static double[] add(double[] a, double[] b){
         double[] c = new double[a.length];
         for(int i = 0; i < a.length; i++){
@@ -39,6 +57,13 @@ public class FftProcessing {
         return c;
     }
 
+    /**
+     * Sub.
+     *
+     * @param a the a
+     * @param b the b
+     * @return the double[]
+     */
     private static double[] sub(double[] a, double[] b){
         double[] c = new double[a.length];
         for(int i = 0; i < a.length; i++){
@@ -47,6 +72,13 @@ public class FftProcessing {
         return c;
     }
 
+    /**
+     * Adds the.
+     *
+     * @param a the a
+     * @param b the b
+     * @return the double[]
+     */
     private static double[] add(double[] a, double b){
         double[] c = new double[a.length];
         for(int i = 0; i < a.length; i++){
@@ -55,6 +87,13 @@ public class FftProcessing {
         return c;
     }
 
+    /**
+     * Cp.
+     *
+     * @param a the a
+     * @param size the size
+     * @return the double[]
+     */
     private static double[] cp(double[] a, int size){
         double[] c = new double[size];
         for(int i = 0; i < size; i++){
@@ -63,6 +102,13 @@ public class FftProcessing {
         return c;
     }
 
+    /**
+     * Mul.
+     *
+     * @param a the a
+     * @param b the b
+     * @return the double[]
+     */
     private static double[] mul(double[] a, double b){
         double[] c = new double[a.length];
         for(int i = 0; i < a.length; i++){
@@ -71,6 +117,11 @@ public class FftProcessing {
         return c;
     }
 
+    /**
+     * Prints the.
+     *
+     * @param value the value
+     */
     public static void print(double[] value){
         for(int i = 0; i < value.length; i++){
             System.out.print(i + "," + value[i] + "\n");
@@ -78,6 +129,12 @@ public class FftProcessing {
         System.out.println();
     }
 
+    /**
+     * Abs.
+     *
+     * @param a the a
+     * @return the double
+     */
     private static double abs(double[] a){
         double c = 0;
         for(int i = 0; i < a.length; i++){
@@ -86,6 +143,15 @@ public class FftProcessing {
         return c;
     }
 
+    /**
+     * Fft.
+     *
+     * @param a the a
+     * @param min the min
+     * @param max the max
+     * @param step the step
+     * @return the double[]
+     */
     public static double[] fft(double[] a, int min, int max, int step){
         double[] ret = new double[(max - min) / step];
         int i = 0;
@@ -98,6 +164,12 @@ public class FftProcessing {
         return ret;
     }
 
+    /**
+     * Fft_log.
+     *
+     * @param a the a
+     * @return the double[]
+     */
     private static double[] fft_log(double[] a){
         double[] ret = new double[1551];
         int i = 0;
@@ -110,10 +182,21 @@ public class FftProcessing {
         return ret;
     }
 
+    /**
+     * Fc.
+     *
+     * @param d the d
+     * @return the double
+     */
     private static double fc(double d){
         return d * Math.PI / res;
     }
 
+    /**
+     * Print_log.
+     *
+     * @param value the value
+     */
     private static void print_log(double[] value){
         for(int i = 0; i < value.length; i++){
             System.out.print(Math.pow(2,((double)i/100d)) + "," + value[i] + "\n");
@@ -121,6 +204,11 @@ public class FftProcessing {
         System.out.println();
     }
 
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     */
     public static void main(String[] args){
         double[] f_0 = sin(fc(440), sample_length); // res / pi =>14005
         //double[] f_1 = sin(.02, sample_length);
@@ -137,8 +225,13 @@ public class FftProcessing {
         print_log(fft_log(d));
     }
 
+    /** The length. */
     static double length = .2; // sec
+    
+    /** The res. */
     static int res = 44000; // resoultion (pro sec)
+    
+    /** The sample_length. */
     static int sample_length = res; // resoultion
 
 }

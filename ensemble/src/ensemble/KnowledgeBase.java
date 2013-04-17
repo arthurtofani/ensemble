@@ -31,34 +31,59 @@ import ensemble.memory.EventMemory;
 import ensemble.memory.Memory;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class KnowledgeBase.
+ */
 public class KnowledgeBase extends MusicalAgentComponent {
 	
 	//--------------------------------------------------------------------------------
 	// Facts
 	//--------------------------------------------------------------------------------
 	
+	/**
+	 * The Class Fact.
+	 */
 	class Fact {
 
+		/** The name. */
 		public String 	name;
+		
+		/** The value. */
 		public String 	value;
+		
+		/** The is public. */
 		public boolean 	isPublic;
 		
 	}
 	
+	/**
+	 * The Class EventFact.
+	 */
 	class EventFact {
 
+		/** The name. */
 		public String 	name;
+		
+		/** The value. */
 		public Object	value;
+		
+		/** The timestamp. */
 		public long 	timestamp;
 		
 	}
 	
 	// Tabela de Fatos do Agente
+	/** The facts. */
 	private HashMap<String, Fact> facts = new HashMap<String, Fact>();
 
 	// Armazena as memórias
+	/** The memories. */
 	private HashMap<String, Memory> memories = new HashMap<String, Memory>();
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#start()
+	 */
 	@Override
 	public final boolean start() {
 		// Sets component type
@@ -96,6 +121,9 @@ public class KnowledgeBase extends MusicalAgentComponent {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#stop()
+	 */
 	@Override
 	public final boolean stop() {
 		// Calls user finalization method
@@ -116,9 +144,10 @@ public class KnowledgeBase extends MusicalAgentComponent {
 	
 	/**
 	 * Registers a fact in the Knowledge Base. If it already exists, than update it's value and visibility.
-	 * @param fact
-	 * @param value
-	 * @param isPublic
+	 *
+	 * @param fact the fact
+	 * @param value the value
+	 * @param isPublic the is public
 	 */
 	public void registerFact(String fact, String value, boolean isPublic) {
 		
@@ -192,6 +221,13 @@ public class KnowledgeBase extends MusicalAgentComponent {
 	// Memory
 	//--------------------------------------------------------------------------------
 	
+	/**
+	 * Creates the memory.
+	 *
+	 * @param name the name
+	 * @param parameters the parameters
+	 * @return the memory
+	 */
 	public Memory createMemory(String name, Parameters parameters) {
 
 		Memory newMemory = null;
@@ -232,6 +268,12 @@ public class KnowledgeBase extends MusicalAgentComponent {
 		
 	}
 	
+	/**
+	 * Gets the memory.
+	 *
+	 * @param name the name
+	 * @return the memory
+	 */
 	public Memory getMemory(String name) {
 		
 		return memories.get(name);

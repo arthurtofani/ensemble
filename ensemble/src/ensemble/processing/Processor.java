@@ -24,25 +24,42 @@ package ensemble.processing;
 import ensemble.LifeCycle;
 import ensemble.Parameters;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Processor.
+ */
 public abstract class Processor implements LifeCycle {
 
+	/** The parameters. */
 	protected Parameters parameters;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#setParameters(ensemble.Parameters)
+	 */
 	@Override
 	public void setParameters(Parameters parameters) {
 		this.parameters = parameters;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#getParameters()
+	 */
 	@Override
 	public Parameters getParameters() {
 		return parameters;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
 	@Override
 	public boolean configure() {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#start()
+	 */
 	@Override
 	public boolean start() {
 		
@@ -61,6 +78,9 @@ public abstract class Processor implements LifeCycle {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#stop()
+	 */
 	@Override
 	public boolean stop() {
 		
@@ -69,16 +89,20 @@ public abstract class Processor implements LifeCycle {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#parameterUpdate(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public boolean parameterUpdate(String name, String newValue) {
 		return true;
 	}
 	
 	/**
-	 * Process method
-	 * @param parameters
-	 * @param in
-	 * @return
+	 * Process method.
+	 *
+	 * @param parameters the parameters
+	 * @param in the in
+	 * @return the object
 	 */
 	public abstract Object process(Parameters parameters, Object in);
 

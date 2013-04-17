@@ -39,17 +39,32 @@ import ensemble.memory.Memory;
 import ensemble.world.World;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DummyEventServer.
+ */
 public class DummyEventServer extends EventServer {
 	
+	/** The world. */
 	private World world;
 	
 //	PrintWriter file_perf;
 	
-	private int numberFrames;
+	/** The number frames. */
+private int numberFrames;
+	
+	/** The events received. */
 	private int eventsReceived = 0;
+	
+	/** The events received in frame. */
 	private int eventsReceivedInFrame = 0;
+	
+	/** The number agents. */
 	private int numberAgents = 0;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
 	@Override
 	public boolean configure() {
 		setEventType("DUMMY");
@@ -62,6 +77,9 @@ public class DummyEventServer extends EventServer {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#init()
+	 */
 	@Override
 	public boolean init() {
 		world = envAgent.getWorld();
@@ -84,6 +102,9 @@ public class DummyEventServer extends EventServer {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#finit()
+	 */
 	@Override
 	public boolean finit() {
 		
@@ -119,6 +140,9 @@ public class DummyEventServer extends EventServer {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#actuatorRegistered(java.lang.String, java.lang.String, ensemble.Parameters)
+	 */
 	@Override
 	protected Parameters actuatorRegistered(String agentName, String eventHandlerName, Parameters userParam) throws Exception {
 
@@ -137,6 +161,9 @@ public class DummyEventServer extends EventServer {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#sensorRegistered(java.lang.String, java.lang.String, ensemble.Parameters)
+	 */
 	@Override
 	protected Parameters sensorRegistered(String agentName, String eventHandlerName, Parameters userParam) throws Exception {
 		
@@ -152,6 +179,9 @@ public class DummyEventServer extends EventServer {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#processSense(ensemble.Event)
+	 */
 	@Override
 	protected void processSense(Event evt) throws Exception {
  
@@ -166,6 +196,9 @@ public class DummyEventServer extends EventServer {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#process()
+	 */
 	@Override
 	protected void process() throws Exception {
 		

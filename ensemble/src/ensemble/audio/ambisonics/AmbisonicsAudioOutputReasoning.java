@@ -41,29 +41,73 @@ import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AmbisonicsAudioOutputReasoning.
+ */
 public class AmbisonicsAudioOutputReasoning extends Reasoning {
 
+	/**
+	 * The Enum SPEAKERS_LAYOUT.
+	 */
 	enum SPEAKERS_LAYOUT {
+		
+		/** The mono. */
 		MONO (1, gm_mono), 
+		
+		/** The stereo. */
 		STEREO (2, gm_stereo), 
+		
+		/** The square. */
 		SQUARE (4, gm_square), 
+		
+		/** The pentagon. */
 		PENTAGON (5, gm_pentagon), 
+		
+		/** The hexagon. */
 		HEXAGON (6, gm_hexagon), 
+		
+		/** The OCTAGO n1. */
 		OCTAGON1 (8, gm_octagon1), 
+		
+		/** The OCTAGO n2. */
 		OCTAGON2 (8, gm_octagon2), 
+		
+		/** The SURROUN d1. */
 		SURROUND1 (5, gm_surround), 
+		
+		/** The cube. */
 		CUBE (8, gm_cube), 
+		
+		/** The DODECAHEDRO n1. */
 		DODECAHEDRON1 (12, gm_dodecahedron1), 
+		
+		/** The DODECAHEDRO n2. */
 		DODECAHEDRON2 (12, gm_dodecahedron2);
 		
+		/** The num_speakers. */
 		public final int num_speakers;
+		
+		/** The gain_matrix. */
 		public final double[][] gain_matrix;
 
+		/**
+		 * Instantiates a new speakers layout.
+		 *
+		 * @param num_speakers the num_speakers
+		 * @param gain_matrix the gain_matrix
+		 */
 		SPEAKERS_LAYOUT(int num_speakers, double[][] gain_matrix) {
 			this.num_speakers = num_speakers;
 			this.gain_matrix = gain_matrix;
 		}
 		
+		/**
+		 * Parses the string.
+		 *
+		 * @param sl the sl
+		 * @return the speakers layout
+		 */
 		public static SPEAKERS_LAYOUT parseString(String sl) {
 	 		if (sl.equals("MONO")) {
 	 			return SPEAKERS_LAYOUT.MONO;
@@ -104,15 +148,18 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 	}
 
 	// Ambisonics - matrix_gain[speaker][amb_channel]
+	/** The gm_mono. */
 	private static double[][] gm_mono = {
 		{+1.4142, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000}
 	};
 
+	/** The gm_stereo. */
 	private static double[][] gm_stereo = {
 		{+0.7071, +0.0000, +0.5000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
 		{+0.7071, +0.0000, -0.5000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000}
 	};
 
+	/** The gm_square. */
 	private static double[][] gm_square = {
 		{+0.3536, +0.3536, +0.3536, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.2500, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
 		{+0.3536, +0.3536, -0.3536, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, -0.2500, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
@@ -120,6 +167,7 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 		{+0.3536, -0.3536, +0.3536, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, -0.2500, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000}
 	};
 
+	/** The gm_pentagon. */
 	private static double[][] gm_pentagon = {
 		{+0.2828,  0.3236,  0.2351, +0.0000, +0.0000, +0.0000, +0.0000, +0.1236, +0.3804, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
 		{+0.2828, -0.1236,  0.3804, +0.0000, +0.0000, +0.0000, +0.0000, -0.3236, -0.2351, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
@@ -128,6 +176,7 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 		{+0.2828, +0.3236, -0.2351, +0.0000, +0.0000, +0.0000, +0.0000, +0.1236, -0.3804, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000}
 	};
 
+	/** The gm_hexagon. */
 	private static double[][] gm_hexagon = {
 		{+0.2357,  0.2887,  0.1667, +0.0000, +0.0000, +0.0000, +0.0000, +0.1667, +0.2887, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
 		{+0.2357,  0.0000,  0.3333, +0.0000, +0.0000, +0.0000, +0.0000, -0.3333, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
@@ -137,6 +186,7 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 		{+0.2357,  0.2887, -0.1667, +0.0000, +0.0000, +0.0000, +0.0000, +0.1667, -0.2887, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000}
 	};
 
+	/** The gm_octagon1. */
 	private static double[][] gm_octagon1 = {
 		{+0.1768,  0.2310,  0.0957, +0.0000, +0.0000, +0.0000, +0.0000, +0.1768, +0.1768, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
 		{+0.1768,  0.0957,  0.2310, +0.0000, +0.0000, +0.0000, +0.0000, -0.1768, +0.1768, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
@@ -148,6 +198,7 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 		{+0.1768,  0.2310, -0.0957, +0.0000, +0.0000, +0.0000, +0.0000, +0.1768, -0.1768, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000}
 	};
 
+	/** The gm_octagon2. */
 	private static double[][] gm_octagon2 = {
 		{+0.1768,  0.2500,  0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.2500, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
 		{+0.1768,  0.1768,  0.1768, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.2500, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
@@ -159,6 +210,7 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 		{+0.1768,  0.1768, -0.1768, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, -0.2500, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000}
 	};
 
+	/** The gm_surround. */
 	private static double[][] gm_surround = {
 		{+0.0000,  1.3660,  0.3660, +0.0000, +0.0000, +0.0000, +0.0000, -1.3660, +0.3660, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
 		{+0.4714, -1.8214,  0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +2.4880, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
@@ -167,6 +219,7 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 		{+0.4714, -0.4553, -0.3660, +0.0000, +0.0000, +0.0000, +0.0000, +0.1220, +0.2113, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000}
 	};
 
+	/** The gm_cube. */
 	private static double[][] gm_cube = {
 		{+0.1768,  0.2165,  0.2165, -0.2165, +0.0000, -0.1875, -0.1875, +0.0000, +0.1875, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
 		{+0.1768,  0.2165, -0.2165, -0.2165, +0.0000, -0.1875, +0.1875, +0.0000, -0.1875, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
@@ -178,6 +231,7 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 		{+0.1768, -0.2165,  0.2165,  0.2165, +0.0000, -0.1875, +0.1875, +0.0000, -0.1875, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000}
 	};
 
+	/** The gm_dodecahedron1. */
 	private static double[][] gm_dodecahedron1 = {
 		{+0.1179,  0.0000,  0.0000,  0.2500, +0.4167, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
 		{+0.1179,  0.0000,  0.0000, -0.2500, +0.4167, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
@@ -193,6 +247,7 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 		{+0.1179,  0.2236,  0.0000, -0.1118, -0.0833, -0.2500, +0.0000, +0.2500, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000}
 	};
 
+	/** The gm_dodecahedron2. */
 	private static double[][] gm_dodecahedron2 = {
 		{+0.1179,  0.2500,  0.0000,  0.0000, -0.2083, +0.0000, +0.0000, +0.3125, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
 		{+0.1179, -0.2500,  0.0000,  0.0000, -0.2083, +0.0000, +0.0000, +0.3125, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000},
@@ -208,21 +263,40 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 		{+0.1179, -0.1118,  0.1314, -0.1809,  0.1189,  0.2023, -0.2378, -0.0239, -0.1469, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000, +0.0000}
 	};
 
+	/** The speakers_layout. */
 	private SPEAKERS_LAYOUT speakers_layout = SPEAKERS_LAYOUT.STEREO;
+	
+	/** The num_channels. */
 	private int num_channels;
 	
+	/** The mapping. */
 	Hashtable<String,String> mapping = new Hashtable<String, String>();
 
+	/** The sensor. */
 	private Sensor sensor;
+	
+	/** The sensor memory. */
 	private Memory sensorMemory;
 	
 	// JACK
+	/** The client_name. */
 	String 	client_name;
+	
+	/** The client. */
 	long 	client;
+	
+	/** The ports. */
 	long[] 	ports;	
+	
+	/** The period. */
 	double 	callbackStartTime, period;
+	
+	/** The step. */
 	double 	step =	1/44100.0;
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -255,6 +329,9 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#finit()
+	 */
 	@Override
 	public boolean finit() {
 		
@@ -265,6 +342,9 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) throws Exception {
 		if (evtHdl instanceof Sensor) {
@@ -299,6 +379,9 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerDeregistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerDeregistered(EventHandler evtHdl)
 			throws Exception {
@@ -310,11 +393,20 @@ public class AmbisonicsAudioOutputReasoning extends Reasoning {
 
 	}
 
+	/**
+	 * The Class Process.
+	 */
 	class Process implements JackCallback {
 
+		/** The first call. */
 		boolean firstCall = true;
+		
+		/** The instant. */
 		double instant = 0;
 
+		/* (non-Javadoc)
+		 * @see jjack.JackCallback#process(int, double)
+		 */
 		@Override
 		public int process(int nframes, double time) {
 			if (firstCall) {

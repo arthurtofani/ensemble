@@ -8,8 +8,17 @@ import ensemble.MusicalAgent;
 import ensemble.Parameters;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LM_MusicalAgent.
+ */
 public class LM_MusicalAgent extends MusicalAgent {
 
+	/**
+	 * Randomize sound genoma.
+	 *
+	 * @return the string
+	 */
 	private String randomizeSoundGenoma() {
 		
 		// Sorteia um SoundGenoma, de 1 at� 10 notas
@@ -24,6 +33,11 @@ public class LM_MusicalAgent extends MusicalAgent {
 		
 	}
 	
+	/**
+	 * Randomize procedural genoma.
+	 *
+	 * @return the string
+	 */
 	private String randomizeProceduralGenoma() {
 		
 		// Sorteia um ProceduralGenoma, de 1 at� DeathLength
@@ -108,6 +122,9 @@ public class LM_MusicalAgent extends MusicalAgent {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EnsembleAgent#configure()
+	 */
 	@Override
 	public boolean configure() {
 		
@@ -147,6 +164,9 @@ public class LM_MusicalAgent extends MusicalAgent {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EnsembleAgent#init()
+	 */
 	@Override
 	public boolean init() {
 		

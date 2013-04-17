@@ -25,12 +25,34 @@ import ensemble.Event;
 import ensemble.comm.Comm;
 import jade.core.ServiceHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface CommDirectHelper.
+ */
 public interface CommDirectHelper extends ServiceHelper {
 
+	/**
+	 * Register.
+	 *
+	 * @param agentName the agent name
+	 * @param accessPoint the access point
+	 * @param comm the comm
+	 */
 	public void register(String agentName, String accessPoint, Comm comm);
 	
+	/**
+	 * Deregister.
+	 *
+	 * @param agentName the agent name
+	 * @param accessPoint the access point
+	 */
 	public void deregister(String agentName, String accessPoint);
 
+	/**
+	 * Send.
+	 *
+	 * @param evt the evt
+	 */
 	public void send(Event evt);
 	
 }	

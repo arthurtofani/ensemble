@@ -24,25 +24,41 @@ package ensemble.audio;
 import ensemble.world.Law;
 import ensemble.world.LawState;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AudioLaw.
+ */
 public class AudioLaw extends Law {
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
 	@Override
 	public boolean configure() {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#init()
+	 */
 	@Override
 	public boolean init() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#finit()
+	 */
 	@Override
 	public boolean finit() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.world.Law#changeState(ensemble.world.LawState, double, ensemble.world.LawState)
+	 */
 	@Override
 	public void changeState(LawState oldState, double instant, LawState newState) {
 				

@@ -19,88 +19,175 @@ import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
 import ensemble.movement.MovementConstants;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class EG_Reasoning.
+ */
 public class EG_Reasoning extends Reasoning{
 
 	// Audio
+	/** The mouth. */
 	Actuator 	mouth;
+	
+	/** The mouth memory. */
 	Memory 		mouthMemory;
+	
+	/** The ear. */
 	Sensor 		ear;
+	
+	/** The ear memory. */
 	Memory 		earMemory;
+	
+	/** The chunk_size. */
 	int 		chunk_size;
+	
+	/** The sample rate. */
 	float 		sampleRate;
+	
+	/** The frame_duration. */
 	double 		frame_duration;
 	
 	
 	//Time Related
+	/** The start_time. */
 	double 		start_time;
 	
 	//Auxiliar Memory
+	/** The internal memory. */
 	Memory internalMemory;
 
 	
 	// Movement
+	/** The legs. */
 	Actuator	legs;
+	
+	/** The legs memory. */
 	Memory 		legsMemory;
+	
+	/** The eyes. */
 	Sensor 		eyes;
+	
+	/** The eyes memory. */
 	Memory 		eyesMemory;
 
 	
 	// InputMode
+	/**
+	 * The Enum InputMode.
+	 */
 	enum InputMode {
+		
+		/** The not defined. */
 		NOT_DEFINED,
+		
+		/** The file only. */
 		FILE_ONLY,
+		
+		/** The mic only. */
 		MIC_ONLY,
+		
+		/** The file on play. */
 		FILE_ON_PLAY,
+		
+		/** The sum on play. */
 		SUM_ON_PLAY,
+		
+		/** The random files. */
 		RANDOM_FILES,
+		
+		/** The variable. */
 		VARIABLE
 	}
 	
+	/** The input mode. */
 	InputMode inputMode = InputMode.NOT_DEFINED;
 	
 	//VST definitions
 	
+	/**
+	 * The Enum VSTMode.
+	 */
 	enum VSTMode {
+		
+		/** The not defined. */
 		NOT_DEFINED,
+		
+		/** The fixed. */
 		FIXED,
+		
+		/** The chain. */
 		CHAIN,
+		
+		/** The variable. */
 		VARIABLE		
 	}
 
+	/** The vst mode. */
 	VSTMode vstMode = VSTMode.NOT_DEFINED;
 
 	//VST LIST
+	/** The vst reference. */
 	public Hashtable<String, String> vstReference =  new Hashtable<String, String>();
 	
 	
+	/** The vst list. */
 	public String[] vstList;
 
 	//Repertoire
 	
+	/** The audio file reference. */
 	public Hashtable<String, String> audioFileReference =  new Hashtable<String, String>();
+	
+	/** The audio file reference1. */
 	public Hashtable<String, String> audioFileReference1 =  new Hashtable<String, String>();
+	
+	/** The audio file reference2. */
 	public Hashtable<String, String> audioFileReference2 =  new Hashtable<String, String>();
+	
+	/** The audio file reference3. */
 	public Hashtable<String, String> audioFileReference3 =  new Hashtable<String, String>();
+	
+	/** The audio file reference4. */
 	public Hashtable<String, String> audioFileReference4 =  new Hashtable<String, String>();
 	
+	/** The audio file list. */
 	public String[] audioFileList;
 
 	
 	// Reasoning state
+	/**
+	 * The Enum ReasoningState.
+	 */
 	enum ReasoningState {
+		
+		/** The not defined. */
 		NOT_DEFINED,
+		
+		/** The listening. */
 		LISTENING,
+		
+		/** The recording. */
 		RECORDING,
+		
+		/** The processing. */
 		PROCESSING,
+		
+		/** The playing. */
 		PLAYING,
+		
+		/** The error. */
 		ERROR
 	}
 	
+	/** The state. */
 	ReasoningState state = ReasoningState.NOT_DEFINED;
 	
 	
 	
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -151,6 +238,9 @@ public class EG_Reasoning extends Reasoning{
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
 		// Checks if it is a sound Actuator
@@ -268,6 +358,9 @@ public class EG_Reasoning extends Reasoning{
 	
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 		
@@ -278,6 +371,9 @@ public class EG_Reasoning extends Reasoning{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	public void needAction(Actuator sourceActuator, double instant, double duration) {
 
 		switch (state) {
@@ -483,6 +579,9 @@ public class EG_Reasoning extends Reasoning{
 //		System.out.println("REAS time = " + (System.currentTimeMillis() - start));
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#processCommand(ensemble.Command)
+	 */
 	@Override
 	public void processCommand(Command cmd) {
 		if (cmd.getCommand().equals(AudioConstants.CMD_VST_OFF)) {
@@ -492,6 +591,9 @@ public class EG_Reasoning extends Reasoning{
 		} 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#process()
+	 */
 	public void process() throws Exception {
 
 		switch (state) {

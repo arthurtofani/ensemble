@@ -23,7 +23,9 @@ package ensemble.router;
 
 import ensemble.Command;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Interface RouterClient.
  *
  * @author lfthomaz
  */
@@ -36,20 +38,23 @@ public interface RouterClient {
     public String getAddress();
 
     /**
-     * An user-implemented method to process a received command 
-     * @param cmd
+     * An user-implemented method to process a received command.
+     *
+     * @param cmd the cmd
      */
     public void processCommand(Command cmd);
     
     /**
      * A framework-implemented method that receives a command sent by the RouterAgent and calls processCommand.
-     * @param cmd
+     *
+     * @param cmd the cmd
      */
     public void receiveCommand(Command cmd);
 
     /**
      * A framework-implemented method that sends a command to its destination, via RouterAgent if the recipient is another agent.
-     * @param cmd
+     *
+     * @param cmd the cmd
      */
     public void sendCommand(Command cmd);
     

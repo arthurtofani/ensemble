@@ -23,6 +23,7 @@ package ensemble.world;
 
 import java.util.HashMap;
 
+// TODO: Auto-generated Javadoc
 /**
  * Represents the state of an entity in the environment (agent or not) at a given instant. 
  * @author lfthomaz
@@ -31,27 +32,44 @@ import java.util.HashMap;
 public class EntityState {
 
 	// State instant in seconds
+	/** The instant. */
 	public double instant;
 	
+	/** The attributes. */
 	protected HashMap<String,Object> attributes;
 	
+	/**
+	 * Instantiates a new entity state.
+	 */
 	public EntityState() {
 		attributes = new HashMap<String, Object>();
 	}
 	
+	/**
+	 * Gets the instant.
+	 *
+	 * @return the instant
+	 */
 	public double getInstant() {
 		return this.instant;
 	}
 	
+	/**
+	 * Gets the entity state attribute.
+	 *
+	 * @param attributeName the attribute name
+	 * @return the entity state attribute
+	 */
 	public Object getEntityStateAttribute(String attributeName) {
 		return attributes.get(attributeName);
 	}
 		
     /**
      * Updates a variable from an entity's state. This method can be overloaded by the user to check the data beign updated.
-     * @param entityName
-     * @param variable
-     * @param value
+     *
+     * @param entityName the entity name
+     * @param variable the variable
+     * @param value the value
      * @return if the update was successful
      */
     public boolean updateEntityStateAttribute(String entityName, String variable, Object value) {

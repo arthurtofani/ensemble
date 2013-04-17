@@ -21,42 +21,59 @@ along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 
 package ensemble;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface LifeCycle.
+ */
 public interface LifeCycle {
 
 	/**
-	 * User-implemented method that configures the component, setting up user parameters and essential properties
+	 * User-implemented method that configures the component, setting up user parameters and essential properties.
+	 *
+	 * @return true, if successful
 	 */
 	public boolean configure();
 	
 	/**
-	 * Framework-implemented initialization method
-	 * @return 
+	 * Framework-implemented initialization method.
+	 *
+	 * @return true, if successful
 	 */
 	public boolean start();
 	
 	/**
-	 * User-implemented initialization method, called by start()
+	 * User-implemented initialization method, called by start().
+	 *
+	 * @return true, if successful
 	 */
 	public boolean init();
 	
 	/**
-	 * User-implement method called when a parameter has been updated
+	 * User-implement method called when a parameter has been updated.
+	 *
+	 * @param name the name
+	 * @param newValue the new value
+	 * @return true, if successful
 	 */
 	public boolean parameterUpdate(String name, String newValue);
 	
 	/**
-	 * User-implemented finalization method, called by stop()
-	 * @return 
+	 * User-implemented finalization method, called by stop().
+	 *
+	 * @return true, if successful
 	 */
 	public boolean finit();
 	
-	/** Framework-implemented finalization method
-	 * @return 
+	/**
+	 * Framework-implemented finalization method.
+	 *
+	 * @return true, if successful
 	 */
 	public boolean stop();
 	
 	/**
-	 * Framework-implemented method that sets system and user parameters
+	 * Framework-implemented method that sets system and user parameters.
+	 *
 	 * @param parameters a Parameters object with all user and system Parameters for this object
 	 */
 	public void setParameters(Parameters parameters);

@@ -37,6 +37,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+// TODO: Auto-generated Javadoc
 /**
  * A class to extract Pitch from WavData using Paul Boersma's Sound_to_Pitch algorithm included in Praat.
  * <p/>
@@ -46,17 +47,34 @@ import java.io.IOException;
  */
 public class PitchExtractor extends SampledDataAnalyzer {
 
+  /** The Constant NUM_VALUE_INTERPOLATE_NEAREST. */
   private final static int NUM_VALUE_INTERPOLATE_NEAREST = 0;
+  
+  /** The Constant NUM_VALUE_INTERPOLATE_LINEAR. */
   private final static int NUM_VALUE_INTERPOLATE_LINEAR = 1;
+  
+  /** The Constant NUM_VALUE_INTERPOLATE_CUBIC. */
   private final static int NUM_VALUE_INTERPOLATE_CUBIC = 2;
   // Higher values than 2 yield a true sinc interpolation. Here are some examples:
+  /** The Constant NUM_VALUE_INTERPOLATE_SINC70. */
   private final static int NUM_VALUE_INTERPOLATE_SINC70 = 70;
+  
+  /** The Constant NUM_VALUE_INTERPOLATE_SINC700. */
   private final static int NUM_VALUE_INTERPOLATE_SINC700 = 700;
 
+  /** The Constant NUM_PEAK_INTERPOLATE_NONE. */
   private final static int NUM_PEAK_INTERPOLATE_NONE = 0;
+  
+  /** The Constant NUM_PEAK_INTERPOLATE_PARABOLIC. */
   private final static int NUM_PEAK_INTERPOLATE_PARABOLIC = 1;
+  
+  /** The Constant NUM_PEAK_INTERPOLATE_CUBIC. */
   private final static int NUM_PEAK_INTERPOLATE_CUBIC = 2;
+  
+  /** The Constant NUM_PEAK_INTERPOLATE_SINC70. */
   private final static int NUM_PEAK_INTERPOLATE_SINC70 = 3;
+  
+  /** The Constant NUM_PEAK_INTERPOLATE_SINC700. */
   private final static int NUM_PEAK_INTERPOLATE_SINC700 = 4;
 
   /**
@@ -73,8 +91,7 @@ public class PitchExtractor extends SampledDataAnalyzer {
    * Call Paul Boersma's soundToPitch with no parameters.
    *
    * @return A list of TimeValuePairs containing pitch information
-   * @throws edu.cuny.qc.speech.AuToBI.core.AuToBIException
-   *          if there are problems
+   * @throws AuToBIException the au to bi exception
    */
   public Contour soundToPitch() throws AuToBIException {
 
@@ -85,7 +102,7 @@ public class PitchExtractor extends SampledDataAnalyzer {
   }
 
   /**
-   * Call Paul Boersma's soundToPitch function with default parameters
+   * Call Paul Boersma's soundToPitch function with default parameters.
    *
    * @param time_step The time step to extract values at
    * @param min_pitch The minimum valid pitch

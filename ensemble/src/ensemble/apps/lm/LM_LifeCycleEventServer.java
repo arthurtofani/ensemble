@@ -11,28 +11,50 @@ import ensemble.apps.lm.LM_World.Direction;
 import ensemble.apps.lm.LM_World.Position;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LM_LifeCycleEventServer.
+ */
 public class LM_LifeCycleEventServer extends EventServer {
 
 	// Mundo virtual
+	/** The world. */
 	LM_World world;
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
 	@Override
 	public boolean configure() {
 		setEventType("LIFE");
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#init()
+	 */
 	@Override
 	public boolean init() {
 		world = (LM_World)envAgent.getWorld();
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#finit()
+	 */
 	@Override
 	public boolean finit() {
 		return true;
 	}
 
+	/**
+	 * Check agent presence.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @param dir the dir
+	 * @return the position
+	 */
 	private Position checkAgentPresence(int x, int y, Direction dir) {
 
 		Position pos = null;
@@ -76,6 +98,14 @@ public class LM_LifeCycleEventServer extends EventServer {
 		
 	}
 	
+	/**
+	 * Crossover.
+	 *
+	 * @param genoma1 the genoma1
+	 * @param genoma2 the genoma2
+	 * @param crossoverProbability the crossover probability
+	 * @return the string
+	 */
 	private String crossover(String genoma1, String genoma2, float crossoverProbability) {
 		
 		String[] gen1 = genoma1.split(":");
@@ -96,6 +126,9 @@ public class LM_LifeCycleEventServer extends EventServer {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#process()
+	 */
 	@Override
 	public void process() {
 		

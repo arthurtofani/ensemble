@@ -21,13 +21,32 @@ along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 
 package ensemble;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class EventHandlerInfo.
+ */
 public class EventHandlerInfo {
 
+	/** The agent name. */
 	public String agentName;
+	
+	/** The component name. */
 	public String componentName;
+	
+	/** The event type. */
 	public String eventType;
+	
+	/** The eh type. */
 	public String ehType;
 	
+	/**
+	 * Instantiates a new event handler info.
+	 *
+	 * @param agentName the agent name
+	 * @param componentName the component name
+	 * @param eventType the event type
+	 * @param ehType the eh type
+	 */
 	public EventHandlerInfo(String agentName, String componentName, String eventType, String ehType) {
 		this.agentName = agentName;
 		this.componentName = componentName;
@@ -35,10 +54,19 @@ public class EventHandlerInfo {
 		this.ehType = ehType;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		return (agentName+":"+componentName+":"+eventType+":"+ehType);
 	}
 	
+	/**
+	 * Parses the.
+	 *
+	 * @param str the str
+	 * @return the event handler info
+	 */
 	public static EventHandlerInfo parse(String str) {
 		String[] str2 = str.split(":");
 		if (str2.length == 4) {

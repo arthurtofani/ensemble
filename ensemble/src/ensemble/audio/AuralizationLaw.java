@@ -21,6 +21,9 @@ along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 
 package ensemble.audio;
 
+/**
+ * The Class AuralizationLaw.
+ */
 public class AuralizationLaw {
 
 }

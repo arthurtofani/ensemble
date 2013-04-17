@@ -31,12 +31,26 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TestAutomation.
+ */
 public class TestAutomation {
 
+	/** The ratio. */
 	private static double[] ratio = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
+	
+	/** The num_agents. */
 	private static int[] num_agents = {1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500};
+	
+	/** The frame_size. */
 	private static int[] frame_size = {250, 500, 750, 1000};
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 			
 		DecimalFormat df = new DecimalFormat("0.0000");

@@ -1,16 +1,37 @@
 package ensemble.audio.dsp;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FilterProcessing.
+ */
 public class FilterProcessing {
 	
+	/** The pi. */
 	double pi= 3.14159265;
 	
 
+	/** The in_1. */
 	static double in_1=0;
+	
+	/** The in_2. */
 	static double in_2=0;
+	
+	/** The out_1. */
 	static double out_1=0;
+	
+	/** The out_2. */
 	static double out_2=0;
 	
 	
+	/**
+	 * Gets the lP coefficients butterworth2 pole.
+	 *
+	 * @param samplerate the samplerate
+	 * @param cutoff the cutoff
+	 * @param ax the ax
+	 * @param by the by
+	 * @return the lP coefficients butterworth2 pole
+	 */
 	public static void getLPCoefficientsButterworth2Pole(int samplerate,
 			double cutoff, double[] ax, double[] by) {
 		double PI = 3.1415926535897932385;
@@ -29,6 +50,12 @@ public class FilterProcessing {
 		ax[2] = 1 * gain;
 	}
 	
+	/**
+	 * Filter.
+	 *
+	 * @param samples the samples
+	 * @param count the count
+	 */
 	public void filter(double[] samples, int count)
 	{
 		double[] xv = new double[3];
@@ -53,6 +80,14 @@ public class FilterProcessing {
 	   }
 	}
 
+	/**
+	 * Four poles low pass.
+	 *
+	 * @param samples the samples
+	 * @param out the out
+	 * @param count the count
+	 * @param freq the freq
+	 */
 	public void FourPolesLowPass(double[] samples, double[] out, int count, double freq){
 
 		double[] coef = new double[9];
@@ -102,6 +137,14 @@ public class FilterProcessing {
 		
 }
 
+	/**
+	 * Four poles high pass.
+	 *
+	 * @param samples the samples
+	 * @param out the out
+	 * @param count the count
+	 * @param freq the freq
+	 */
 	public void FourPolesHighPass(double[] samples, double[] out, int count, double freq){
 
 		double[] coef = new double[9];
@@ -150,6 +193,15 @@ public class FilterProcessing {
 		
 }
 	
+	/**
+	 * Low pass.
+	 *
+	 * @param samples the samples
+	 * @param out the out
+	 * @param count the count
+	 * @param freq the freq
+	 * @param sampleRate the sample rate
+	 */
 	public void lowPass(double[] samples, double[] out, int count, double freq, float sampleRate){
 /*
 		r  = rez amount, from sqrt(2) to ~ 0.1
@@ -192,6 +244,15 @@ public class FilterProcessing {
 	}
 
 	
+	/**
+	 * High pass.
+	 *
+	 * @param samples the samples
+	 * @param out the out
+	 * @param count the count
+	 * @param freq the freq
+	 * @param sampleRate the sample rate
+	 */
 	public void highPass(double[] samples, double[] out, int count, double freq, float sampleRate){
 		/*
 				r  = rez amount, from sqrt(2) to ~ 0.1
@@ -242,6 +303,15 @@ public class FilterProcessing {
 			}
 
 	
+	/**
+	 * Sets the lpf.
+	 *
+	 * @param fCut the f cut
+	 * @param fSampling the f sampling
+	 * @param a0 the a0
+	 * @param a1 the a1
+	 * @param b1 the b1
+	 */
 	public void SetLPF(double fCut, double fSampling, double a0, double a1, double b1)
 	{
 	    double w = 2.0 * fSampling;
@@ -253,6 +323,15 @@ public class FilterProcessing {
 		a0 = a1 = fCut * Norm;
 	}
 
+	/**
+	 * Sets the hpf.
+	 *
+	 * @param fCut the f cut
+	 * @param fSampling the f sampling
+	 * @param a0 the a0
+	 * @param a1 the a1
+	 * @param b1 the b1
+	 */
 	void SetHPF(double fCut, double fSampling, double a0, double a1, double b1)
 	{
 	    double w = 2.0 * fSampling;
@@ -265,6 +344,15 @@ public class FilterProcessing {
 	    b1 = (w - fCut) * Norm;
 	}
 
+	/**
+	 * Process lpf.
+	 *
+	 * @param samples the samples
+	 * @param out the out
+	 * @param count the count
+	 * @param freq the freq
+	 * @param sampleRate the sample rate
+	 */
 	public void ProcessLPF(double[] samples, double[] out, int count,
 			double freq, double sampleRate) {
 

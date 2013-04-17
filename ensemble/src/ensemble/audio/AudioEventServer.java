@@ -40,13 +40,30 @@ import ensemble.movement.MovementState;
 import ensemble.world.Vector;
 import ensemble.world.World;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AudioEventServer.
+ */
 public class AudioEventServer extends EventServer {
 
 	// Log
 //	public static Logger logger = Logger.getMyLogger(MusicalAgent.class.getName());
 
-    private enum INTERPOLATION_MODE {NONE, LINEAR, POLYNOMIAL;
-    	public static INTERPOLATION_MODE fromString(String str) {
+    /**
+	 * The Enum INTERPOLATION_MODE.
+	 */
+	private enum INTERPOLATION_MODE {/** The none. */
+NONE, /** The linear. */
+ LINEAR, /** The polynomial. */
+ POLYNOMIAL;
+    	
+	    /**
+	     * From string.
+	     *
+	     * @param str the str
+	     * @return the interpolation mode
+	     */
+	    public static INTERPOLATION_MODE fromString(String str) {
     		if (str.equals("NONE")) {
 				return NONE;
     		} else if (str.equals("LINEAR")) {
@@ -61,60 +78,123 @@ public class AudioEventServer extends EventServer {
 
     //---- WORK VARIABLES ----
 	// Newton function's variables 
-	double[] f_res	= new double[2];
+	/** The f_res. */
+    double[] f_res	= new double[2];
+	
+	/** The f. */
 	double[] f		= new double[2];
+	
+	/** The fl. */
 	double[] fl	 	= new double[2];
+	
+	/** The fh. */
 	double[] fh 	= new double[2];
 	// States
+	/** The rcv_state. */
 	MovementState 	rcv_state;
+	
+	/** The src_state. */
 	MovementState 	src_state;
+	
+	/** The vec_aux. */
 	Vector 			vec_aux;
+	
+	/** The vec_aux_2. */
 	Vector 			vec_aux_2;
+	
+	/** The rcv_comp_pos. */
 	Vector 			rcv_comp_pos;
+	
+	/** The src_comp_pos. */
 	Vector 			src_comp_pos;
 	
 	// Utilizado para comparar o tempo (ajustar de acordo com a precis‹o desejada), em segundos
+	/** The epsilon. */
 	private final double 	EPSILON 		= 1E-6;
+	
+	/** The max iterations. */
 	private final int 		MAX_ITERATIONS 	= 10;
 
 	// AudioEventServer Parameters
+	/** The Constant PARAM_MASTER_GAIN. */
 	private static final String PARAM_MASTER_GAIN = "MASTER_GAIN";
+	
+	/** The Constant PARAM_SPEED_SOUND. */
 	private static final String PARAM_SPEED_SOUND = "SPEED_SOUND";
+	
+	/** The Constant PARAM_REFERENCE_DISTANCE. */
 	private static final String PARAM_REFERENCE_DISTANCE = "REFERENCE_DISTANCE";
+	
+	/** The Constant PARAM_ROLLOFF_FACTOR. */
 	private static final String PARAM_ROLLOFF_FACTOR = "ROLLOFF_FACTOR";
+	
+	/** The Constant PARAM_SAMPLE_RATE. */
 	private static final String PARAM_SAMPLE_RATE = "SAMPLE_RATE";
+	
+	/** The Constant PARAM_LOOP_HEARING. */
 	private static final String PARAM_LOOP_HEARING = "LOOP_HEARING";
+	
+	/** The Constant PARAM_INTERPOLATION_MODE. */
 	private static final String PARAM_INTERPOLATION_MODE = "INTERPOLATION_MODE";
+	
+	/** The Constant PARAM_NUMBER_POINTS. */
 	private static final String PARAM_NUMBER_POINTS = "NUMBER_POINTS";
 	
+	/** The master_gain. */
 	private double 			master_gain 		= 1.0;
+	
+	/** The speed_sound. */
 	private double			speed_sound			= 343.3; // speed of sound (m/s)
+	
+	/** The reference_distance. */
 	private double 			reference_distance 	= 1.0;
+	
+	/** The rolloff_factor. */
 	private double 			rolloff_factor 		= 1.0;
+    
+    /** The sample_rate. */
     private int 			sample_rate 		= 44100;
+    
+    /** The interpolation_mode. */
     private INTERPOLATION_MODE 	interpolation_mode 	= INTERPOLATION_MODE.LINEAR;
+    
+    /** The number_points. */
     private int 			number_points		= 3;
+    
+    /** The loop_hearing. */
     private boolean 		loop_hearing 		= false;
 
     // Working variables
+    /** The step. */
     private double 			step 				= 1 / sample_rate;
+    
+    /** The chunk_size. */
     private int 			chunk_size 			= 4410;
 
     // When a parameter has changed, only applies it in the next cycle 
+    /** The param_changed. */
     private boolean 		param_changed 		= false;
 
     // Table that stores the last calculated delta of each pair
 //    double[] deltas, deltas_1, deltas_2, deltas_3;
+    /** The deltas. */
     double[] deltas;
+    
+    /** The last_deltas. */
     private HashMap<String, Double> last_deltas = new HashMap<String, Double>();
     
     // Table that stores sent audio chunks
+    /** The memories. */
     private HashMap<String, Memory> memories = new HashMap<String, Memory>();
 
 	// Descrição do mundo
+	/** The world. */
 	private World world;
 
+	/** The movement present. */
 	private boolean 	movementPresent = false;
+	
+	/** The mov law. */
 	private MovementLaw movLaw;
 	
 //	// Performance
@@ -122,7 +202,10 @@ public class AudioEventServer extends EventServer {
 //	long proc_time_1, proc_time_2, proc_time_3;
 //	PrintWriter file_perf, file_perf_1, file_perf_2, file_perf_3;
 	
-	@Override
+	/* (non-Javadoc)
+ * @see ensemble.LifeCycle#configure()
+ */
+@Override
 	public boolean configure() {
 		setEventType(AudioConstants.EVT_TYPE_AUDIO);
 		if (parameters.containsKey(Constants.PARAM_COMM_CLASS)) {
@@ -139,6 +222,9 @@ public class AudioEventServer extends EventServer {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#init()
+	 */
 	@Override
 	public boolean init() {
 
@@ -192,11 +278,17 @@ public class AudioEventServer extends EventServer {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#finit()
+	 */
 	@Override
 	public boolean finit() {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#actuatorRegistered(java.lang.String, java.lang.String, ensemble.Parameters)
+	 */
 	@Override
 	public Parameters actuatorRegistered(String agentName, String eventHandlerName, Parameters userParam) {
 		
@@ -236,6 +328,9 @@ public class AudioEventServer extends EventServer {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#sensorRegistered(java.lang.String, java.lang.String, ensemble.Parameters)
+	 */
 	@Override
 	public Parameters sensorRegistered(String agentName, String eventHandlerName, Parameters userParam) throws Exception {
 		
@@ -273,6 +368,9 @@ public class AudioEventServer extends EventServer {
 		return userParameters;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#parameterUpdate(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public boolean parameterUpdate(String name, String newValue) {
 		if (name.equals(PARAM_MASTER_GAIN)) {
@@ -313,6 +411,9 @@ public class AudioEventServer extends EventServer {
 	}
 	
 	// TODO Verificar problemas de concorrência!
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#processSense(ensemble.Event)
+	 */
 	@Override
 	public void processSense(Event evt) {
 
@@ -328,6 +429,9 @@ public class AudioEventServer extends EventServer {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#process()
+	 */
 	@Override
 	public void process() {
 		
@@ -532,6 +636,14 @@ public class AudioEventServer extends EventServer {
 
 	}
 
+    /**
+     * Function.
+     *
+     * @param src_state the src_state
+     * @param rcv_state the rcv_state
+     * @param t the t
+     * @param delta the delta
+     */
     private void function(MovementState src_state, MovementState rcv_state, double t, double delta) {
     	
     	if (src_state == null || rcv_state == null) {
@@ -551,6 +663,17 @@ public class AudioEventServer extends EventServer {
 
     }
     
+    /**
+     * Newton_raphson.
+     *
+     * @param mem_src the mem_src
+     * @param mem_rcv the mem_rcv
+     * @param t the t
+     * @param initial_guess the initial_guess
+     * @param x1 the x1
+     * @param x2 the x2
+     * @return the double
+     */
     private double newton_raphson(Memory mem_src, Memory mem_rcv, double t, double initial_guess, double x1, double x2) {
     	    	
     	double dx, dx_old, rts, xl, xh, temp;
@@ -662,6 +785,14 @@ public class AudioEventServer extends EventServer {
 		return rts;
     }
 
+    /**
+     * Polint.
+     *
+     * @param xa the xa
+     * @param ya the ya
+     * @param x the x
+     * @return the double
+     */
     private double polint(double[] xa, double[] ya, double x) {
     	
     	double y, dy;

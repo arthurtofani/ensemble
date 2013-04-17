@@ -24,33 +24,56 @@ import ensemble.Parameters;
 import ensemble.apps.lm.LM_World.Position;
 import ensemble.apps.lm.LM_World.Sound;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LM_SoundEventServer.
+ */
 public class LM_SoundEventServer extends EventServer {
 
 	// Mundo virtual
+	/** The world. */
 	LM_World world;
+	
+	/** The new sounds. */
 	Sound[][] newSounds;
 	
 	// Dados do agente para enviar o eventos
+	/** The agent name. */
 	protected String agentName;
+	
+	/** The agent comp name. */
 	protected String agentCompName;
 	
 	// �ltima notada cantada
+	/** The last midi note. */
 	private int lastMidiNote = 84;
 	
 	// Sons cantandos no turno
+	/** The events. */
 	ArrayList<Event> events = new ArrayList<Event>();
 	
 	// MIDI
+	/** The synth. */
 	Synthesizer	synth;
+	
+	/** The channel. */
 	MidiChannel	channel;
+	
+	/** The rcv. */
 	Receiver 	rcv;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
 	@Override
 	public boolean configure() {
 		setEventType("SOUND");
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#init()
+	 */
 	public boolean init() {
 	
 		world = (LM_World)envAgent.getWorld();
@@ -76,11 +99,23 @@ public class LM_SoundEventServer extends EventServer {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#finit()
+	 */
 	@Override
 	public boolean finit() {
 		return true;
 	}
 	
+	/**
+	 * Sets the sound.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @param note the note
+	 * @param amplitude the amplitude
+	 * @param direction the direction
+	 */
 	private void setSound(int x, int y, int note, int amplitude, int direction) {
 
 		if ((x >= 0 && x < LM_Constants.WorldSize) && (y >= 0 && y < LM_Constants.WorldSize)) {
@@ -102,6 +137,16 @@ public class LM_SoundEventServer extends EventServer {
 	}
 
 	// TODO Problema se dois sons que se encontram tem a mesma amplitude
+	/**
+	 * Propagate sound.
+	 *
+	 * @param sound the sound
+	 * @param i the i
+	 * @param j the j
+	 * @param note the note
+	 * @param amplitude the amplitude
+	 * @param direction the direction
+	 */
 	private void propagateSound(Sound sound, int i, int j, int note, int amplitude, int direction) {
 
 		if ((i >= 0 && i < LM_Constants.WorldSize) && (j >= 0 && j < LM_Constants.WorldSize)) {
@@ -170,6 +215,9 @@ public class LM_SoundEventServer extends EventServer {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#process()
+	 */
 	@Override
 	public void process() {
 		
@@ -273,6 +321,9 @@ public class LM_SoundEventServer extends EventServer {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#processSense(ensemble.Event)
+	 */
 	@Override
 	public void processSense(Event evt) {
 		
@@ -330,6 +381,9 @@ public class LM_SoundEventServer extends EventServer {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.EventServer#processAction(ensemble.Event)
+	 */
 	@Override
 	protected Event processAction(Event evt) {
 		

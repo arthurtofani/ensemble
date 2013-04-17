@@ -21,8 +21,15 @@ along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
     	
 package ensemble;
 
+// TODO: Auto-generated Javadoc
+/**
+ * Basic interface for a defined Agent Act.
+ */
 public interface Acting {
 
+	/**
+	 * Act.
+	 */
 	public void act();
 	
 }

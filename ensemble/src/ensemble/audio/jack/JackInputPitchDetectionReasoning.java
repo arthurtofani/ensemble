@@ -18,35 +18,71 @@ import ensemble.clock.TimeUnit;
 import ensemble.memory.Memory;
 import ensemble.memory.MemoryException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JackInputPitchDetectionReasoning.
+ */
 public class JackInputPitchDetectionReasoning extends Reasoning {
 
 	// Log
 //	public static Logger logger = Logger.getMyLogger(MusicalAgent.class.getName());
 
 	// JACK
+	/** The client_name. */
 	String 						client_name;
+	
+	/** The client. */
 	long					 	client;
+	
+	/** The callback start time. */
 	double 						callbackStartTime;
+	
+	/** The period. */
 	double 						period;
+	
+	/** The step. */
 	double 						step = 1/44100.0;
+	
+	/** The mapping. */
 	Hashtable<String,String> mapping = new Hashtable<String, String>();
+	
+	/** The ports. */
 	Hashtable<String, Long> ports = new Hashtable<String,Long>(2);
 	
 	// Actuator
+	/** The mouths. */
 	Hashtable<String,Actuator> mouths = new Hashtable<String, Actuator>(2);
+	
+	/** The mouth memories. */
 	Hashtable<String,Memory> mouthMemories = new Hashtable<String, Memory>(2);
 	
 	
 	// Reasoning state
+	/**
+	 * The Enum ReasoningState.
+	 */
 	enum ReasoningState {
+		
+		/** The not defined. */
 		NOT_DEFINED,
+		
+		/** The bypass. */
 		BYPASS,
+		
+		/** The stopped. */
 		STOPPED,
+		
+		/** The error. */
 		ERROR
 	}
+	
+	/** The state. */
 	ReasoningState state = ReasoningState.NOT_DEFINED;
 	
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -79,6 +115,9 @@ public class JackInputPitchDetectionReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#finit()
+	 */
 	@Override
 	public boolean finit() {
 		
@@ -88,6 +127,9 @@ public class JackInputPitchDetectionReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 		
@@ -135,6 +177,9 @@ public class JackInputPitchDetectionReasoning extends Reasoning {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerDeregistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerDeregistered(EventHandler evtHdl) {
 		if (evtHdl instanceof Actuator && evtHdl.getEventType().equals(AudioConstants.EVT_TYPE_AUDIO)) {
@@ -147,6 +192,9 @@ public class JackInputPitchDetectionReasoning extends Reasoning {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#needAction(ensemble.Actuator, double, double)
+	 */
 	@Override
 	public void needAction(Actuator sourceActuator, double instant,
 			double duration) throws Exception {
@@ -158,12 +206,23 @@ public class JackInputPitchDetectionReasoning extends Reasoning {
 		
 	}
 	
+/**
+ * The Class Process.
+ */
 class Process implements JackCallback {
 
+	/** The d buffer. */
 	double[] dBuffer;
+	
+	/** The first call. */
 	boolean firstCall = true;
+	
+	/** The instant. */
 	double instant = 0;
 
+	/* (non-Javadoc)
+	 * @see jjack.JackCallback#process(int, double)
+	 */
 	@Override
 	public int process(int nframes, double time) {
 
@@ -233,6 +292,9 @@ class Process implements JackCallback {
 
 };
 
+/* (non-Javadoc)
+ * @see ensemble.MusicalAgentComponent#processCommand(ensemble.Command)
+ */
 public void processCommand(Command cmd) {
 
 	if (cmd.getCommand().equals(JACKConstants.CMD_STOP)) {

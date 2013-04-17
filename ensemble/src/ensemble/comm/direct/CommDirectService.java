@@ -36,6 +36,10 @@ import jade.core.BaseService;
 import jade.core.ServiceException;
 import jade.util.Logger;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommDirectService.
+ */
 public class CommDirectService extends BaseService {
 
 	//----------------------------------------------------------
@@ -44,18 +48,27 @@ public class CommDirectService extends BaseService {
 	
 	//----------------------------------------------------------
 	// Nome do servi�o
+	/** The Constant NAME. */
 	public static final String NAME = "CommDirect";
 
 	//----------------------------------------------------------
+	/** The comms. */
 	private ConcurrentHashMap<String, Comm> comms = new ConcurrentHashMap<String, Comm>();
 	
+	/** The executor. */
 	private static Executor executor;
 
+	/* (non-Javadoc)
+	 * @see jade.core.Service#getName()
+	 */
 	@Override
 	public String getName() {
 		return NAME;
 	}
 
+	/* (non-Javadoc)
+	 * @see jade.core.BaseService#boot(jade.core.Profile)
+	 */
 	public void boot(jade.core.Profile p) throws ServiceException {
 		
 		super.boot(p);
@@ -67,22 +80,40 @@ public class CommDirectService extends BaseService {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see jade.core.BaseService#getHelper(jade.core.Agent)
+	 */
 	public CommDirectHelper getHelper(Agent a) {
 		
 		return new CommDirectHelperImp();
 	
 	}
 	
+	/**
+	 * The Class CommDirectTask.
+	 */
 	public class CommDirectTask implements Runnable {
 
+		/** The comm. */
 		Comm comm;
+		
+		/** The evt. */
 		Event evt;
 		
+		/**
+		 * Instantiates a new comm direct task.
+		 *
+		 * @param comm the comm
+		 * @param evt the evt
+		 */
 		public CommDirectTask(Comm comm, Event evt) {
 			this.comm 	= comm;
 			this.evt 	= evt;
 		}
 		
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
 		@Override
 		public void run() {
 			if (comm != null) {
@@ -94,14 +125,23 @@ public class CommDirectService extends BaseService {
 		
 	}
 
+	/**
+	 * The Class CommDirectHelperImp.
+	 */
 	public class CommDirectHelperImp implements CommDirectHelper {
 
+		/* (non-Javadoc)
+		 * @see jade.core.ServiceHelper#init(jade.core.Agent)
+		 */
 		@Override
 		public void init(Agent a) {
 			// TODO Auto-generated method stub
 			
 		}
 
+		/* (non-Javadoc)
+		 * @see ensemble.comm.direct.CommDirectHelper#register(java.lang.String, java.lang.String, ensemble.comm.Comm)
+		 */
 		@Override
 		public void register(String agentName, String accessPoint, Comm comm) {
 
@@ -109,6 +149,9 @@ public class CommDirectService extends BaseService {
 			
 		}
 
+		/* (non-Javadoc)
+		 * @see ensemble.comm.direct.CommDirectHelper#deregister(java.lang.String, java.lang.String)
+		 */
 		@Override
 		public void deregister(String agentName, String accessPoint) {
 
@@ -116,6 +159,9 @@ public class CommDirectService extends BaseService {
 			
 		}
 
+		/* (non-Javadoc)
+		 * @see ensemble.comm.direct.CommDirectHelper#send(ensemble.Event)
+		 */
 		@Override
 		public void send(Event evt) {
 

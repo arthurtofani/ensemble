@@ -10,17 +10,38 @@ import ensemble.apps.lm.LM_World.Site;
 import ensemble.world.WorldGUI;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LM_BoardGUI.
+ */
 public class LM_BoardGUI extends JFrame implements WorldGUI {
 	
+    /** The agent pad. */
     final double AGENT_PAD = 0.3;
+    
+    /** The sound pad. */
     final double SOUND_PAD = 0.0;
+	
+	/** The pad. */
 	final int PAD = 0;
+    
+    /** The rows. */
     private int rows;
+    
+    /** The cols. */
     private int cols;
     
+    /** The square lattice. */
     private Site[][] squareLattice;
+    
+    /** The turn. */
     private int turn = 0;
     
+    /**
+     * Instantiates a new l m_ board gui.
+     *
+     * @param squareLattice the square lattice
+     */
     public LM_BoardGUI(Site[][] squareLattice) {
 
     	this.squareLattice = squareLattice;
@@ -33,6 +54,9 @@ public class LM_BoardGUI extends JFrame implements WorldGUI {
         this.setVisible(true);
     }
     
+    /* (non-Javadoc)
+     * @see ensemble.world.WorldGUI#update()
+     */
     @Override
     public void update() {
     	turn++;
@@ -40,7 +64,10 @@ public class LM_BoardGUI extends JFrame implements WorldGUI {
     	repaint();
     }
 
- 	private void initComponents() {
+ 	/**
+	  * Inits the components.
+	  */
+	 private void initComponents() {
 
 		jPanel1 = new MyPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -99,13 +126,24 @@ public class LM_BoardGUI extends JFrame implements WorldGUI {
     }
  	
     // Variables declaration - do not modify
+    /** The j label1. */
     private javax.swing.JLabel jLabel1;
+    
+    /** The j panel1. */
     private MyPanel jPanel1;
+    
+    /** The lbl turn. */
     private javax.swing.JLabel lblTurn;
     // End of variables declaration
 
-	class MyPanel extends JPanel {
+	/**
+     * The Class MyPanel.
+     */
+    class MyPanel extends JPanel {
 		
+		/* (non-Javadoc)
+		 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+		 */
 		protected void paintComponent(Graphics g) {
 	    	super.paintComponent(g);
 	        Graphics2D g2 = (Graphics2D)g;

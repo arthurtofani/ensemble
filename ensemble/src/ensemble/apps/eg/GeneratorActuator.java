@@ -4,11 +4,18 @@ import ensemble.Actuator;
 import ensemble.Constants;
 import ensemble.memory.Memory;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GeneratorActuator.
+ */
 public class GeneratorActuator extends Actuator{
 
 	
 
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventHandler#eventHandlerRegistered()
+	 */
 	@Override
 	protected void eventHandlerRegistered() {
 		

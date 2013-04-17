@@ -43,22 +43,36 @@ import ensemble.memory.Memory;
 import ensemble.tools.AudioTools;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JavaOutputReasoning.
+ */
 public class JavaOutputReasoning extends Reasoning {
 
 	// Log
 //	public static Logger logger = Logger.getMyLogger(MusicalAgent.class.getName());
 
 	// Memories
+	/** The ear memories. */
 	private HashMap<String, Memory> earMemories = new HashMap<String, Memory>();
 
 	// Channel mapping
+	/** The ear channels. */
 	private HashMap<String, Integer> earChannels = new HashMap<String, Integer>();
 	
 	// JavaSound
+	/** The format. */
 	private AudioFormat 					format;
+	
+	/** The info. */
 	private DataLine.Info 					info;
+	
+	/** The lines. */
 	private HashMap<String, SourceDataLine> lines = new HashMap<String, SourceDataLine>();
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -75,6 +89,9 @@ public class JavaOutputReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#finit()
+	 */
 	@Override
 	public boolean finit() {
 
@@ -87,6 +104,9 @@ public class JavaOutputReasoning extends Reasoning {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#eventHandlerRegistered(ensemble.EventHandler)
+	 */
 	@Override
 	protected void eventHandlerRegistered(EventHandler evtHdl) {
 
@@ -142,6 +162,9 @@ public class JavaOutputReasoning extends Reasoning {
 
 	// TODO Não pode tocar imediatamente, tem que respeitar o tempo, senão não podemos sincronazar com outros agentes e com outros acontecimentos no ambiente
 	// TODO O JavaSound consegue fazer isso?!?!?!? No lo creo!
+	/* (non-Javadoc)
+	 * @see ensemble.Reasoning#newSense(ensemble.Sensor, double, double)
+	 */
 	@Override
 	public void newSense(Sensor sourceSensor, double instant, double duration) {
 

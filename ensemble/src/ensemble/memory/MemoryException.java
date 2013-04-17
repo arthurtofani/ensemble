@@ -21,8 +21,17 @@ along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 
 package ensemble.memory;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MemoryException.
+ */
 public class MemoryException extends Exception {
 
+	/**
+	 * Instantiates a new memory exception.
+	 *
+	 * @param msg the msg
+	 */
 	public MemoryException(String msg) {
 		super(msg);
 	}

@@ -39,56 +39,104 @@ import ensemble.memory.Memory;
 import ensemble.router.RouterClient;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class EventServer.
+ */
 public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterClient {
 
 //	public static Logger logger = Logger.getMyLogger(MusicalAgent.class.getName());
 
-	private Lock lock = new ReentrantLock();
+	/** The lock. */
+private Lock lock = new ReentrantLock();
+	
+	/** The output lock. */
 	private Lock outputLock = new ReentrantLock();
 
+	/** The parameters. */
 	protected Parameters parameters = null;
 
+	/** The env agent. */
 	protected EnvironmentAgent envAgent;
 
+	/** The clock. */
 	protected VirtualClockHelper clock;
 
+	/** The event server state. */
 	private ES_STATE 	eventServerState 	= ES_STATE.CREATED; 
 	
+	/** The event type. */
 	private String 		eventType 			= "DUMMY";
+	
+	/** The event exchange. */
 	private String		eventExchange 		= Constants.EVT_EXC_SPORADIC;
+	
+	/** The comm type. */
 	private String 		commType 			= "ensemble.comm.direct.CommDirect";
+	
+	/** The is batch. */
 	private boolean		isBatch				= false;
 
 	// Periodic Events' variables
+	/** The period. */
 	protected long 		period;
+	
+	/** The send deadline. */
 	protected long 		sendDeadline;
+	
+	/** The receive deadline. */
 	protected long 		receiveDeadline;
+	
+	/** The period deadline. */
 	protected long 		periodDeadline;
+	
+	/** The start time. */
 	protected long 		startTime;
+	
+	/** The frame time. */
 	protected long 		frameTime;
+	
+	/** The wait time. */
 	protected long 		waitTime;
 	
+	/** The working frame. */
 	protected int 		workingFrame;
+	
+	/** The happening frame. */
 	protected int 		happeningFrame;
+	
+	/** The receiving frame. */
 	protected int 		receivingFrame;
 	
+	/** The next state change. */
 	private	long 		nextStateChange;
 	
 	// TODO Melhorar forma de armazenamento
+	/** The actuators. */
 	protected ConcurrentHashMap<String, Parameters> actuators = new ConcurrentHashMap<String, Parameters>();
 
+	/** The sensors. */
 	protected ConcurrentHashMap<String, Parameters> sensors   = new ConcurrentHashMap<String, Parameters>();
 	
+	/** The event handlers. */
 	protected ConcurrentHashMap<String, Parameters> eventHandlers = new ConcurrentHashMap<String, Parameters>();
 	
+	/** The early events. */
 	protected ArrayList<Event> earlyEvents = new ArrayList<Event>();
 	
+	/** The comm. */
 	protected Comm comm;
 
+	/** The my sensor. */
 	protected Sensor mySensor;
+	
+	/** The my actuator. */
 	protected Actuator myActuator;
 	
+	/** The input events. */
 	private ArrayList<Event> inputEvents = new ArrayList<Event>();
+	
+	/** The output events. */
 	private ArrayList<Event> outputEvents = new ArrayList<Event>();
 	
 	//--------------------------------------------------------------------------------
@@ -98,6 +146,8 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	/**
 	 * Called by the system to initalize an EventServer.
 	 * Should not be called by the user!
+	 *
+	 * @return true, if successful
 	 */
 	@Override
 	public final boolean start() {
@@ -210,6 +260,9 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	}
 	
 	// TODO Implementar a finalização segura de um EventServer
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#stop()
+	 */
 	@Override
 	public final boolean stop() {
 		
@@ -262,20 +315,44 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	// Getters / Setters
 	//--------------------------------------------------------------------------------
 	
+	/**
+	 * Adds the parameter.
+	 *
+	 * @param key the key
+	 * @param value the value
+	 */
 	public final void addParameter(String key, String value) {
 		parameters.put(key, value);
 	}
 
+	/**
+	 * Adds the parameters.
+	 *
+	 * @param newParameters the new parameters
+	 */
 	public final void addParameters(Parameters newParameters) {
 		if (newParameters != null) {
 			parameters.putAll(newParameters);
 		}
 	}
 	
+	/**
+	 * Gets the parameter.
+	 *
+	 * @param key the key
+	 * @return the parameter
+	 */
 	public final String getParameter(String key) {
 		return parameters.get(key);
 	}
 	
+	/**
+	 * Gets the parameter.
+	 *
+	 * @param key the key
+	 * @param defaultValue the default value
+	 * @return the parameter
+	 */
 	public final String getParameter(String key, String defaultValue) {
 		if (parameters.containsKey(key)) {
 			return parameters.get(key);
@@ -284,18 +361,34 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
  		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#setParameters(ensemble.Parameters)
+	 */
 	public void setParameters(Parameters parameters) {
 		this.parameters = parameters;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#getParameters()
+	 */
 	public Parameters getParameters() {
 		return parameters;
 	}
 	
+	/**
+	 * Sets the env agent.
+	 *
+	 * @param envAgent the new env agent
+	 */
 	public void setEnvAgent(EnvironmentAgent envAgent) {
 		this.envAgent = envAgent;
 	}
 
+	/**
+	 * Sets the comm type.
+	 *
+	 * @param commType the new comm type
+	 */
 	public void setCommType(String commType) {
 		if (eventServerState == ES_STATE.CREATED) {
 			this.commType = commType;
@@ -304,10 +397,20 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 		}
 	}
 
+	/**
+	 * Gets the comm type.
+	 *
+	 * @return the comm type
+	 */
 	public String getCommType() {
 		return commType;
 	}
 	
+	/**
+	 * Sets the event type.
+	 *
+	 * @param eventType the new event type
+	 */
 	public void setEventType(String eventType) {
 		if (eventServerState == ES_STATE.CREATED) {
 			this.eventType = eventType;
@@ -316,6 +419,11 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 		}
 	}
 
+	/**
+	 * Gets the event type.
+	 *
+	 * @return the event type
+	 */
 	public String getEventType() {
 		return eventType;
 	}
@@ -328,7 +436,13 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 //		}
 //	}
 	
-	public void setEventExchange(long period, long waitTime) {
+	/**
+ * Sets the event exchange.
+ *
+ * @param period the period
+ * @param waitTime the wait time
+ */
+public void setEventExchange(long period, long waitTime) {
 		if (eventServerState == ES_STATE.CREATED) {
 			this.eventExchange = Constants.EVT_EXC_HYBRID;
 			this.period = period;
@@ -337,6 +451,15 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	}
 	
 	// TODO Como mudar o período durante a execução
+	/**
+	 * Sets the event exchange.
+	 *
+	 * @param period the period
+	 * @param receiveDeadline the receive deadline
+	 * @param sendDeadline the send deadline
+	 * @param waitTime the wait time
+	 * @return true, if successful
+	 */
 	public boolean setEventExchange(long period, long receiveDeadline, long sendDeadline, long waitTime) {
 		
 		if (eventServerState == ES_STATE.CREATED &&
@@ -356,6 +479,11 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 		
 	}
 
+	/**
+	 * Gets the event exchange.
+	 *
+	 * @return the event exchange
+	 */
 	public String getEventExchange() {
 		return eventExchange;
 	}
@@ -363,7 +491,13 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	//------------------------------
 	
 	/**
-	 * Searches the registered event handlers using filters
+	 * Searches the registered event handlers using filters.
+	 *
+	 * @param agentName the agent name
+	 * @param componentName the component name
+	 * @param eventType the event type
+	 * @param ehType the eh type
+	 * @return the string[]
 	 */
 	public String[] searchRegisteredEventHandler(String agentName, String componentName, String eventType, String ehType) {
 		ArrayList<String> list = new ArrayList<String>();
@@ -382,6 +516,14 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 		return list.toArray(ret);
 	}
 	
+	/**
+	 * Register event handler.
+	 *
+	 * @param agentName the agent name
+	 * @param eventHandlerName the event handler name
+	 * @param eventHandlerType the event handler type
+	 * @param userParameters the user parameters
+	 */
 	public void registerEventHandler(String agentName, String eventHandlerName, String eventHandlerType, Parameters userParameters) {
 
 //		MusicalAgent.logger.info("[" + envAgent.getAgentName() + "] " + "Recebi pedido de registro de " + agentName + ":" + eventHandlerName);
@@ -451,6 +593,13 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 
 	}
 	
+	/**
+	 * Deregister event handler.
+	 *
+	 * @param agentName the agent name
+	 * @param eventHandlerName the event handler name
+	 * @param eventHandlerType the event handler type
+	 */
 	public void deregisterEventHandler(String agentName, String eventHandlerName, String eventHandlerType) {
 		
 		if (eventHandlerType.equals(Constants.COMP_ACTUATOR)) {
@@ -487,6 +636,13 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 
 	}
 	
+	/**
+	 * Creates the memory.
+	 *
+	 * @param name the name
+	 * @param parameters the parameters
+	 * @return the memory
+	 */
 	public Memory createMemory(String name, Parameters parameters) {
 
 		Memory newMemory = null;
@@ -523,6 +679,11 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	// Métodos de recebimento e envio de Eventos
 	//--------------------------------------------------------------------------------
 
+	/**
+	 * Sense early events.
+	 *
+	 * @param evt the evt
+	 */
 	protected void senseEarlyEvents(Event evt) {
 		try {
 			processSense(evt);
@@ -533,6 +694,9 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	}
 	
 	// TODO Pode ser um problema se o processSense() demorar muito! Mudar para Threads!!
+	/* (non-Javadoc)
+	 * @see ensemble.Sensing#sense(ensemble.Event)
+	 */
 	public void sense(Event evt) {
 		
 //		MusicalAgent.logger.info("[" + envAgent.getAgentName() + ":" + getEventType() + "] " + "Event received: " + evt);
@@ -591,7 +755,7 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	}
 	
 	/**
-	 * Sends automatically all events in the outputEvents queue
+	 * Sends automatically all events in the outputEvents queue.
 	 */
 	public void act() {
 
@@ -619,10 +783,9 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	}
 	
 	/**
-	 * Sends a single Event
-	 * @param destAgentName
-	 * @param destCompName
-	 * @param evt
+	 * Sends a single Event.
+	 *
+	 * @param evt the evt
 	 */
 	protected void sendEvent(Event evt) {
 		
@@ -661,9 +824,10 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	/**
 	 * Adds a event to a queue to be sent the next time act() is called.
 	 * It can be used by a sporadic event server to send differents events for differents recipients at the same time
-	 * @param destAgentName
-	 * @param destCompName
-	 * @param evt
+	 *
+	 * @param destAgentName the dest agent name
+	 * @param destCompName the dest comp name
+	 * @param evt the evt
 	 */
 	protected void addOutputEvent(String destAgentName, String destCompName, Event evt) {
 		
@@ -682,8 +846,14 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	// Hybrid Exchange Methods
 	//--------------------------------------------------------------------------------
 	
+	/**
+	 * The Class HybridScheduler.
+	 */
 	private class HybridScheduler implements Runnable {
 
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
 		public void run() {
 
 			try {
@@ -709,6 +879,9 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	//--------------------------------------------------------------------------------
 	
 //	private class ActionScheduler extends OneShotBehaviour {
+	/**
+	 * The Class PeriodicScheduler.
+	 */
 	private class PeriodicScheduler implements Runnable {
 
 //		long wakeTime;
@@ -718,7 +891,10 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 //		}
 		
 //		public void action() {
-		public void run() {
+		/* (non-Javadoc)
+ * @see java.lang.Runnable#run()
+ */
+public void run() {
 
 //			int num = (int)Math.floor((Math.random() * 100));
 
@@ -856,11 +1032,17 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	// Command Interface
 	//--------------------------------------------------------------------------------
 	
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#getAddress()
+	 */
 	@Override
 	public final String getAddress() {
 		return "/" + Constants.FRAMEWORK_NAME + "/" + envAgent.getAgentName() + "/" + getEventType();
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#receiveCommand(ensemble.Command)
+	 */
 	@Override
 	public final void receiveCommand(Command cmd) {
 //        System.out.println("[" + getAddress() +"] Command received: " + cmd);
@@ -897,6 +1079,9 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#sendCommand(ensemble.Command)
+	 */
 	@Override
 	public final void sendCommand(Command cmd) {
 		envAgent.sendCommand(cmd);
@@ -906,16 +1091,25 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	// User implemented methods
 	//--------------------------------------------------------------------------------
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#init()
+	 */
 	@Override
 	public boolean init() {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#parameterUpdate(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public boolean parameterUpdate(String name, String newValue) {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#finit()
+	 */
 	@Override
 	public boolean finit() {
 		return true;
@@ -923,6 +1117,9 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	
 	/**
 	 * Método chamado ao receber um evento. Deve armazenar os eventos recebidos em uma estrutura de dados, para depois ser processado.
+	 *
+	 * @param evt the evt
+	 * @throws Exception the exception
 	 */
 	protected void processSense(Event evt) throws Exception {
 //		MusicalAgent.logger.info("[" + envAgent.getAgentName() + ":" + getEventType() + "] " + "processSense()");
@@ -931,8 +1128,10 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	/**
 	 * Método chamado para enviar um evento pelo process().
 	 * No caso de eventos frequentes, é chamado automaticamente quando o sendDeadline é atingindo.
-	 * @return
-	 * @throws Exception
+	 *
+	 * @param evt the evt
+	 * @return the event
+	 * @throws Exception the exception
 	 */
 	protected Event processAction(Event evt) throws Exception {
 //		MusicalAgent.logger.info("[" + envAgent.getAgentName() + ":" + getEventType() + "] " + "processAction()");
@@ -942,31 +1141,67 @@ public abstract class EventServer implements LifeCycle, Sensing, Acting, RouterC
 	/**
 	 * Método chamado para efetuar algum processamento sobre os eventos recebidos, e enviar eventos em seguida.
 	 * No caso de eventos frequentes, é chamado automaticamente quando o receiveDeadline é atingindo.
-	 * @throws Exception
+	 *
+	 * @throws Exception the exception
 	 */
 	// TODO Pode lançar um TimeOutException caso não seja executada no tempo necessário!
 	protected void process() throws Exception {
 //		MusicalAgent.logger.info("[" + envAgent.getAgentName() + ":" + getEventType() + "] " + "process()");
 	}
 
+	/**
+	 * Actuator registered.
+	 *
+	 * @param agentName the agent name
+	 * @param actuatorName the actuator name
+	 * @param userParam the user param
+	 * @return the parameters
+	 * @throws Exception the exception
+	 */
 	protected Parameters actuatorRegistered(String agentName, String actuatorName, Parameters userParam) throws Exception {
 //		MusicalAgent.logger.info("[" + envAgent.getAgentName() + ":" + getEventType() + "] " + "actuatorRegistered()");
 		return null;
 	}
 	
+	/**
+	 * Actuator deregistered.
+	 *
+	 * @param agentName the agent name
+	 * @param actuatorName the actuator name
+	 * @throws Exception the exception
+	 */
 	protected void actuatorDeregistered(String agentName, String actuatorName) throws Exception {
 //		MusicalAgent.logger.info("[" + envAgent.getAgentName() + ":" + getEventType() + "] " + "actuatorDeregistered()");
 	}
 	
+	/**
+	 * Sensor registered.
+	 *
+	 * @param agentName the agent name
+	 * @param sensorName the sensor name
+	 * @param userParam the user param
+	 * @return the parameters
+	 * @throws Exception the exception
+	 */
 	protected Parameters sensorRegistered(String agentName, String sensorName, Parameters userParam) throws Exception {
 //		MusicalAgent.logger.info("[" + envAgent.getAgentName() + ":" + getEventType() + "] " + "sensorRegistered()");
 		return null;
 	}
 	
+	/**
+	 * Sensor deregistered.
+	 *
+	 * @param agentName the agent name
+	 * @param sensorName the sensor name
+	 * @throws Exception the exception
+	 */
 	protected void sensorDeregistered(String agentName, String sensorName) throws Exception {
 //		MusicalAgent.logger.info("[" + envAgent.getAgentName() + ":" + getEventType() + "] " + "sensorDeregistered()");
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#processCommand(ensemble.Command)
+	 */
 	@Override
 	public void processCommand(Command cmd) {
 	}

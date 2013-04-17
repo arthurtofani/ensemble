@@ -44,6 +44,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 
+// TODO: Auto-generated Javadoc
 /**
  * An agent that represents the environment.
  * 
@@ -56,102 +57,99 @@ public class EnvironmentAgent extends EnsembleAgent {
 	// General variables
 	// ----------------------------------------------
 
-	/**
-	 * Estado do Agente Ambiente
-	 */
+	/** Estado do Agente Ambiente. */
 	private EA_STATE state = EA_STATE.CREATED;
 
+	/** The dfd. */
 	protected DFAgentDescription dfd;
 
+	/** The tbf. */
 	ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
 
-	/**
-	 * Lock
-	 */
+	/** Lock. */
 	private Lock lock = new ReentrantLock();
+	
+	/** The batch lock. */
 	private Lock batchLock = new ReentrantLock();
 
-	/**
-	 * Descrição do Mundo Virtual
-	 */
+	/** Descrição do Mundo Virtual. */
 	protected World world = null;
 
-	/**
-	 * Event Servers registrados (por tipo de evento)
-	 */
+	/** Event Servers registrados (por tipo de evento). */
 	protected ConcurrentHashMap<String, EventServer> eventServers = new ConcurrentHashMap<String, EventServer>();
 
-	/**
-	 * Tabela de fatos públicos dos agentes (Fenótipo)
-	 */
+	/** Tabela de fatos públicos dos agentes (Fenótipo). */
 	// TODO Faz mais sentido estar no World
 	public ConcurrentHashMap<String, String> agentsPublicFacts = new ConcurrentHashMap<String, String>();
 
-	/**
-	 * Contador para manter nome dos agentes único
-	 */
+	/** Contador para manter nome dos agentes único. */
 	private int numberCreatedAgents;
 
 	// ----------------------------------------------
 	// Batch processing control variables
 	// ----------------------------------------------
 
+	/** The last update time. */
 	private long lastUpdateTime = System.currentTimeMillis();
-	/**
-	 * Tempo mínimo de espera entre cada turno
-	 */
+	
+	/** Tempo mínimo de espera entre cada turno. */
 	private long waitTimeTurn;
-	/**
-	 * Controla se deve esperar todos os agentes serem criados para iniciar a
-	 * simulação
-	 */
+	
+	/** Controla se deve esperar todos os agentes serem criados para iniciar a simulação. */
 	private boolean waitAllAgents;
-	/**
-	 * Número inicial de Agentes Musicais
-	 */
+	
+	/** Número inicial de Agentes Musicais. */
 	private long initialAgents;
-	/**
-	 * Número de agentes registrados no Ambiente
-	 */
+	
+	/** Número de agentes registrados no Ambiente. */
 	private int registeredAgents;
-	/**
-	 * Número de agentes registrados no Ambiente para o próximo turno
-	 */
+	
+	/** Número de agentes registrados no Ambiente para o próximo turno. */
 	private int registeredAgentsNextTurn;
-	/**
-	 * Número de agentes registrados que finalizaram suas ações no turno atual
-	 */
+	
+	/** Número de agentes registrados que finalizaram suas ações no turno atual. */
 	private int registeredAgentsReady;
-	/**
-	 * Número de eventos enviados pelos Agentes Musicais no turno atual
-	 */
+	
+	/** Número de eventos enviados pelos Agentes Musicais no turno atual. */
 	private int agentEventsSent;
-	/**
-	 * Número de eventos processados pelos EventServers no turno atual
-	 */
+	
+	/** Número de eventos processados pelos EventServers no turno atual. */
 	private int agentEventsProcessed;
-	/**
-	 * Número de eventos enviados pelos EventServers para os Agentes no turno
-	 * atual
-	 */
+	
+	/** Número de eventos enviados pelos EventServers para os Agentes no turno atual. */
 	private int evtSrvEventsSent;
-	/**
-	 * Número de eventos processados pelos Agentes Musicais no turno atual
-	 */
+	
+	/** Número de eventos processados pelos Agentes Musicais no turno atual. */
 	private int evtSrvEventsProcessed;
 
 	// --------------------------------------------------------------------------------
 	// Agente getters / setters
 	// --------------------------------------------------------------------------------
 
+	/**
+	 * Gets the eA state.
+	 *
+	 * @return the eA state
+	 */
 	public final EA_STATE getEAState() {
 		return state;
 	}
 	
+	/**
+	 * Gets the world.
+	 *
+	 * @return the world
+	 */
 	public final World getWorld() {
 		return world;
 	}
 
+	/**
+	 * Gets the event server.
+	 *
+	 * @param eventType the event type
+	 * @return the event server
+	 */
 	public final EventServer getEventServer(String eventType) {
 		return eventServers.get(eventType);
 	}
@@ -160,6 +158,9 @@ public class EnvironmentAgent extends EnsembleAgent {
 	// Initialization
 	// --------------------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#start()
+	 */
 	@Override
 	public boolean start() {
 
@@ -233,6 +234,9 @@ public class EnvironmentAgent extends EnsembleAgent {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#stop()
+	 */
 	@Override
 	public boolean stop() {
 
@@ -255,6 +259,12 @@ public class EnvironmentAgent extends EnsembleAgent {
 		return true;
 	}
 
+	/**
+	 * Adds the world.
+	 *
+	 * @param className the class name
+	 * @param parameters the parameters
+	 */
 	public void addWorld(String className, Parameters parameters) {
 		if (state == EA_STATE.CREATED) {
 			try {
@@ -274,12 +284,10 @@ public class EnvironmentAgent extends EnsembleAgent {
 	
 	/**
 	 * Registra um tipo de evento tratado por este Agente Ambiente no diretório
-	 * do JADE
-	 * 
-	 * @param name
-	 *            nome do EventServer que trata o evento
-	 * @param type
-	 *            tipo do evento
+	 * do JADE.
+	 *
+	 * @param name nome do EventServer que trata o evento
+	 * @param type tipo do evento
 	 */
 	protected final void registerService(String name, String type) {
 
@@ -308,12 +316,10 @@ public class EnvironmentAgent extends EnsembleAgent {
 	}
 
 	/**
-	 * Cria uma instância de um EventServer esporádico ou frequente
-	 * 
-	 * @param className
-	 *            classe Java do EventServer
-	 * @param arguments
-	 *            parâmetros a serem passados para o objeto criado
+	 * Cria uma instância de um EventServer esporádico ou frequente.
+	 *
+	 * @param className classe Java do EventServer
+	 * @param esParam the es param
 	 */
 	public final void addEventServer(String className, Parameters esParam) {
 
@@ -363,9 +369,9 @@ public class EnvironmentAgent extends EnsembleAgent {
 	}
 
 	/**
-	 * Removes an EventServer from the EnvironmentAgent
-	 * 
-	 * @param server
+	 * Removes an EventServer from the EnvironmentAgent.
+	 *
+	 * @param eventType the event type
 	 */
 	public final void removeEventServer(String eventType) {
 
@@ -418,6 +424,11 @@ public class EnvironmentAgent extends EnsembleAgent {
 	//
 	// }
 	//
+	/**
+	 * Process control command.
+	 *
+	 * @param cmd the cmd
+	 */
 	protected final void processControlCommand(Command cmd) {
 
 		String command = cmd.getCommand();
@@ -600,6 +611,9 @@ public class EnvironmentAgent extends EnsembleAgent {
 	// Command Interface
 	// ----------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#receiveCommand(ensemble.Command)
+	 */
 	@Override
 	public final void receiveCommand(Command cmd) {
 
@@ -645,6 +659,11 @@ public class EnvironmentAgent extends EnsembleAgent {
 	/**
 	 * Cria um novo Agente no Ambiente. Se o nome do agente é null ou vazio,
 	 * cria um nome sequencial, baseado na classe.
+	 *
+	 * @param agentName the agent name
+	 * @param agentClass the agent class
+	 * @param parameters the parameters
+	 * @return the string
 	 */
 	public final String createMusicalAgent(String agentName, String agentClass,
 			Parameters parameters) {
@@ -679,10 +698,9 @@ public class EnvironmentAgent extends EnsembleAgent {
 	}
 
 	/**
-	 * Kills a musical agent
-	 * 
-	 * @param agentName
-	 *            Musical Agent's name
+	 * Kills a musical agent.
+	 *
+	 * @param agentName Musical Agent's name
 	 */
 	public final void destroyAgent(String agentName) {
 
@@ -697,8 +715,9 @@ public class EnvironmentAgent extends EnsembleAgent {
 
 	/**
 	 * Registra um agente musical no Ambiente.
-	 * 
-	 * @param agentName
+	 *
+	 * @param agentName the agent name
+	 * @param parameters the parameters
 	 */
 	protected final void registerAgent(String agentName, Parameters parameters) {
 
@@ -708,8 +727,9 @@ public class EnvironmentAgent extends EnsembleAgent {
 	}
 
 	/**
-	 * 
-	 * @param agentName
+	 * Prepare agent.
+	 *
+	 * @param agentName the agent name
 	 */
 	protected final void prepareAgent(String agentName) {
 
@@ -748,8 +768,8 @@ public class EnvironmentAgent extends EnsembleAgent {
 
 	/**
 	 * Retira um agente musical do registro de agentes ativos no ambiente.
-	 * 
-	 * @param agentName
+	 *
+	 * @param agentName the agent name
 	 */
 	protected final void deregisterAgent(String agentName) {
 
@@ -775,10 +795,13 @@ public class EnvironmentAgent extends EnsembleAgent {
 	}
 
 	/**
-	 * Checks if all Musical Agents were destroyed
+	 * Checks if all Musical Agents were destroyed.
 	 */
 	private final class CheckAgentDeregister extends CyclicBehaviour {
 
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		public void action() {
 
 			if (world.getEntityList().size() == 0) {
@@ -795,10 +818,13 @@ public class EnvironmentAgent extends EnsembleAgent {
 	}
 	
 	/**
-	 * Kills this agent
+	 * Kills this agent.
 	 */
 	private final class KillAgent extends OneShotBehaviour {
 
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		@Override
 		public void action() {
 			
@@ -820,10 +846,18 @@ public class EnvironmentAgent extends EnsembleAgent {
 	 */
 	private final class CheckRegister extends CyclicBehaviour {
 
+		/**
+		 * Instantiates a new check register.
+		 *
+		 * @param a the a
+		 */
 		public CheckRegister(Agent a) {
 			super(a);
 		}
 
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		public void action() {
 
 			// Enquanto não tiver nenhum agente registrado para o próximo turno,
@@ -851,10 +885,18 @@ public class EnvironmentAgent extends EnsembleAgent {
 	 */
 	private final class CheckEndTurn extends OneShotBehaviour {
 
+		/**
+		 * Instantiates a new check end turn.
+		 *
+		 * @param a the a
+		 */
 		public CheckEndTurn(Agent a) {
 			super(a);
 		}
 
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		public void action() {
 
 			batchLock.lock();
@@ -931,6 +973,8 @@ public class EnvironmentAgent extends EnsembleAgent {
 
 	/**
 	 * Registra a mensagem de um agente indicando que terminou o turno.
+	 *
+	 * @param events the events
 	 */
 	private final void agentProcessed(int events) {
 		batchLock.lock();
@@ -945,7 +989,7 @@ public class EnvironmentAgent extends EnsembleAgent {
 	}
 
 	/**
-	 * Registra a informação do EventServer que um evento foi processado
+	 * Registra a informação do EventServer que um evento foi processado.
 	 */
 	public final void eventProcessed() {
 
@@ -961,7 +1005,7 @@ public class EnvironmentAgent extends EnsembleAgent {
 	}
 
 	/**
-	 * Registra que um evento foi enviado pelo EventServer
+	 * Registra que um evento foi enviado pelo EventServer.
 	 */
 	public final void eventSent() {
 
@@ -976,7 +1020,7 @@ public class EnvironmentAgent extends EnsembleAgent {
 	}
 
 	/**
-	 * Registra que um Agente terminou de processar
+	 * Registra que um Agente terminou de processar.
 	 */
 	private final void eventAgentProcessed() {
 

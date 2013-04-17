@@ -30,10 +30,18 @@ import ensemble.Constants.EH_STATUS;
 import ensemble.clock.TimeUnit;
 import ensemble.memory.MemoryException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Sensor.
+ */
 public class Sensor extends EventHandler implements Sensing {
 	
+	/** The early_events. */
 	protected ArrayList<Event> early_events = new ArrayList<Event>();
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventHandler#start()
+	 */
 	@Override
 	public final boolean start() {
 
@@ -73,6 +81,9 @@ public class Sensor extends EventHandler implements Sensing {
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EventHandler#stop()
+	 */
 	@Override
 	public final boolean stop() {
 
@@ -95,11 +106,17 @@ public class Sensor extends EventHandler implements Sensing {
 	}
 	
 	// Chamado por um raciocínio para registrá-lo como listener dos eventos
+	/* (non-Javadoc)
+	 * @see ensemble.EventHandler#registerListener(ensemble.Reasoning)
+	 */
 	public void registerListener(Reasoning reasoning) {
 		listeners.add(reasoning);
 	}
 	
 	// Método chamado pelo Comm ao receber um evento
+	/* (non-Javadoc)
+	 * @see ensemble.Sensing#sense(ensemble.Event)
+	 */
 	public void sense(Event evt) {
 		
 		if (status == EH_STATUS.REGISTERED && evt.eventType.equals(eventType)) {

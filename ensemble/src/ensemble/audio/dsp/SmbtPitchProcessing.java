@@ -4,6 +4,10 @@ import java.util.Arrays;
 
 import be.hogent.tarsos.dsp.util.FFT;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SmbtPitchProcessing.
+ */
 public class SmbtPitchProcessing {
 
 
@@ -48,12 +52,25 @@ public class SmbtPitchProcessing {
 
 
 	private double M_PI = Math.PI;
+	
+	/** The max frame length. */
 	private static int  MAX_FRAME_LENGTH = 16384;//8192;
 
 
 
 // -----------------------------------------------------------------------------------------------------------------
-	 public void smbPitchShift(float pitchShift, int numSampsToProcess, int fftFrameSize, int osamp, int sampleRate, double[] indata, double[] outdata)
+	 /**
+ * Smb pitch shift.
+ *
+ * @param pitchShift the pitch shift
+ * @param numSampsToProcess the num samps to process
+ * @param fftFrameSize the fft frame size
+ * @param osamp the osamp
+ * @param sampleRate the sample rate
+ * @param indata the indata
+ * @param outdata the outdata
+ */
+public void smbPitchShift(float pitchShift, int numSampsToProcess, int fftFrameSize, int osamp, int sampleRate, double[] indata, double[] outdata)
 	 {
 		float[] auxIn = new float[indata.length];
 		float[] auxOut = new float[outdata.length];
@@ -70,6 +87,17 @@ public class SmbtPitchProcessing {
 		 }
 	 }
 
+ /**
+  * Smb pitch shift.
+  *
+  * @param pitchShift the pitch shift
+  * @param numSampsToProcess the num samps to process
+  * @param fftFrameSize the fft frame size
+  * @param osamp the osamp
+  * @param sampleRate the sample rate
+  * @param indata the indata
+  * @param outdata the outdata
+  */
  public void smbPitchShift(float pitchShift, long numSampsToProcess, long fftFrameSize, long osamp, float sampleRate, float[] indata, float[] outdata)
 {
 /*
@@ -340,6 +368,13 @@ void smbFft(float[] fftBuffer, long fftFrameSize, long sign)
 */
 
 
+/**
+ * Smb atan2.
+ *
+ * @param x the x
+ * @param y the y
+ * @return the double
+ */
 private double smbAtan2(double x, double y)
 {
   double signx;

@@ -21,8 +21,15 @@ along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 
 package ensemble.world;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface WorldGUI.
+ */
 public interface WorldGUI {
 
+	/**
+	 * Update.
+	 */
 	public void update();
 	
 }

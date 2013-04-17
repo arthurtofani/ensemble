@@ -23,18 +23,34 @@ package ensemble.audio;
 
 import ensemble.Event;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AudioEvent.
+ */
 public class AudioEvent extends Event {
 	
 	// Tamanho e Formato do Chunk
+	/** The sample rate. */
 	public int		sampleRate;
 	
 	// 0 - none, 1 - ambisonics 1st order, 2 - ambisonics 2nd order
+	/** The codification. */
 	public int 		codification;
+	
+	/** The num channels. */
 	public int 		numChannels;
 
 	// Dados do Chunk (audio, MIDI etc.)
+	/** The chunk. */
 	public double[][] chunk;
 	
+	/**
+	 * Instantiates a new audio event.
+	 *
+	 * @param sampleRate the sample rate
+	 * @param chunkLenght the chunk lenght
+	 * @param numChannels the num channels
+	 */
 	public AudioEvent(int sampleRate, int chunkLenght, int numChannels) {
 		this.sampleRate 	= sampleRate;
 		this.chunk 			= new double[numChannels][chunkLenght];

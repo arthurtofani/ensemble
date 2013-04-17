@@ -4,11 +4,24 @@ import java.util.Random;
 
 import ddf.minim.analysis.FFT;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MinimFftProcessing.
+ */
 public class MinimFftProcessing {
 
 	
 	
 	
+	/**
+	 * Gets the band fft.
+	 *
+	 * @param buffer the buffer
+	 * @param sampleRate the sample rate
+	 * @param timeSize the time size
+	 * @param chunksize the chunksize
+	 * @return the band fft
+	 */
 	public static double getBandFft(double[] buffer, int sampleRate,int timeSize, int chunksize)
 	{
 		Random rnd = new Random();

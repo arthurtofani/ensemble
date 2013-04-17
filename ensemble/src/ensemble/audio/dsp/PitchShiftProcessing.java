@@ -1,8 +1,21 @@
 package ensemble.audio.dsp;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PitchShiftProcessing.
+ */
 public class PitchShiftProcessing {
 
 	
+	/**
+	 * Pitch shift.
+	 *
+	 * @param samples the samples
+	 * @param out the out
+	 * @param count the count
+	 * @param factor the factor
+	 * @param sampleRate the sample rate
+	 */
 	public void PitchShift(double[] samples, double[] out, int count, double factor, float sampleRate){
 		System.out.println(count + " SR:" + sampleRate );
 		new PitchShifting((int)sampleRate,count ).perform(samples);

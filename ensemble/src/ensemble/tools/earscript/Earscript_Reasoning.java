@@ -18,15 +18,25 @@ import ensemble.tools.earscript.EARSTools.StateValue;
 import ensemble.tools.earscript.EARSTools.WorldValue;
 import ensemble.tools.earscript.EARSTools;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Earscript_Reasoning.
+ */
 public class Earscript_Reasoning extends Reasoning {
 
 	
+	/** The event servers. */
 	List<EventServer> eventServers;
 
+	/** The world values. */
 	static ArrayList<WorldValue> worldValues;
 
+	/** The tools. */
 	public static EARSTools tools;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.MusicalAgentComponent#init()
+	 */
 	public boolean init() {
 
 		String xml_filename = getParameter("scriptPath", "");
@@ -50,6 +60,11 @@ public class Earscript_Reasoning extends Reasoning {
 
 	}
 
+	/**
+	 * Start ear script.
+	 *
+	 * @param elem_EARScript the elem_ ear script
+	 */
 	private static void startEARScript(Element elem_EARScript) {
 
 		// Load World Values
@@ -77,6 +92,11 @@ if (nl.getLength() == 1) {
 		
 	}
 
+/**
+ * Load world values.
+ *
+ * @param elem_wv the elem_wv
+ */
 private static void loadWorldValues(Element elem_wv) {
 
 		
@@ -106,6 +126,11 @@ worldValues = wvList;
 
 	}
 	
+	/**
+	 * Load event servers.
+	 *
+	 * @param elem_EARScript the elem_ ear script
+	 */
 	private static void loadEventServers(Element elem_EARScript) {
 		
 
@@ -193,6 +218,12 @@ worldValues = wvList;
 
 	
 
+	/**
+	 * Load xml file.
+	 *
+	 * @param xmlFile the xml file
+	 * @return the document
+	 */
 	private static Document loadXMLFile(String xmlFile) {
 
 		Document doc = null;
@@ -215,6 +246,14 @@ worldValues = wvList;
 
 	}
 
+	/**
+	 * Read attribute.
+	 *
+	 * @param elem the elem
+	 * @param attributeName the attribute name
+	 * @param defaultValue the default value
+	 * @return the string
+	 */
 	private static String readAttribute(Element elem, String attributeName, String defaultValue) {
 
 		String ret;

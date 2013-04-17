@@ -2,8 +2,20 @@ package ensemble.audio.dsp;
 
 import be.hogent.tarsos.dsp.pitch.DynamicWavelet;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TarsosProcessing.
+ */
 public class TarsosProcessing {
 
+	/**
+	 * Pitch track.
+	 *
+	 * @param samples the samples
+	 * @param count the count
+	 * @param sampleRate the sample rate
+	 * @return the float
+	 */
 	public float pitchTrack(double[] samples, int count,  float sampleRate){
 		
 		float[] aux = new float[count];

@@ -4,8 +4,15 @@ import ensemble.Constants;
 import ensemble.MusicalAgent;
 import ensemble.Parameters;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ListenerAgent.
+ */
 public class ListenerAgent extends MusicalAgent {
 	
+	/* (non-Javadoc)
+	 * @see ensemble.EnsembleAgent#configure()
+	 */
 	@Override
 	public boolean configure() {
 

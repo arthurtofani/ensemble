@@ -36,20 +36,49 @@ import ensemble.processing.audio.LibXtract_RMS;
 import ensemble.processing.audio.OnsetsDS;
 
 
+// TODO: Auto-generated Javadoc
 // TODO Mem�ria para guardar os �ltimos frames, utilizados em processamentos com janela deslizantes
+/**
+ * A factory for creating Processor objects.
+ */
 public class ProcessorFactory {
 	
+	/**
+	 * The Enum AudioOperation.
+	 */
 	public enum AudioOperation {
+		
+		/** The fft. */
 		FFT,
+		
+		/** The filter. */
 		FILTER,
+		
+		/** The rms. */
 		RMS,
+		
+		/** The onset detection. */
 		ONSET_DETECTION,
+		
+		/** The pitch detection. */
 		PITCH_DETECTION,
+		
+		/** The loudness. */
 		LOUDNESS,
+		
+		/** The resample. */
 		RESAMPLE,
+		
+		/** The convolution. */
 		CONVOLUTION,
+		
+		/** The mfcc. */
 		MFCC,
+		
+		/** The dct. */
 		DCT,
+		
+		/** The phase vocoder. */
 		PHASE_VOCODER
 	}
 
@@ -81,6 +110,13 @@ public class ProcessorFactory {
 
 	}
 	
+	/**
+	 * Creates a new Processor object.
+	 *
+	 * @param operation the operation
+	 * @param arguments the arguments
+	 * @return the processor
+	 */
 	public static Processor createAudioProcessor(AudioOperation operation, Parameters arguments) {
 		
 		Processor proc = null;
@@ -128,11 +164,21 @@ public class ProcessorFactory {
 		return proc;
 	}
 	
+	/**
+	 * Delete audio processor.
+	 *
+	 * @param proc the proc
+	 */
 	public static void deleteAudioProcessor(Processor proc) {
 		proc.stop();
 	}
 
 	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		
     	final int N = 2048;

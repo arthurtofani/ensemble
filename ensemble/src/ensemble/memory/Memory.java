@@ -29,6 +29,7 @@ import ensemble.clock.TimeUnit;
 import ensemble.clock.VirtualClockHelper;
 import jade.util.Logger;
 
+// TODO: Auto-generated Javadoc
 // usar TimeFormat(); para os instantes e amostras
 
 // TODO se ele pedir em tempo, devolver o vetor interpolado, se pedir em amostras, devolver os valores do buffer
@@ -37,34 +38,60 @@ import jade.util.Logger;
 // TODO Raciocinio cutucar o outro (oscilidores/mixer)
 // Reunião - terça
 // TODO Não funciona para Batch (considerar turnos também) -> Já tem o tipo em TimeUnit
+/**
+ * The Class Memory.
+ */
 public abstract class Memory implements LifeCycle {
 
 	// Log
 //	public static Logger logger = Logger.getMyLogger(EnsembleAgent.class.getName());
 	
+	/** The parameters. */
 	protected  Parameters 	parameters;
 
+	/** The clock. */
 	protected VirtualClockHelper clock;
 
+	/** The my agent. */
 	protected EnsembleAgent 	myAgent;
+	
+	/** The name. */
 	protected String 	name;
+	
+	/** The past. */
 	protected double	past;
+	
+	/** The future. */
 	protected double	future;
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#getParameters()
+	 */
 	@Override
 	public Parameters getParameters() {
 		return parameters;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#setParameters(ensemble.Parameters)
+	 */
 	@Override
 	public void setParameters(Parameters parameters) {
 		this.parameters = parameters;
 	}
 	
+	/**
+	 * Sets the agent.
+	 *
+	 * @param myAgent the new agent
+	 */
 	public void setAgent(EnsembleAgent myAgent) {
 		this.myAgent = myAgent;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#start()
+	 */
 	@Override
 	public boolean start() {
 
@@ -83,11 +110,17 @@ public abstract class Memory implements LifeCycle {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#parameterUpdate(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public boolean parameterUpdate(String name, String newValue) {
 		return false;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#stop()
+	 */
 	@Override
 	public boolean stop() {
 
@@ -103,87 +136,121 @@ public abstract class Memory implements LifeCycle {
 	// User implemented method
 	//--------------------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
 	@Override
 	public boolean configure() {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#init()
+	 */
 	@Override
 	public boolean init() {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#finit()
+	 */
 	@Override
 	public boolean finit() {
 		return true;
 	}
 
 	/**
-	 * Retorna o nome do componente ao qual está memória está associada
-	 * @return
+	 * Retorna o nome do componente ao qual está memória está associada.
+	 *
+	 * @return the name
 	 */
 	public final String getName() {
 		return name;
 	}
 	
+	/**
+	 * Gets the past.
+	 *
+	 * @return the past
+	 */
 	public final double getPast() {
 		return past;
 	}
 	
+	/**
+	 * Gets the future.
+	 *
+	 * @return the future
+	 */
 	public final double getFuture() {
 		return future;
 	}
 	
 	/**
-	 * Retorna o instante mais antigo em que existe informação na memória
-	 * @return
+	 * Retorna o instante mais antigo em que existe informação na memória.
+	 *
+	 * @return the first instant
 	 */
 	public abstract double getFirstInstant();
 
 	/**
-	 * Retorna o último instante em que existe informação na memória
-	 * @return
+	 * Retorna o último instante em que existe informação na memória.
+	 *
+	 * @return the last instant
 	 */
 	public abstract double getLastInstant();
 	
 	/**
-	 * Obtém a memória em um instante do tempo
-	 * @param instant
-	 * @return
+	 * Obtém a memória em um instante do tempo.
+	 *
+	 * @param instant the instant
+	 * @param unit the unit
+	 * @return the object
 	 */
 	public abstract Object readMemory(double instant, TimeUnit unit);
 	
 	/**
-	 * Obtém a memória em um dado intervalo de tempo
-	 * @param initialInstant
-	 * @param duration
-	 * @return
+	 * Obtém a memória em um dado intervalo de tempo.
+	 *
+	 * @param instant the instant
+	 * @param duration the duration
+	 * @param unit the unit
+	 * @return the object
 	 */
 	public abstract Object readMemory(double instant, double duration, TimeUnit unit);
 	
 	/**
-	 * Limpa a memória
+	 * Limpa a memória.
 	 */
 	public abstract void resetMemory();
 	
 	/**
-	 * Escreve na memória a partir de um instante absoluto
-	 * @param object
-	 * @param instant
+	 * Escreve na memória a partir de um instante absoluto.
+	 *
+	 * @param object the object
+	 * @param instant the instant
+	 * @param duration the duration
+	 * @param unit the unit
+	 * @throws MemoryException the memory exception
 	 */
 	public abstract void writeMemory(Object object, double instant, double duration, TimeUnit unit) throws MemoryException;
 
 	/**
+	 * Write memory.
 	 *
-	 * @param object
-	 * @throws MemoryException
+	 * @param object the object
+	 * @param instant the instant
+	 * @param unit the unit
+	 * @throws MemoryException the memory exception
 	 */
 	public abstract void writeMemory(Object object, double instant, TimeUnit unit) throws MemoryException;
 
 	/**
+	 * Write memory.
 	 *
-	 * @param object
-	 * @throws MemoryException
+	 * @param object the object
+	 * @throws MemoryException the memory exception
 	 */
 	public abstract void writeMemory(Object object) throws MemoryException;
 

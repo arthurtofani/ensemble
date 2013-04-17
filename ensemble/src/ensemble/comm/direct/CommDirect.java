@@ -27,6 +27,10 @@ import ensemble.comm.Comm;
 import jade.core.ServiceException;
 import jade.util.Logger;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommDirect.
+ */
 public class CommDirect extends Comm {
 	
 	//----------------------------------------------------------
@@ -35,13 +39,20 @@ public class CommDirect extends Comm {
 
 	//----------------------------------------------------------
 	// Serviço de CommDirect
+	/** The comm direct. */
 	protected CommDirectHelper commDirect;
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
 	@Override
 	public final boolean configure() {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#init()
+	 */
 	@Override
 	public final boolean init() {
 		
@@ -61,6 +72,9 @@ public class CommDirect extends Comm {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#finit()
+	 */
 	@Override
 	public final boolean finit() {
 		
@@ -70,6 +84,9 @@ public class CommDirect extends Comm {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.comm.Comm#receive(ensemble.Event)
+	 */
 	@Override
 	public void receive(Event evt) {
 //		MusicalAgent.logger.info("[" + myAgent.getAID().getAgentName() + ":" + myAccessPoint + "] " + "Enviei evento via CommDirect");
@@ -81,6 +98,9 @@ public class CommDirect extends Comm {
 		}
  	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.comm.Comm#send(ensemble.Event)
+	 */
 	@Override
 	public void send(Event evt) {
 //		MusicalAgent.logger.info("[" + myAgent.getAID().getAgentName() + ":" + myAccessPoint + "] " + "Enviei evento via CommDirect");

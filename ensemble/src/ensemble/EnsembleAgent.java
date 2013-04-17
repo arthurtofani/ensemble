@@ -33,20 +33,27 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class EnsembleAgent, extends the JADE class
+ * Agent.
+ */
 public abstract class EnsembleAgent extends Agent implements LifeCycle, RouterClient {
 
 //	public static final Logger logger = Logger.getMyLogger(MusicalAgent.class.getName());
 
-	ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
+	/** The tbf. */
+ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
+	
+	/** The rcv cmd behavior. */
 	private ReceiveCommand rcvCmdBehavior;
 	
-	/**
-	 *  Agent Parameters
-	 */
+	/** Agent Parameters. */
 	protected Parameters parameters = null;
 
 	/**
-	 * Parameters getter
+	 * Parameters getter.
+	 *
 	 * @return initialized parameters
 	 */
 	@Override
@@ -55,7 +62,9 @@ public abstract class EnsembleAgent extends Agent implements LifeCycle, RouterCl
 	}
 
 	/**
-	 * Parameters setter
+	 * Parameters setter.
+	 *
+	 * @param parameters the new parameters
 	 * @return initialized parameters
 	 */
 	@Override
@@ -63,10 +72,23 @@ public abstract class EnsembleAgent extends Agent implements LifeCycle, RouterCl
 		this.parameters = parameters;
 	}
 	
+	/**
+	 * Gets the parameter.
+	 *
+	 * @param key the key
+	 * @return the parameter
+	 */
 	public final String getParameter(String key) {
 		return parameters.get(key);
 	}
 	
+	/**
+	 * Gets the parameter.
+	 *
+	 * @param key the key
+	 * @param defaultValue the default value
+	 * @return the parameter
+	 */
 	public final String getParameter(String key, String defaultValue) {
 		if (parameters.containsKey(key)) {
 			return parameters.get(key);
@@ -75,38 +97,37 @@ public abstract class EnsembleAgent extends Agent implements LifeCycle, RouterCl
  		}
 	}
 
-	/**
-	 * Clock Service
-	 */
+	/** Clock Service. */
 	private VirtualClockHelper clock;
 	
 	/**
-	 * Gets agent's name
-	 * @return 
+	 * Gets agent's name.
+	 *
+	 * @return the agent
 	 */
 	public final EnsembleAgent getAgent() {
 		return this;
 	}
 
 	/**
-	 * Gets agent's name
-	 * @return 
+	 * Gets agent's name.
+	 *
+	 * @return the agent name
 	 */
 	public final String getAgentName() {
 		return getLocalName();
 	}
 	
 	/**
-	 * Clock getter
+	 * Clock getter.
+	 *
 	 * @return ensemble clock service
 	 */
 	public final VirtualClockHelper getClock() {
 		return clock;
 	}
 	
-	/**
-	 * Router Service
-	 */
+	/** Router Service. */
 //	private RouterHelper router;
 //	
 //	public RouterHelper getRouter() {
@@ -116,7 +137,7 @@ public abstract class EnsembleAgent extends Agent implements LifeCycle, RouterCl
 	protected boolean isBatch = false;
 	
 	/**
-	 * Initialization method called by JADE
+	 * Initialization method called by JADE.
 	 */
 	protected void setup() {
 		
@@ -154,7 +175,7 @@ public abstract class EnsembleAgent extends Agent implements LifeCycle, RouterCl
 	}
 	
 	/**
-	 * Finalization method called by JADE
+	 * Finalization method called by JADE.
 	 */
 	protected void takeDown() {
 		
@@ -165,15 +186,27 @@ public abstract class EnsembleAgent extends Agent implements LifeCycle, RouterCl
 		
 	}
 	
+	/**
+	 * The Class ReceiveCommand.
+	 */
 	private final class ReceiveCommand extends CyclicBehaviour {
 
+		/** The mt. */
 		MessageTemplate mt;
 		
+		/**
+		 * Instantiates a new receive command.
+		 *
+		 * @param a the a
+		 */
 		public ReceiveCommand(Agent a) {
 			super(a);
 			mt = MessageTemplate.MatchConversationId("CommandRouter");
 		}
 		
+		/* (non-Javadoc)
+		 * @see jade.core.behaviours.Behaviour#action()
+		 */
 		public void action() {
 			ACLMessage msg = myAgent.receive(mt);
 			if (msg != null) {
@@ -191,11 +224,17 @@ public abstract class EnsembleAgent extends Agent implements LifeCycle, RouterCl
 	
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#getAddress()
+	 */
 	@Override
 	public final String getAddress() {
 		return "/" + Constants.FRAMEWORK_NAME + "/" + getAgentName();
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#sendCommand(ensemble.Command)
+	 */
 	@Override
 	public final void sendCommand(Command cmd) {
 		
@@ -234,26 +273,41 @@ public abstract class EnsembleAgent extends Agent implements LifeCycle, RouterCl
 	// User implemented methods
 	//--------------------------------------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#configure()
+	 */
 	@Override
 	public boolean configure() {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#init()
+	 */
 	@Override
 	public boolean init() {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#finit()
+	 */
 	@Override
 	public boolean finit() {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#parameterUpdate(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public boolean parameterUpdate(String name, String newValue) {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see ensemble.router.RouterClient#processCommand(ensemble.Command)
+	 */
 	@Override
 	public void processCommand(Command cmd) {
 	}

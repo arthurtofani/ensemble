@@ -2,7 +2,17 @@ package ensemble.audio.dsp;
 
 import com.sun.jna.Library;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface AubioJNA.
+ */
 public interface AubioJNA extends Library {
+    
+    /**
+     * Librarymethod.
+     *
+     * @param whatToSay the what to say
+     */
     public void librarymethod(String whatToSay);
 }
 

@@ -18,26 +18,6 @@ You should have received a copy of the GNU General Public License
 along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
 
 ******************************************************************************/
-*****************************************************************************
-
-Copyright 2011 Leandro Ferrari Thomaz
-
-This file is part of Ensemble.
-
-Ensemble is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Ensemble is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
-
-******************************************************************************/
 
 package ensemble.processing.audio;
 
@@ -52,28 +32,62 @@ import aubio.SWIGTYPE_p_fvec_t;
 import aubio.aubiowrapper;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Aubio_FFT.
+ */
 public class Aubio_FFT extends Processor {
 
 	// Mutex needed for safe threaded FFTW initialization
+	/** The Constant mutex. */
 	private static final Semaphore mutex = new Semaphore(1);
 
+	/** The param size. */
 	private final String PARAM_SIZE 		= "size";
+	
+	/** The param sample rate. */
 	private final String PARAM_SAMPLE_RATE	= "sample_rate";
+	
+	/** The param output type. */
 	private final String PARAM_OUTPUT_TYPE 	= "output_type";
+	
+	/** The param inverse. */
 	private final String PARAM_INVERSE		= "inverse";
 	
 	// FFT
+	/** The mfft_t. */
 	private SWIGTYPE_p_aubio_mfft_t mfft_t;
+	
+	/** The default_fft_size. */
 	private int default_fft_size = 512;
+	
+	/** The fft_size. */
 	private int fft_size;
+	
+	/** The Fs. */
 	private double Fs;
+	
+	/** The fft_output. */
 	private String fft_output;
+	
+	/** The inverse. */
 	private boolean inverse;
+	
+	/** The in_fvec. */
 	private SWIGTYPE_p_fvec_t in_fvec = null;
+	
+	/** The out_cvec. */
 	private SWIGTYPE_p_cvec_t out_cvec = null;
+	
+	/** The in_cvec. */
 	private SWIGTYPE_p_cvec_t in_cvec = null;
+	
+	/** The out_fvec. */
 	private SWIGTYPE_p_fvec_t out_fvec = null;
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#init()
+	 */
 	@Override
 	public boolean init() {
 		
@@ -103,6 +117,9 @@ public class Aubio_FFT extends Processor {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.processing.Processor#process(ensemble.Parameters, java.lang.Object)
+	 */
 	@Override
 	public Object process(Parameters arguments, Object in) {
 		
@@ -133,27 +150,7 @@ public class Aubio_FFT extends Processor {
 					float norm = aubiowrapper.cvec_read_norm(out_cvec, 0, i);
 					float phas = aubiowrapper.cvec_read_phas(out_cvec, 0, i);
 	//				System.out.println(norm + " |_ " + phas);
-					double mag = norm/******************************************************************************
-
-Copyright 2011 Leandro Ferrari Thomaz
-
-This file is part of Ensemble.
-
-Ensemble is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Ensemble is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Ensemble.  If not, see <http://www.gnu.org/licenses/>.
-
-******************************************************************************/
-Math.sqrt((norm * norm) + (phas * phas))*/;
+					double mag = normMath.sqrt((norm * norm) + (phas * phas));
 					out[i] = mag;
 				}
 			} else if (fft_output.equals("complex")) {
@@ -189,6 +186,9 @@ Math.sqrt((norm * norm) + (phas * phas))*/;
 
 	}
 
+	/* (non-Javadoc)
+	 * @see ensemble.LifeCycle#finit()
+	 */
 	@Override
 	public boolean finit() {
 		
